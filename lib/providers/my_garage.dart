@@ -114,6 +114,9 @@ class Garage with ChangeNotifier {
             'vehicleName': vehicle.vehicleName,
             'image': vehicle.image.path,
             'dateTime': vehicle.dateTime.toIso8601String(),
+            'mileage': vehicle.milage.toString(),
+            'engineSize': vehicle.engineSize.toString(),
+            'topSpeed': vehicle.topSpeed.toString(),
           }));
 
       _items[vehicleIndex] = vehicle;
