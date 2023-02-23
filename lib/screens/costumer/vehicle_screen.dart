@@ -78,15 +78,18 @@ class VehicleScreen extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  Text('2000', style: TextStyle(fontSize: 18)),
+                  Text(vehicleData.items[existingIndex].milage.toString(),
+                      style: TextStyle(fontSize: 18)),
                   const SizedBox(
                     height: 5,
                   ),
-                  Text('1500', style: TextStyle(fontSize: 18)),
+                  Text(vehicleData.items[existingIndex].engineSize.toString(),
+                      style: TextStyle(fontSize: 18)),
                   const SizedBox(
                     height: 5,
                   ),
-                  Text('180', style: TextStyle(fontSize: 18)),
+                  Text(vehicleData.items[existingIndex].topSpeed.toString(),
+                      style: TextStyle(fontSize: 18)),
                   const SizedBox(
                     height: 5,
                   ),
