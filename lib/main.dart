@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/my_garage.dart';
+import 'screens/costumer/service_logs_screen.dart';
 import 'screens/costumer/atdoorstep_services_screen.dart';
-import '/screens/costumer/my_garage_screen.dart';
+import 'screens/costumer/my_garage_screen.dart';
 import 'screens/costumer/services_screen.dart';
 import 'screens/costumer/shops_customers_screen.dart';
-import '/screens/costumer/costumer_tab_screen.dart';
+import 'screens/costumer/costumer_tab_screen.dart';
 import 'screens/worker/worker_tab_screen.dart';
-import '/screens/costumer/costumer_login_screen.dart';
-import '/screens/costumer/costumer_signup_screen.dart';
-import '/screens/worker/worker_signup_screen.dart';
-import '/screens/worker/worker_login_screen.dart';
-import '/screens/startpage.dart';
+import 'screens/costumer/costumer_login_screen.dart';
+import 'screens/costumer/costumer_signup_screen.dart';
+import 'screens/worker/worker_signup_screen.dart';
+import 'screens/worker/worker_login_screen.dart';
+import 'screens/startpage.dart';
 
 // Color.fromRGBO(206, 206, 206, 100) button color1
 // Color.fromRGBO(24, 45, 75, 1) button color2
@@ -72,6 +73,7 @@ class MyApp extends StatelessWidget {
           //--//
           MyGarageScreen.routeName: (context) => MyGarageScreen(),
           //--//
+          ServiceLogsScreen.routeName: (context) => ServiceLogsScreen(),
         },
       ),
     );

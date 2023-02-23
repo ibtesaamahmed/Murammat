@@ -1,8 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:murammat_app/providers/my_garage.dart';
 import 'package:provider/provider.dart';
+
+import '/providers/my_garage.dart';
+import '/screens/costumer/service_logs_screen.dart';
 
 class VehicleScreen extends StatelessWidget {
   final int existingIndex;
@@ -15,7 +16,6 @@ class VehicleScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Details'),
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.edit_rounded))],
       ),
       body: Column(
         children: <Widget>[
@@ -97,12 +97,23 @@ class VehicleScreen extends StatelessWidget {
           const SizedBox(
             height: 50,
           ),
-          ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).primaryColor),
-              onPressed: () {},
-              icon: Icon(Icons.home_repair_service_rounded),
-              label: Text('Service Logs')),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                padding: EdgeInsets.only(right: 20),
+                child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                        primary: Theme.of(context).primaryColor),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed(ServiceLogsScreen.routeName);
+                    },
+                    icon: Icon(Icons.home_repair_service_rounded),
+                    label: Text('Service Logs')),
+              ),
+            ],
+          ),
         ],
       ),
     );

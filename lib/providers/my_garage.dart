@@ -8,11 +8,18 @@ class GarageItems {
   final String? vehicleName;
   var image;
   final DateTime dateTime;
+  final int? milage;
+  final int? engineSize;
+  final int? topSpeed;
+
   GarageItems({
     required this.id,
     required this.vehicleName,
     required this.image,
     required this.dateTime,
+    this.milage,
+    this.engineSize,
+    this.topSpeed,
   });
 }
 
@@ -38,6 +45,9 @@ class Garage with ChangeNotifier {
         vehicleName: vehicleData['vehicleName'],
         dateTime: DateTime.tryParse(vehicleData['dateTime'])!,
         image: File(vehicleData['image']),
+        milage: int.parse(vehicleData['mileage']),
+        engineSize: int.parse(vehicleData['engineSize']),
+        topSpeed: int.parse(vehicleData['topSpeed']),
       ));
     });
     _items = loadedVehicles;
@@ -45,9 +55,6 @@ class Garage with ChangeNotifier {
   }
 
   Future<void> addNewVehicle(GarageItems vehicle) async {
-    print(vehicle.vehicleName);
-    print(vehicle.image.path);
-    print(vehicle.dateTime);
     final url = Uri.parse(
         'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles.json');
     try {
@@ -56,12 +63,18 @@ class Garage with ChangeNotifier {
             'vehicleName': vehicle.vehicleName,
             'image': vehicle.image.path,
             'dateTime': vehicle.dateTime.toIso8601String(),
+            'mileage': vehicle.milage.toString(),
+            'engineSize': vehicle.engineSize.toString(),
+            'topSpeed': vehicle.topSpeed.toString(),
           }));
       final newVehicle = GarageItems(
         id: json.decode(response.body)['name'],
         vehicleName: vehicle.vehicleName,
         image: File((vehicle.image).path),
         dateTime: vehicle.dateTime,
+        milage: vehicle.milage,
+        engineSize: vehicle.engineSize,
+        topSpeed: vehicle.topSpeed,
       );
       _items.add(newVehicle);
       notifyListeners();

@@ -12,6 +12,9 @@ class AddNewVehicle extends StatefulWidget {
 
 class _AddNewVehicleState extends State<AddNewVehicle> {
   final _nameController = TextEditingController();
+  final _milageController = TextEditingController();
+  final _enginesizeController = TextEditingController();
+  final _topspeedController = TextEditingController();
   File? file;
   DateTime? _selectedDate;
   var image;
@@ -48,20 +51,65 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
         ? Center(child: CircularProgressIndicator())
         : Padding(
             padding: EdgeInsets.only(
-                top: 20,
+                top: 10,
                 left: 20,
                 right: 20,
-                bottom: MediaQuery.of(context).viewInsets.bottom + 20),
+                bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 TextField(
+                  autofocus: false,
                   controller: _nameController,
                   keyboardType: TextInputType.name,
                   decoration: InputDecoration(
+                      contentPadding: EdgeInsets.zero,
                       labelText: 'Vehicle Name',
-                      focusColor: Theme.of(context).primaryColor),
+                      labelStyle: TextStyle(
+                          fontSize: 14, color: Theme.of(context).primaryColor)),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  autofocus: false,
+                  controller: _milageController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    labelText: 'Mileage (Km)',
+                    labelStyle: TextStyle(
+                        fontSize: 14, color: Theme.of(context).primaryColor),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  autofocus: false,
+                  controller: _enginesizeController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    labelText: 'Engine Size (cc)',
+                    labelStyle: TextStyle(
+                        fontSize: 14, color: Theme.of(context).primaryColor),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  autofocus: false,
+                  controller: _topspeedController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    labelText: 'Top Speed (Km/h)',
+                    labelStyle: TextStyle(
+                        fontSize: 14, color: Theme.of(context).primaryColor),
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -130,20 +178,27 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
                           backgroundColor: Theme.of(context).primaryColor,
                         ),
                         onPressed: () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
                           final newVehicle;
                           if (_nameController.text.isEmpty ||
                               _selectedDate == null ||
-                              file == null) {
+                              file == null ||
+                              _milageController.text.isEmpty ||
+                              _enginesizeController.text.isEmpty ||
+                              _topspeedController.text.isEmpty) {
                             return;
                           } else {
+                            setState(() {
+                              _isLoading = true;
+                            });
                             newVehicle = GarageItems(
-                                id: DateTime.now().toString(),
-                                vehicleName: _nameController.text,
-                                image: image,
-                                dateTime: _selectedDate!);
+                              id: DateTime.now().toString(),
+                              vehicleName: _nameController.text,
+                              image: image,
+                              dateTime: _selectedDate!,
+                              milage: int.parse(_milageController.text),
+                              engineSize: int.parse(_enginesizeController.text),
+                              topSpeed: int.parse(_topspeedController.text),
+                            );
 
                             await Provider.of<Garage>(context, listen: false)
                                 .addNewVehicle(newVehicle);

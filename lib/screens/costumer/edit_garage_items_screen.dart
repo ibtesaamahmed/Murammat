@@ -20,8 +20,12 @@ class EditGarageItemsScreen extends StatefulWidget {
 class _EditGarageItemsScreenState extends State<EditGarageItemsScreen> {
   DateTime? _selectedDate;
   final _nameController = TextEditingController();
+  final _milageController = TextEditingController();
+  final _enginesizeController = TextEditingController();
+  final _topspeedController = TextEditingController();
   File? file;
   var image;
+  var _isLoading = false;
 
   _openGallery() async {
     image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -50,6 +54,7 @@ class _EditGarageItemsScreenState extends State<EditGarageItemsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: Text('Edit Vehicle'),
         actions: <Widget>[
@@ -59,104 +64,156 @@ class _EditGarageItemsScreenState extends State<EditGarageItemsScreen> {
           )
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _nameController,
-              keyboardType: TextInputType.name,
-              decoration: InputDecoration(
-                  labelText: 'Vehicle Name',
-                  focusColor: Theme.of(context).primaryColor),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  width: 100,
-                  height: 100,
-                  margin: EdgeInsets.only(top: 8, right: 10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 1,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ),
-                  child: file != null
-                      ? Image.file(file as File)
-                      : Center(
-                          child: Text('Update Image',
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                              )),
-                        ),
-                ),
-                ElevatedButton.icon(
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            Theme.of(context).primaryColor)),
-                    onPressed: _openGallery,
-                    icon: Icon(Icons.browse_gallery),
-                    label: Text('Choose from Gallery'))
-              ],
-            ),
-            Container(
-              height: 70,
-              child: Row(
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
                 children: <Widget>[
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Text(
-                      _selectedDate == null
-                          ? 'No Date Choosen'
-                          : 'Picked Date: ${DateFormat.yMd().format(_selectedDate!)}',
-                      style: TextStyle(color: Theme.of(context).primaryColor),
+                  TextField(
+                    controller: _nameController,
+                    keyboardType: TextInputType.name,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        labelText: 'Vehicle Name',
+                        labelStyle: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).primaryColor)),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: _milageController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        labelText: 'Mileage (Km)',
+                        labelStyle: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).primaryColor)),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: _enginesizeController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        labelText: 'Engine Size (cc)',
+                        labelStyle: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).primaryColor)),
+                  ),
+                  SizedBox(height: 10),
+                  TextField(
+                    controller: _topspeedController,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        labelText: 'Top Speed (Km/h)',
+                        labelStyle: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).primaryColor)),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(
+                        width: 100,
+                        height: 100,
+                        margin: EdgeInsets.only(top: 8, right: 10),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        child: file != null
+                            ? Image.file(file as File)
+                            : Center(
+                                child: Text('Update Image',
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                    )),
+                              ),
+                      ),
+                      ElevatedButton.icon(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Theme.of(context).primaryColor)),
+                          onPressed: _openGallery,
+                          icon: Icon(Icons.browse_gallery),
+                          label: Text('Choose from Gallery'))
+                    ],
+                  ),
+                  Container(
+                    height: 70,
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                          fit: FlexFit.tight,
+                          child: Text(
+                            _selectedDate == null
+                                ? 'No Date Choosen'
+                                : 'Picked Date: ${DateFormat.yMd().format(_selectedDate!)}',
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          ),
+                        ),
+                        TextButton(
+                            onPressed: _showDatePicker,
+                            child: Text(
+                              'Choose Date',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ))
+                      ],
                     ),
                   ),
-                  TextButton(
-                      onPressed: _showDatePicker,
-                      child: Text(
-                        'Choose Date',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold),
-                      ))
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                        ),
+                        onPressed: () {
+                          final newVehicle;
+                          if (_nameController.text.isEmpty ||
+                              _selectedDate == null ||
+                              file == null ||
+                              _milageController.text.isEmpty ||
+                              _enginesizeController.text.isEmpty ||
+                              _topspeedController.text.isEmpty) {
+                            return;
+                          } else {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            newVehicle = GarageItems(
+                                id: DateTime.now().toString(),
+                                vehicleName: _nameController.text,
+                                image: image,
+                                dateTime: _selectedDate!,
+                                milage: int.parse(_milageController.text),
+                                engineSize:
+                                    int.parse(_enginesizeController.text),
+                                topSpeed: int.parse(_topspeedController.text));
+                            Provider.of<Garage>(context, listen: false)
+                                .updateVehicle(newVehicle, widget.existingId);
+                          }
+                          Navigator.of(context).pop();
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        },
+                        child: Text('Submit'),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ),
-                  onPressed: () {
-                    final newVehicle;
-                    if (_nameController.text.isEmpty ||
-                        _selectedDate == null ||
-                        file == null) {
-                      return;
-                    } else {
-                      newVehicle = GarageItems(
-                          id: DateTime.now().toString(),
-                          vehicleName: _nameController.text,
-                          image: image,
-                          dateTime: _selectedDate!);
-                      Provider.of<Garage>(context, listen: false)
-                          .updateVehicle(newVehicle, widget.existingId);
-                    }
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('Submit'),
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
     );
   }
 }
