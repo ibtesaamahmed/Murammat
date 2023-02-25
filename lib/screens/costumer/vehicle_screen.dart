@@ -109,8 +109,11 @@ class VehicleScreen extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         primary: Theme.of(context).primaryColor),
                     onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed(ServiceLogsScreen.routeName);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ServiceLogsScreen(
+                                  vehicleData.items[existingIndex].id)));
                     },
                     icon: Icon(Icons.home_repair_service_rounded),
                     label: Text('Service Logs')),

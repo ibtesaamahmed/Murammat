@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:murammat_app/screens/costumer/vehicle_screen.dart';
+import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 import 'package:intl/intl.dart';
@@ -55,10 +56,11 @@ class _MyGarageScreenState extends State<MyGarageScreen> {
         ],
       ),
       body: FutureBuilder(
+        future: _refreshVehicles(context),
         builder: ((context, snapshot) => snapshot.connectionState ==
                 ConnectionState.waiting
             ? Center(
-                child: CircularProgressIndicator(),
+                child: CustomCircularProgressIndicator(),
               )
             : Container(
                 child: RefreshIndicator(

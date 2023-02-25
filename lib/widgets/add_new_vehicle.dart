@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:murammat_app/providers/my_garage.dart';
+import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 class AddNewVehicle extends StatefulWidget {
@@ -48,7 +49,7 @@ class _AddNewVehicleState extends State<AddNewVehicle> {
   @override
   Widget build(BuildContext context) {
     return _isLoading == true
-        ? Center(child: CircularProgressIndicator())
+        ? Center(child: CustomCircularProgressIndicator())
         : Padding(
             padding: EdgeInsets.only(
                 top: 10,

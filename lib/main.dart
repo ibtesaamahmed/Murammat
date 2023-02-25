@@ -15,14 +15,27 @@ import 'screens/worker/worker_signup_screen.dart';
 import 'screens/worker/worker_login_screen.dart';
 import 'screens/startpage.dart';
 
-// Color.fromRGBO(206, 206, 206, 100) button color1
-// Color.fromRGBO(24, 45, 75, 1) button color2
-// Color.fromRGBO(206, 206, 206, 1) main background color
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    MaterialColor myColor = MaterialColor(
+      Color.fromRGBO(24, 45, 75, 1).value,
+      <int, Color>{
+        50: Color.fromRGBO(24, 45, 75, 0.1),
+        100: Color.fromRGBO(24, 45, 75, 0.2),
+        200: Color.fromRGBO(24, 45, 75, 0.3),
+        300: Color.fromRGBO(24, 45, 75, 0.4),
+        400: Color.fromRGBO(24, 45, 75, 0.5),
+        500: Color.fromRGBO(24, 45, 75, 0.6),
+        600: Color.fromRGBO(24, 45, 75, 0.7),
+        700: Color.fromRGBO(24, 45, 75, 0.8),
+        800: Color.fromRGBO(24, 45, 75, 0.9),
+        900: Color.fromRGBO(24, 45, 75, 1),
+      },
+    );
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => Garage()),
@@ -31,6 +44,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Murammat',
         theme: ThemeData(
+          primarySwatch: myColor,
           primaryColor: Color.fromRGBO(24, 45, 75, 1),
           canvasColor: const Color.fromRGBO(206, 206, 206, 1),
           accentColor: const Color.fromRGBO(206, 206, 206, 100),
@@ -73,7 +87,6 @@ class MyApp extends StatelessWidget {
           //--//
           MyGarageScreen.routeName: (context) => MyGarageScreen(),
           //--//
-          ServiceLogsScreen.routeName: (context) => ServiceLogsScreen(),
         },
       ),
     );

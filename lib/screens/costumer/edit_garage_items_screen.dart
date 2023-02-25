@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:intl/intl.dart';
+import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/my_garage.dart';
@@ -65,7 +66,7 @@ class _EditGarageItemsScreenState extends State<EditGarageItemsScreen> {
         ],
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: CustomCircularProgressIndicator())
           : Padding(
               padding: EdgeInsets.all(16),
               child: Column(
@@ -202,10 +203,10 @@ class _EditGarageItemsScreenState extends State<EditGarageItemsScreen> {
                             Provider.of<Garage>(context, listen: false)
                                 .updateVehicle(newVehicle, widget.existingId);
                           }
-                          Navigator.of(context).pop();
                           setState(() {
                             _isLoading = false;
                           });
+                          Navigator.of(context).pop();
                         },
                         child: Text('Submit'),
                       ),
