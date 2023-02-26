@@ -52,6 +52,36 @@ class _EditGarageItemsScreenState extends State<EditGarageItemsScreen> {
     });
   }
 
+  void _submitData() async {
+    final newVehicle;
+    if (_nameController.text.isEmpty ||
+        _selectedDate == null ||
+        file == null ||
+        _milageController.text.isEmpty ||
+        _enginesizeController.text.isEmpty ||
+        _topspeedController.text.isEmpty) {
+      return;
+    } else {
+      setState(() {
+        _isLoading = true;
+      });
+      newVehicle = GarageItems(
+          id: DateTime.now().toString(),
+          vehicleName: _nameController.text,
+          image: image,
+          dateTime: _selectedDate!,
+          milage: int.parse(_milageController.text),
+          engineSize: int.parse(_enginesizeController.text),
+          topSpeed: int.parse(_topspeedController.text));
+      await Provider.of<Garage>(context, listen: false)
+          .updateVehicle(newVehicle, widget.existingId);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +90,7 @@ class _EditGarageItemsScreenState extends State<EditGarageItemsScreen> {
         title: Text('Edit Vehicle'),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: _submitData,
             icon: Icon(Icons.done),
           )
         ],
@@ -178,36 +208,7 @@ class _EditGarageItemsScreenState extends State<EditGarageItemsScreen> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Theme.of(context).primaryColor,
                         ),
-                        onPressed: () {
-                          final newVehicle;
-                          if (_nameController.text.isEmpty ||
-                              _selectedDate == null ||
-                              file == null ||
-                              _milageController.text.isEmpty ||
-                              _enginesizeController.text.isEmpty ||
-                              _topspeedController.text.isEmpty) {
-                            return;
-                          } else {
-                            setState(() {
-                              _isLoading = true;
-                            });
-                            newVehicle = GarageItems(
-                                id: DateTime.now().toString(),
-                                vehicleName: _nameController.text,
-                                image: image,
-                                dateTime: _selectedDate!,
-                                milage: int.parse(_milageController.text),
-                                engineSize:
-                                    int.parse(_enginesizeController.text),
-                                topSpeed: int.parse(_topspeedController.text));
-                            Provider.of<Garage>(context, listen: false)
-                                .updateVehicle(newVehicle, widget.existingId);
-                          }
-                          setState(() {
-                            _isLoading = false;
-                          });
-                          Navigator.of(context).pop();
-                        },
+                        onPressed: _submitData,
                         child: Text('Submit'),
                       ),
                     ],

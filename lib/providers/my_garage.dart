@@ -24,10 +24,12 @@ class GarageItems {
 }
 
 class ServiceLogs {
+  final String id;
   final int? totalPrice;
   final String? serviceDetail;
   final DateTime dateTime;
   ServiceLogs({
+    required this.id,
     required this.totalPrice,
     required this.serviceDetail,
     required this.dateTime,
@@ -151,6 +153,7 @@ class Garage with ChangeNotifier {
             'dateTime': service.dateTime.toIso8601String(),
           }));
       final newServiceLog = ServiceLogs(
+          id: json.decode(response.body)['name'],
           totalPrice: service.totalPrice,
           serviceDetail: service.serviceDetail,
           dateTime: service.dateTime);
@@ -158,6 +161,62 @@ class Garage with ChangeNotifier {
       notifyListeners();
     } catch (error) {
       throw error;
+    }
+  }
+
+  Future<void> fetchAndSetServiceLogs(String id) async {
+    final url = Uri.parse(
+        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$id/services.json');
+    final response = await http.get(url);
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    if (extractedData.isEmpty || extractedData['error'] != null) {
+      return;
+    }
+    final List<ServiceLogs> loadedServiceLogs = [];
+    extractedData.forEach((serviceId, serviceData) {
+      loadedServiceLogs.add(ServiceLogs(
+          id: serviceId,
+          totalPrice: serviceData['totalPrice'],
+          serviceDetail: serviceData['serviceDetail'],
+          dateTime: DateTime.tryParse(serviceData['dateTime'])!));
+    });
+    _serviceLogs = loadedServiceLogs;
+    notifyListeners();
+  }
+
+  Future<void> deleteServiceLog(String existingId, String vehicleId) async {
+    final url = Uri.parse(
+        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$vehicleId/services/$existingId.json');
+    final existingServiceLogIndex =
+        _serviceLogs.indexWhere((service) => service.id == existingId);
+    ServiceLogs? existingServiceLog = _serviceLogs[existingServiceLogIndex];
+    _serviceLogs.removeAt(existingServiceLogIndex);
+    final response = await http.delete(url);
+    if (response.statusCode >= 400) {
+      _serviceLogs.insert(existingServiceLogIndex, existingServiceLog);
+      notifyListeners();
+      throw HttpException('Could not delete Vehicle');
+    } else {
+      existingServiceLog = null;
+    }
+    notifyListeners();
+  }
+
+  Future<void> updateServiceLogs(String existingServiceLogId,
+      String existingVehicleId, ServiceLogs service) async {
+    final serviceIndex = _serviceLogs
+        .indexWhere((service) => service.id == existingServiceLogId);
+    if (serviceIndex >= 0) {
+      final url = Uri.parse(
+          'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$existingVehicleId/services/$existingServiceLogId.json');
+      await http.patch(url,
+          body: json.encode({
+            'serviceDetail': service.serviceDetail,
+            'totalPrice': service.totalPrice,
+            'dateTime': service.dateTime.toIso8601String(),
+          }));
+      _serviceLogs[serviceIndex] = service;
+      notifyListeners();
     }
   }
 }

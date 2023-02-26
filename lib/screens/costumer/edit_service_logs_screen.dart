@@ -4,19 +4,22 @@ import 'package:murammat_app/providers/my_garage.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
-class AddNewServiceLog extends StatefulWidget {
-  final String existingId;
-  AddNewServiceLog(this.existingId);
+class EditServiceLogScreen extends StatefulWidget {
+  String existingServiceId;
+  String existingVehicleId;
+
+  EditServiceLogScreen(
+      {required this.existingServiceId, required this.existingVehicleId});
+
   @override
-  State<AddNewServiceLog> createState() => _AddNewServiceLogState();
+  State<EditServiceLogScreen> createState() => _EditServiceLogScreenState();
 }
 
-class _AddNewServiceLogState extends State<AddNewServiceLog> {
+class _EditServiceLogScreenState extends State<EditServiceLogScreen> {
   DateTime? _selectedDate;
   final _detailController = TextEditingController();
   final _priceController = TextEditingController();
   var _isLoading = false;
-
   void _showDatePicker() {
     showDatePicker(
       context: context,
@@ -33,22 +36,49 @@ class _AddNewServiceLogState extends State<AddNewServiceLog> {
     });
   }
 
+  void _sumitData() async {
+    final newServiceLog;
+    if (_detailController.text.isEmpty ||
+        _priceController.text.isEmpty ||
+        _selectedDate == null) {
+      return;
+    } else {
+      setState(() {
+        _isLoading = true;
+      });
+      newServiceLog = ServiceLogs(
+        id: DateTime.now().toString(),
+        totalPrice: int.parse(_priceController.text),
+        serviceDetail: _detailController.text,
+        dateTime: _selectedDate!,
+      );
+      await Provider.of<Garage>(context, listen: false).updateServiceLogs(
+          widget.existingServiceId, widget.existingVehicleId, newServiceLog);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return _isLoading == true
-        ? Center(
-            child: CustomCircularProgressIndicator(),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text('Edit Vehicle'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: _sumitData,
+            icon: Icon(Icons.done),
           )
-        : Padding(
-            padding: EdgeInsets.only(
-                top: 20,
-                left: 20,
-                right: 20,
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+        ],
+      ),
+      body: _isLoading
+          ? Center(child: CustomCircularProgressIndicator())
+          : Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(children: <Widget>[
                 TextField(
                   autofocus: false,
                   maxLines: 4,
@@ -140,29 +170,7 @@ class _AddNewServiceLogState extends State<AddNewServiceLog> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     ElevatedButton(
-                      onPressed: () async {
-                        final newServiceLog;
-                        if (_detailController.text.isEmpty ||
-                            _priceController.text.isEmpty ||
-                            _selectedDate == null) {
-                          return;
-                        } else {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          newServiceLog = ServiceLogs(
-                              id: DateTime.now().toString(),
-                              totalPrice: int.parse(_priceController.text),
-                              serviceDetail: _detailController.text,
-                              dateTime: _selectedDate!);
-                          await Provider.of<Garage>(context, listen: false)
-                              .addServiceLog(newServiceLog, widget.existingId);
-                        }
-                        Navigator.of(context).pop();
-                        setState(() {
-                          _isLoading = false;
-                        });
-                      },
+                      onPressed: _sumitData,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).primaryColor,
                       ),
@@ -170,9 +178,8 @@ class _AddNewServiceLogState extends State<AddNewServiceLog> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-              ],
+              ]),
             ),
-          );
+    );
   }
 }
