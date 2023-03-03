@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:murammat_app/providers/auth.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/my_garage.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => Garage()),
+        ChangeNotifierProvider(create: (context) => Auth()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

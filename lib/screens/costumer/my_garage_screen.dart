@@ -134,7 +134,10 @@ class _MyGarageScreenState extends State<MyGarageScreen> {
                                                                 ToastGravity
                                                                     .BOTTOM,
                                                             textColor:
-                                                                Colors.white,
+                                                                Colors.black,
+                                                            backgroundColor: Theme
+                                                                    .of(context)
+                                                                .primaryColorLight,
                                                             fontSize: 12.0);
                                                       } catch (error) {
                                                         scaffold.showSnackBar(
