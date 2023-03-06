@@ -134,7 +134,7 @@ class _CostumerLoginScreenState extends State<CostumerLoginScreen> {
                         fixedSize: const Size(120, 40),
                         backgroundColor:
                             Theme.of(context).appBarTheme.backgroundColor,
-                        foregroundColor: Theme.of(context).accentColor),
+                        foregroundColor: Colors.white),
                     child: const Text(
                       'Login',
                       style: TextStyle(fontSize: 16),

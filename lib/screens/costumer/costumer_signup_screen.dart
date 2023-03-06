@@ -227,8 +227,10 @@ class _CostumerSignupScreenState extends State<CostumerSignupScreen> {
                         });
                         try {
                           await Provider.of<Auth>(context, listen: false)
-                              .signUp(_emailController.text,
-                                  _passwordController.text);
+                              .signUp(
+                            _emailController.text,
+                            _passwordController.text,
+                          );
                           Navigator.of(context).pushReplacementNamed(
                               CostumerLoginScreen.routeName);
                         } on HttpException catch (error) {
