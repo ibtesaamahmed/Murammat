@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -87,9 +88,11 @@ class _MyGarageScreenState extends State<MyGarageScreen> {
                                           }),
                                           child: ListTile(
                                             leading: Container(
-                                              child: Image.file(File(
-                                                  (value.items[index].image)
-                                                      .path)),
+                                              child: Image.file(
+                                                File((value.items[index].image)
+                                                    .path),
+                                                fit: BoxFit.fitWidth,
+                                              ),
                                             ),
                                             title: Text(value
                                                 .items[index].vehicleName

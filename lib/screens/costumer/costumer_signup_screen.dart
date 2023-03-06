@@ -229,6 +229,8 @@ class _CostumerSignupScreenState extends State<CostumerSignupScreen> {
                           await Provider.of<Auth>(context, listen: false)
                               .signUp(_emailController.text,
                                   _passwordController.text);
+                          Navigator.of(context).pushReplacementNamed(
+                              CostumerLoginScreen.routeName);
                         } on HttpException catch (error) {
                           var errorMessage = 'Authentication failed!';
                           if (error.toString().contains('EMAIL_EXISTS')) {
@@ -252,8 +254,6 @@ class _CostumerSignupScreenState extends State<CostumerSignupScreen> {
                           _isLoading = false;
                         });
 
-                        Navigator.of(context).pushReplacementNamed(
-                            CostumerLoginScreen.routeName);
                         //for sending data of textfields
                       } else {
                         setState(() {

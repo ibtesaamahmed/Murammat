@@ -39,8 +39,16 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => Garage()),
         ChangeNotifierProvider(create: (context) => Auth()),
+        ChangeNotifierProxyProvider<Auth, Garage>(
+          create: ((context) => Garage('', '', [])),
+          update: ((context, auth, previousGarage) => Garage(
+                auth.token,
+                auth.userId,
+                previousGarage == null ? [] : previousGarage.items,
+              )),
+        ),
+        // ChangeNotifierProvider(create: (context) => Garage()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -37,6 +37,10 @@ class ServiceLogs {
 }
 
 class Garage with ChangeNotifier {
+  final authToken;
+  final userId;
+  Garage(this.authToken, this.userId, this._items);
+
   List<GarageItems> _items = [];
   List<ServiceLogs> _serviceLogs = [];
 
@@ -49,8 +53,9 @@ class Garage with ChangeNotifier {
   }
 
   Future<void> fetchAndSetVehicles() async {
+    final filterString = 'orderBy="createrId"&equalTo="$userId"';
     final url = Uri.parse(
-        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles.json');
+        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles.json?auth=$authToken&$filterString');
     final response = await http.get(url);
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
     if (extractedData.isEmpty || extractedData['error'] != null) {
@@ -74,7 +79,7 @@ class Garage with ChangeNotifier {
 
   Future<void> addNewVehicle(GarageItems vehicle) async {
     final url = Uri.parse(
-        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles.json');
+        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles.json?auth=$authToken');
     try {
       final response = await http.post(url,
           body: json.encode({
@@ -84,6 +89,7 @@ class Garage with ChangeNotifier {
             'mileage': vehicle.milage.toString(),
             'engineSize': vehicle.engineSize.toString(),
             'topSpeed': vehicle.topSpeed.toString(),
+            'createrId': userId,
           }));
       final newVehicle = GarageItems(
         id: json.decode(response.body)['name'],
@@ -103,7 +109,7 @@ class Garage with ChangeNotifier {
 
   Future<void> deleteVehicle(String existingId) async {
     final url = Uri.parse(
-        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$existingId.json');
+        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$existingId.json?auth=$authToken');
     final existingVehicleIndex =
         _items.indexWhere((vehicle) => vehicle.id == existingId);
     GarageItems? existingVehicle = _items[existingVehicleIndex];
@@ -126,7 +132,7 @@ class Garage with ChangeNotifier {
         _items.indexWhere((vehicle) => vehicle.id == existingId);
     if (vehicleIndex >= 0) {
       final url = Uri.parse(
-          'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$existingId.json');
+          'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$existingId.json?auth=$authToken');
       await http.patch(url,
           body: json.encode({
             'vehicleName': vehicle.vehicleName,
@@ -144,7 +150,7 @@ class Garage with ChangeNotifier {
 
   Future<void> addServiceLog(ServiceLogs service, String id) async {
     final url = Uri.parse(
-        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$id/services.json');
+        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$id/services.json?auth=$authToken');
     try {
       final response = await http.post(url,
           body: json.encode({
@@ -166,7 +172,7 @@ class Garage with ChangeNotifier {
 
   Future<void> fetchAndSetServiceLogs(String id) async {
     final url = Uri.parse(
-        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$id/services.json');
+        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$id/services.json?auth=$authToken');
     final response = await http.get(url);
     final extractedData = json.decode(response.body) as Map<String, dynamic>;
     if (extractedData.isEmpty || extractedData['error'] != null) {
@@ -186,7 +192,7 @@ class Garage with ChangeNotifier {
 
   Future<void> deleteServiceLog(String existingId, String vehicleId) async {
     final url = Uri.parse(
-        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$vehicleId/services/$existingId.json');
+        'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$vehicleId/services/$existingId.json?auth=$authToken');
     final existingServiceLogIndex =
         _serviceLogs.indexWhere((service) => service.id == existingId);
     ServiceLogs? existingServiceLog = _serviceLogs[existingServiceLogIndex];
@@ -208,7 +214,7 @@ class Garage with ChangeNotifier {
         .indexWhere((service) => service.id == existingServiceLogId);
     if (serviceIndex >= 0) {
       final url = Uri.parse(
-          'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$existingVehicleId/services/$existingServiceLogId.json');
+          'https://murammat-b174c-default-rtdb.firebaseio.com/vehicles/$existingVehicleId/services/$existingServiceLogId.json?auth=$authToken');
       await http.patch(url,
           body: json.encode({
             'serviceDetail': service.serviceDetail,
