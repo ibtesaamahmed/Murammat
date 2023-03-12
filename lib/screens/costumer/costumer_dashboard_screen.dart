@@ -14,7 +14,8 @@ class CostumerDashboardScreen extends StatefulWidget {
 class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
   int _currentIndex = 0;
   final List imagesList = [
-    "https://static.vecteezy.com/system/resources/thumbnails/001/270/306/small_2x/maintenance-workshop-for-a-car.jpg",
+    "https://img.freepik.com/premium-vector/roadside-assistance-concept-broken-car-tow-truck-cartoon-man-calling-emergency-service-illustration-flat-style_136277-675.jpg?w=2000",
+    "https://img.freepik.com/premium-vector/roadside-assistance-tow-truck-illustration-car-vector_178650-4113.jpg?w=2000",
   ];
 
   @override

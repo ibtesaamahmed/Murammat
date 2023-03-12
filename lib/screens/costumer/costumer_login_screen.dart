@@ -17,11 +17,8 @@ class CostumerLoginScreen extends StatefulWidget {
 
 class _CostumerLoginScreenState extends State<CostumerLoginScreen> {
   var _isLoading = false;
-
   final _emailController = TextEditingController();
-
   final _passwordController = TextEditingController();
-
   void _showErrorDialog(String message, BuildContext context) {
     showDialog(
         context: context,
@@ -45,6 +42,13 @@ class _CostumerLoginScreenState extends State<CostumerLoginScreen> {
                     )),
               ],
             ));
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -102,7 +106,9 @@ class _CostumerLoginScreenState extends State<CostumerLoginScreen> {
                       });
                       try {
                         await Provider.of<Auth>(context, listen: false).login(
-                            _emailController.text, _passwordController.text);
+                            _emailController.text,
+                            _passwordController.text,
+                            'customers');
                         Navigator.of(context)
                             .pushReplacementNamed(CostumerTabScreen.routeName);
                       } on HttpException catch (error) {

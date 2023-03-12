@@ -1,10 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
+import 'package:provider/provider.dart';
 
+import '../../models/http_exception.dart';
+import '../../providers/auth.dart';
 import '/screens/worker/worker_tab_screen.dart';
 import '/screens/worker/worker_signup_screen.dart';
 
-class WorkerLoginScreen extends StatelessWidget {
+class WorkerLoginScreen extends StatefulWidget {
   static const routeName = '/worker-login';
+
+  @override
+  State<WorkerLoginScreen> createState() => _WorkerLoginScreenState();
+}
+
+class _WorkerLoginScreenState extends State<WorkerLoginScreen> {
+  var _isLoading = false;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  void _showErrorDialog(String message, BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text(
+                'An Error Occured',
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
+              content: Text(
+                message,
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                    child: Text(
+                      'OK',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    )),
+              ],
+            ));
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,36 +72,78 @@ class WorkerLoginScreen extends StatelessWidget {
                 const SizedBox(
                   height: 50,
                 ),
-                const TextField(
+                TextField(
+                  controller: _emailController,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Username'),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
-                const TextField(
+                TextField(
+                  controller: _passwordController,
+                  obscureText: true,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Password'),
                 ),
                 const SizedBox(
                   height: 30,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(WorkerTabScreen.routeName);
-                  },
-                  style: ElevatedButton.styleFrom(
-                      elevation: 5,
-                      fixedSize: const Size(120, 40),
-                      backgroundColor:
-                          Theme.of(context).appBarTheme.backgroundColor,
-                      foregroundColor: Theme.of(context).accentColor),
-                  child: const Text(
-                    'Login',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
+                _isLoading
+                    ? Center(
+                        child: CustomCircularProgressIndicator(),
+                      )
+                    : ElevatedButton(
+                        onPressed: () async {
+                          if (_emailController.text.isEmpty ||
+                              _passwordController.text.isEmpty) {
+                            _showErrorDialog('Missing Fields', context);
+                            return;
+                          }
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          try {
+                            await Provider.of<Auth>(context, listen: false)
+                                .login(_emailController.text,
+                                    _passwordController.text, 'workers');
+                            Navigator.of(context).pushReplacementNamed(
+                                WorkerTabScreen.routeName);
+                          } on HttpException catch (error) {
+                            var errorMessage = 'Authentication failed!';
+                            if (error.toString().contains('INVALID_EMAIL')) {
+                              errorMessage = 'This email is invalid';
+                            } else if (error
+                                .toString()
+                                .contains('EMAIL_NOT_FOUND')) {
+                              errorMessage = 'This email not found';
+                            } else if (error
+                                .toString()
+                                .contains('INVALID_PASSWORD')) {
+                              errorMessage = 'You entered invalid password';
+                            }
+                            _showErrorDialog(errorMessage, context);
+                          } catch (error) {
+                            const errorMessage =
+                                'Could not Autahenticate you, Please try again later!';
+                            _showErrorDialog(errorMessage, context);
+                          }
+
+                          setState(() {
+                            _isLoading = false;
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                            elevation: 5,
+                            fixedSize: const Size(120, 40),
+                            backgroundColor:
+                                Theme.of(context).appBarTheme.backgroundColor,
+                            foregroundColor: Colors.white),
+                        child: const Text(
+                          'Login',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
                 const SizedBox(
                   height: 30,
                 ),

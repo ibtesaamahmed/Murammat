@@ -1,103 +1,154 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class WorkerDashboardScreen extends StatelessWidget {
+class WorkerDashboardScreen extends StatefulWidget {
+  @override
+  State<WorkerDashboardScreen> createState() => _WorkerDashboardScreenState();
+}
+
+class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
+  int _currentIndex = 0;
+  final List imagesList = [
+    "https://img.freepik.com/premium-vector/roadside-assistance-concept-broken-car-tow-truck-cartoon-man-calling-emergency-service-illustration-flat-style_136277-675.jpg?w=2000",
+    "https://img.freepik.com/premium-vector/roadside-assistance-tow-truck-illustration-car-vector_178650-4113.jpg?w=2000",
+  ];
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          height: 200,
-          child: ListView(
-            children: [
-              CarouselSlider(
-                items: [
-                  //1st Image of Slider
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            "https://rental.ua/content/documents/6/567/thumb-article-700x333-0e04.jpg"),
-                        fit: BoxFit.fitWidth,
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          CarouselSlider(
+            options: CarouselOptions(
+              autoPlay: true,
+              //  autoPlayAnimationDuration: Duration(microseconds: 2000),
+              onPageChanged: (index, reason) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+            ),
+            items: imagesList
+                .map(
+                  (item) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      margin: EdgeInsets.only(
+                        top: 10.0,
+                        bottom: 10.0,
+                      ),
+                      elevation: 6.0,
+                      shadowColor: Theme.of(context).primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(30.0),
+                        ),
+                        child: Stack(
+                          children: <Widget>[
+                            Image.network(
+                              item,
+                              fit: BoxFit.cover,
+                              height: double.infinity,
+                              width: double.infinity,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-
-                  //2nd Image of Slider
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      image: DecorationImage(
-                        image: NetworkImage(
-                            "https://www.insurancecentermo.com/wp-content/uploads/2021/09/roadside-assistance1.webp"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ],
-
-                //Slider Container properties
-                options: CarouselOptions(
-                  height: 200.0,
-                  enlargeCenterPage: true,
-                  autoPlay: true,
-                  autoPlayCurve: Curves.easeIn,
-                  enableInfiniteScroll: true,
-                  autoPlayAnimationDuration: Duration(milliseconds: 800),
-                  viewportFraction: 1,
-                ),
-              ),
-            ],
+                )
+                .toList(),
           ),
-        ),
-        const SizedBox(
-          height: 80,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            ElevatedButton(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: imagesList.map((urlOfItem) {
+              int index = imagesList.indexOf(urlOfItem);
+              return Container(
+                width: 10.0,
+                height: 10.0,
+                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _currentIndex == index
+                      ? Color.fromRGBO(0, 0, 0, 0.8)
+                      : Color.fromRGBO(0, 0, 0, 0.3),
+                ),
+              );
+            }).toList(),
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: Theme.of(context).primaryColor, width: 4)),
+            child: ElevatedButton.icon(
               onPressed: () {},
-              child: Text('Show Requests'),
+              icon: Icon(
+                Icons.notifications_active,
+                color: Theme.of(context).primaryColor,
+              ),
+              label: Text(
+                'Requests',
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
               style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
-                fixedSize: Size(100, 100),
-                elevation: 10,
+                primary: Theme.of(context).appBarTheme.foregroundColor,
+                fixedSize: Size(300, 60),
               ),
             ),
-            ElevatedButton(
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: Theme.of(context).primaryColor, width: 4)),
+            child: ElevatedButton.icon(
               onPressed: () {},
-              child: Text('Add Services'),
+              icon: Icon(
+                Icons.home_repair_service,
+                color: Theme.of(context).primaryColor,
+              ),
+              label: Text(
+                'Services',
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
               style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
-                fixedSize: Size(100, 100),
-                elevation: 10,
+                primary: Theme.of(context).appBarTheme.foregroundColor,
+                fixedSize: Size(300, 60),
               ),
             ),
-          ],
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            ElevatedButton(
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: Theme.of(context).primaryColor, width: 4)),
+            child: ElevatedButton.icon(
               onPressed: () {},
-              child: Text(
+              icon: Icon(
+                Icons.shop,
+                color: Theme.of(context).primaryColor,
+              ),
+              label: Text(
                 'My Shop',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(color: Theme.of(context).primaryColor),
               ),
               style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).primaryColor,
-                fixedSize: Size(260, 100),
-                elevation: 10,
+                primary: Theme.of(context).appBarTheme.foregroundColor,
+                fixedSize: Size(300, 60),
               ),
             ),
-          ],
-        )
-      ],
+          ),
+        ],
+      ),
     );
   }
 }

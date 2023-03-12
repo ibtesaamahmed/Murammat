@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:murammat_app/models/http_exception.dart';
 import 'package:murammat_app/providers/auth.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
@@ -194,31 +193,17 @@ class _CostumerSignupScreenState extends State<CostumerSignupScreen> {
 
                       if (isLastStep) {
                         if (_passwordController.text != _confirmPassword.text) {
-                          // Fluttertoast.showToast(
-                          //   msg: 'Password did not match',
-                          //   toastLength: Toast.LENGTH_SHORT,
-                          //   gravity: ToastGravity.BOTTOM,
-                          //   textColor: Colors.black,
-                          //   backgroundColor: Theme.of(context).primaryColorLight,
-                          //   fontSize: 12.0,
-                          // );
                           _showErrorDialog('Password do not match');
                           return;
-                        } else if (_firstName.text.isEmpty ||
+                        } else if (_emailController.text.isEmpty ||
+                            _passwordController.text.isEmpty ||
+                            _firstName.text.isEmpty ||
                             _lastName.text.isEmpty ||
                             _phoneNo.text.isEmpty ||
                             _houseNo.text.isEmpty ||
                             _streetNo.text.isEmpty ||
                             _areaOrSector.text.isEmpty ||
                             _city.text.isEmpty) {
-                          // Fluttertoast.showToast(
-                          //   msg: 'Fill all fields please',
-                          //   toastLength: Toast.LENGTH_LONG,
-                          //   gravity: ToastGravity.BOTTOM,
-                          //   textColor: Colors.black,
-                          //   backgroundColor: Theme.of(context).primaryColorLight,
-                          //   fontSize: 12.0,
-                          // );
                           _showErrorDialog('Missing Fields');
                           return;
                         }
@@ -230,6 +215,7 @@ class _CostumerSignupScreenState extends State<CostumerSignupScreen> {
                               .signUp(
                             _emailController.text,
                             _passwordController.text,
+                            'customers',
                           );
                           Navigator.of(context).pushReplacementNamed(
                               CostumerLoginScreen.routeName);

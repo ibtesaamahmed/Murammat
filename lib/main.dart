@@ -3,7 +3,6 @@ import 'package:murammat_app/providers/auth.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/my_garage.dart';
-import 'screens/costumer/service_logs_screen.dart';
 import 'screens/costumer/atdoorstep_services_screen.dart';
 import 'screens/costumer/my_garage_screen.dart';
 import 'screens/costumer/services_screen.dart';

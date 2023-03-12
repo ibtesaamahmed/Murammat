@@ -51,6 +51,13 @@ class _WorkerTabScreenState extends State<WorkerTabScreen> {
         appBar: AppBar(
           title: Text(_pages[_selectedPageIndex]['title'].toString()),
           automaticallyImplyLeading: false,
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: Icon(Icons.logout))
+          ],
         ),
         body: _pages[_selectedPageIndex]['page'] as Widget,
         bottomNavigationBar: BottomNavigationBar(
@@ -58,7 +65,7 @@ class _WorkerTabScreenState extends State<WorkerTabScreen> {
           onTap: _selectPage,
           backgroundColor: Theme.of(context).primaryColor,
           unselectedItemColor: Theme.of(context).accentColor,
-          selectedItemColor: Theme.of(context).canvasColor,
+          selectedItemColor: Theme.of(context).appBarTheme.foregroundColor,
           currentIndex: _selectedPageIndex,
           type: BottomNavigationBarType.fixed,
           items: [

@@ -70,7 +70,7 @@ class _CostumerTabScreenState extends State<CostumerTabScreen> {
           onTap: _selectPage,
           backgroundColor: Theme.of(context).primaryColor,
           unselectedItemColor: Theme.of(context).accentColor,
-          selectedItemColor: Theme.of(context).canvasColor,
+          selectedItemColor: Theme.of(context).appBarTheme.foregroundColor,
           currentIndex: _selectedPageIndex,
           type: BottomNavigationBarType.fixed,
           items: [

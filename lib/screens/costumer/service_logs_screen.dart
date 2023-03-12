@@ -65,100 +65,130 @@ class _ServiceLogsScreenState extends State<ServiceLogsScreen> {
                 onRefresh: () =>
                     _refreshServiceLogs(context, widget.existingVehicleId),
                 child: Consumer<Garage>(
-                  builder: (context, value, child) => Column(children: <Widget>[
-                    Expanded(
-                        child: ListView.builder(
-                      itemBuilder: (context, index) {
-                        return Container(
-                          child: Card(
-                              elevation: 5,
-                              margin: EdgeInsets.all(20),
-                              child: ListTile(
-                                leading: Container(
-                                  padding: EdgeInsets.only(top: 10, right: 10),
-                                  child: Text(
-                                    'Rs. ' +
-                                        value.serviceLogs[index].totalPrice
+                  builder: (context, value, child) => value.serviceLogs.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(
+                                child: Image.asset("assets/images/waiting.png"),
+                                height: 50,
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                'No Logs Added Yet!',
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor),
+                              )
+                            ],
+                          ),
+                        )
+                      : Column(children: <Widget>[
+                          Expanded(
+                              child: ListView.builder(
+                            itemBuilder: (context, index) {
+                              return Container(
+                                child: Card(
+                                    elevation: 5,
+                                    margin: EdgeInsets.all(20),
+                                    child: ListTile(
+                                      leading: Container(
+                                        padding:
+                                            EdgeInsets.only(top: 10, right: 10),
+                                        child: Text(
+                                          'Rs. ' +
+                                              value
+                                                  .serviceLogs[index].totalPrice
+                                                  .toString(),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      title: Text(
+                                        value.serviceLogs[index].serviceDetail
                                             .toString(),
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                title: Text(
-                                  value.serviceLogs[index].serviceDetail
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(
-                                  DateFormat.yMMMEd().format(
-                                      value.serviceLogs[index].dateTime),
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      IconButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        EditServiceLogScreen(
-                                                          existingServiceId:
-                                                              value
-                                                                  .serviceLogs[
-                                                                      index]
-                                                                  .id,
-                                                          existingVehicleId: widget
-                                                              .existingVehicleId,
-                                                        )));
-                                          },
-                                          icon: Icon(
-                                            Icons.edit,
+                                        style: TextStyle(
                                             color:
                                                 Theme.of(context).primaryColor,
-                                          )),
-                                      IconButton(
-                                          onPressed: () async {
-                                            try {
-                                              await value.deleteServiceLog(
-                                                  value.serviceLogs[index].id,
-                                                  widget.existingVehicleId);
-                                              print('deleted');
-                                              Fluttertoast.showToast(
-                                                  msg: 'Deleted Successfully!',
-                                                  toastLength:
-                                                      Toast.LENGTH_SHORT,
-                                                  gravity: ToastGravity.BOTTOM,
-                                                  textColor: Colors.white,
-                                                  fontSize: 12.0);
-                                            } catch (error) {
-                                              scaffold.showSnackBar(SnackBar(
-                                                  content: Text(
-                                                'Deleting Failed!',
-                                                textAlign: TextAlign.center,
-                                              )));
-                                            }
-                                          },
-                                          icon: Icon(
-                                            Icons.delete,
-                                            color: Theme.of(context).errorColor,
-                                          )),
-                                    ]),
-                              )),
-                        );
-                      },
-                      itemCount: value.serviceLogs.length,
-                    ))
-                  ]),
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      subtitle: Text(
+                                        DateFormat.yMMMEd().format(
+                                            value.serviceLogs[index].dateTime),
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400),
+                                      ),
+                                      trailing: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            IconButton(
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditServiceLogScreen(
+                                                                existingServiceId: value
+                                                                    .serviceLogs[
+                                                                        index]
+                                                                    .id,
+                                                                existingVehicleId:
+                                                                    widget
+                                                                        .existingVehicleId,
+                                                              )));
+                                                },
+                                                icon: Icon(
+                                                  Icons.edit,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
+                                                )),
+                                            IconButton(
+                                                onPressed: () async {
+                                                  try {
+                                                    await value.deleteServiceLog(
+                                                        value.serviceLogs[index]
+                                                            .id,
+                                                        widget
+                                                            .existingVehicleId);
+                                                    print('deleted');
+                                                    Fluttertoast.showToast(
+                                                        msg:
+                                                            'Deleted Successfully!',
+                                                        toastLength:
+                                                            Toast.LENGTH_SHORT,
+                                                        gravity:
+                                                            ToastGravity.BOTTOM,
+                                                        textColor: Colors.white,
+                                                        fontSize: 12.0);
+                                                  } catch (error) {
+                                                    scaffold
+                                                        .showSnackBar(SnackBar(
+                                                            content: Text(
+                                                      'Deleting Failed!',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    )));
+                                                  }
+                                                },
+                                                icon: Icon(
+                                                  Icons.delete,
+                                                  color: Theme.of(context)
+                                                      .errorColor,
+                                                )),
+                                          ]),
+                                    )),
+                              );
+                            },
+                            itemCount: value.serviceLogs.length,
+                          ))
+                        ]),
                 ),
               )),
       ),
