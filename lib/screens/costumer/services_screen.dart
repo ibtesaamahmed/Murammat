@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ServicesScreen extends StatefulWidget {
   static const routeName = '/services';
@@ -15,6 +18,10 @@ class _ServicesScreenState extends State<ServicesScreen> {
   bool? AccidentRecovery = false;
   String otherServices = '';
   late TextEditingController controller;
+  static const _initialCameraPosition = CameraPosition(
+    target: LatLng(33.5651, 73.0169),
+    zoom: 11.5,
+  );
 
   @override
   void initState() {
@@ -60,106 +67,111 @@ class _ServicesScreenState extends State<ServicesScreen> {
         title: Text("Services"),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            const SizedBox(
-              height: 40,
-            ),
-            Center(
-              child: Text(
-                'Choose Services you want!',
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            CheckboxListTile(
-              value: Towing,
-              onChanged: ((val) {
-                setState(() {
-                  Towing = val;
-                });
-              }),
-              activeColor: Theme.of(context).primaryColor,
-              title: Text('Towing'),
-            ),
-            CheckboxListTile(
-              value: EngineReplacement,
-              onChanged: ((val) {
-                setState(() {
-                  EngineReplacement = val;
-                });
-              }),
-              activeColor: Theme.of(context).primaryColor,
-              title: Text('Engine Replacement'),
-            ),
-            CheckboxListTile(
-              value: EngineRepair,
-              onChanged: ((val) {
-                setState(() {
-                  EngineRepair = val;
-                });
-              }),
-              activeColor: Theme.of(context).primaryColor,
-              title: Text('Engine Repair'),
-            ),
-            CheckboxListTile(
-              value: OilChangeOrFilter,
-              onChanged: ((val) {
-                setState(() {
-                  OilChangeOrFilter = val;
-                });
-              }),
-              activeColor: Theme.of(context).primaryColor,
-              title: Text('Oil change or Filter'),
-            ),
-            CheckboxListTile(
-              value: AccidentRecovery,
-              onChanged: ((val) {
-                setState(() {
-                  AccidentRecovery = val;
-                });
-              }),
-              activeColor: Theme.of(context).primaryColor,
-              title: Text('Accident Recovery'),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                ElevatedButton(
-                  onPressed: () async {
-                    final val = await openOthersDialog();
-                    if (val == null || val.isEmpty) return;
-                    setState(() {
-                      otherServices = val;
-                    });
-                  },
-                  child: Text('Others'),
-                  style: ElevatedButton.styleFrom(
-                      fixedSize: Size(100, 40),
-                      backgroundColor: Theme.of(context).primaryColor),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Done'),
-                  style: ElevatedButton.styleFrom(
-                      fixedSize: Size(100, 40),
-                      backgroundColor: Theme.of(context).primaryColor),
-                ),
-              ],
-            ),
-            Text(otherServices),
-          ],
-        ),
+      body: GoogleMap(
+        initialCameraPosition: _initialCameraPosition,
+        myLocationButtonEnabled: false,
+        zoomControlsEnabled: false,
       ),
+      // SingleChildScrollView(
+      //   child: Column(
+      //     children: <Widget>[
+      //       const SizedBox(
+      //         height: 40,
+      //       ),
+      //       Center(
+      //         child: Text(
+      //           'Choose Services you want!',
+      //           style: TextStyle(
+      //               color: Theme.of(context).primaryColor,
+      //               fontSize: 20,
+      //               fontWeight: FontWeight.bold),
+      //         ),
+      //       ),
+      //       const SizedBox(
+      //         height: 30,
+      //       ),
+      //       CheckboxListTile(
+      //         value: Towing,
+      //         onChanged: ((val) {
+      //           setState(() {
+      //             Towing = val;
+      //           });
+      //         }),
+      //         activeColor: Theme.of(context).primaryColor,
+      //         title: Text('Towing'),
+      //       ),
+      //       CheckboxListTile(
+      //         value: EngineReplacement,
+      //         onChanged: ((val) {
+      //           setState(() {
+      //             EngineReplacement = val;
+      //           });
+      //         }),
+      //         activeColor: Theme.of(context).primaryColor,
+      //         title: Text('Engine Replacement'),
+      //       ),
+      //       CheckboxListTile(
+      //         value: EngineRepair,
+      //         onChanged: ((val) {
+      //           setState(() {
+      //             EngineRepair = val;
+      //           });
+      //         }),
+      //         activeColor: Theme.of(context).primaryColor,
+      //         title: Text('Engine Repair'),
+      //       ),
+      //       CheckboxListTile(
+      //         value: OilChangeOrFilter,
+      //         onChanged: ((val) {
+      //           setState(() {
+      //             OilChangeOrFilter = val;
+      //           });
+      //         }),
+      //         activeColor: Theme.of(context).primaryColor,
+      //         title: Text('Oil change or Filter'),
+      //       ),
+      //       CheckboxListTile(
+      //         value: AccidentRecovery,
+      //         onChanged: ((val) {
+      //           setState(() {
+      //             AccidentRecovery = val;
+      //           });
+      //         }),
+      //         activeColor: Theme.of(context).primaryColor,
+      //         title: Text('Accident Recovery'),
+      //       ),
+      //       const SizedBox(
+      //         height: 20,
+      //       ),
+      //       Row(
+      //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //         children: <Widget>[
+      //           ElevatedButton(
+      //             onPressed: () async {
+      //               final val = await openOthersDialog();
+      //               if (val == null || val.isEmpty) return;
+      //               setState(() {
+      //                 otherServices = val;
+      //               });
+      //             },
+      //             child: Text('Others'),
+      //             style: ElevatedButton.styleFrom(
+      //                 fixedSize: Size(100, 40),
+      //                 backgroundColor: Theme.of(context).primaryColor),
+      //           ),
+      //           ElevatedButton(
+      //             onPressed: () {},
+      //             child: Text('Done'),
+      //             style: ElevatedButton.styleFrom(
+      //                 fixedSize: Size(100, 40),
+      //                 backgroundColor: Theme.of(context).primaryColor),
+      //           ),
+      //         ],
+      //       ),
+      //       Text(otherServices),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

@@ -32,8 +32,18 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> signUp(String email, String password, String role) async {
-    // return _authentication(email, password, 'accounts:signUp');
+  Future<void> signUp(
+      String email,
+      String password,
+      String role,
+      String firstName,
+      String lastName,
+      String phoneNo,
+      String houseNo,
+      String streetNo,
+      String areaOrSector,
+      String city,
+      [final shopName]) async {
     const urlSegment = 'accounts:signUp';
     final url = Uri.parse(
         'https://identitytoolkit.googleapis.com/v1/$urlSegment?key=AIzaSyA6zCS41bJZaQicQ1rXUQo9qqhCvUvA5jA');
@@ -59,8 +69,34 @@ class Auth with ChangeNotifier {
       );
       final url2 = Uri.parse(
           'https://murammat-b174c-default-rtdb.firebaseio.com/users/$role.json?auth=$_token?');
-      await http.post(url2, body: json.encode({'id': _userId}));
-      notifyListeners();
+      if (shopName == null) {
+        await http.post(url2,
+            body: json.encode({
+              'id': _userId,
+              'firstName': firstName,
+              'lastName': lastName,
+              'phoneNo': phoneNo,
+              'houseNo': houseNo,
+              'streetNo': streetNo,
+              'areaOrSector': areaOrSector,
+              'city': city,
+            }));
+        notifyListeners();
+      } else {
+        await http.post(url2,
+            body: json.encode({
+              'id': _userId,
+              'firstName': firstName,
+              'lastName': lastName,
+              'phoneNo': phoneNo,
+              'shopNo': houseNo,
+              'streetNo': streetNo,
+              'areaOrSector': areaOrSector,
+              'city': city,
+              'shopName': shopName.toString(),
+            }));
+        notifyListeners();
+      }
     } catch (error) {
       print(error);
       throw error;
@@ -68,12 +104,10 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> login(String email, String password, String role) async {
-    // return _authentication(email, password, 'accounts:signInWithPassword');
     const urlSegment = 'accounts:signInWithPassword';
     final url = Uri.parse(
         'https://identitytoolkit.googleapis.com/v1/$urlSegment?key=AIzaSyA6zCS41bJZaQicQ1rXUQo9qqhCvUvA5jA');
-    final url2 = Uri.parse(
-        'https://murammat-b174c-default-rtdb.firebaseio.com/users/$role.json?auth=$_token');
+
     try {
       final response = await http.post(url,
           body: json.encode({
@@ -92,13 +126,19 @@ class Auth with ChangeNotifier {
           seconds: int.parse(responseData['expiresIn']),
         ),
       );
+      final url2 = Uri.parse(
+          'https://murammat-b174c-default-rtdb.firebaseio.com/users/$role.json?auth=$_token');
       final res = await http.get(url2);
       final extractedData = json.decode(res.body) as Map<String, dynamic>;
-      print(extractedData.toString());
       if (extractedData.isEmpty || extractedData['error'] != null) {
         throw HttpException('Error');
+      } else {
+        extractedData.forEach((_, userData) {
+          if (userData['id'] != _userId) {
+            throw HttpException('Error');
+          }
+        });
       }
-
       notifyListeners();
     } catch (error) {
       throw error;

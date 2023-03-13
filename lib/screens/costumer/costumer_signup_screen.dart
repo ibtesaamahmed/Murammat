@@ -216,6 +216,13 @@ class _CostumerSignupScreenState extends State<CostumerSignupScreen> {
                             _emailController.text,
                             _passwordController.text,
                             'customers',
+                            _firstName.text,
+                            _lastName.text,
+                            _phoneNo.text,
+                            _houseNo.text,
+                            _streetNo.text,
+                            _areaOrSector.text,
+                            _city.text,
                           );
                           Navigator.of(context).pushReplacementNamed(
                               CostumerLoginScreen.routeName);

@@ -237,8 +237,18 @@ class _WorkerSignupScreenState extends State<WorkerSignupScreen> {
 
                         try {
                           await Provider.of<Auth>(context, listen: false)
-                              .signUp(_emailController.text,
-                                  _passwordController.text, 'workers');
+                              .signUp(
+                                  _emailController.text,
+                                  _passwordController.text,
+                                  'workers',
+                                  _firstName.text,
+                                  _lastName.text,
+                                  _phoneNo.text,
+                                  _shopNo.text,
+                                  _streetNo.text,
+                                  _areaOrSector.text,
+                                  _city.text,
+                                  _shopName.text);
                           Navigator.of(context).pushReplacementNamed(
                               WorkerLoginScreen.routeName);
                         } on HttpException catch (error) {
