@@ -129,15 +129,20 @@ class Auth with ChangeNotifier {
       final url2 = Uri.parse(
           'https://murammat-b174c-default-rtdb.firebaseio.com/users/$role.json?auth=$_token');
       final res = await http.get(url2);
+      List<String> userIds = [];
       final extractedData = json.decode(res.body) as Map<String, dynamic>;
       if (extractedData.isEmpty || extractedData['error'] != null) {
         throw HttpException('Error');
       } else {
         extractedData.forEach((_, userData) {
-          if (userData['id'] != _userId) {
-            throw HttpException('Error');
-          }
+          userIds.add(userData['id']);
+          // if (userData['id'] != _userId) {
+          //   throw HttpException('Error');
+          // }
         });
+        if (!userIds.contains(_userId)) {
+          throw HttpException('Error');
+        }
       }
       notifyListeners();
     } catch (error) {

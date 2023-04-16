@@ -82,7 +82,6 @@ class _CostumerLoginScreenState extends State<CostumerLoginScreen> {
             ),
             TextField(
               controller: _passwordController,
-              keyboardType: TextInputType.number,
               obscureText: true,
               decoration: InputDecoration(
                   border: OutlineInputBorder(), labelText: 'Password'),
@@ -112,6 +111,7 @@ class _CostumerLoginScreenState extends State<CostumerLoginScreen> {
                         Navigator.of(context)
                             .pushReplacementNamed(CostumerTabScreen.routeName);
                       } on HttpException catch (error) {
+                        print(error);
                         var errorMessage = 'Authentication failed!';
                         if (error.toString().contains('INVALID_EMAIL')) {
                           errorMessage = 'This email is invalid';

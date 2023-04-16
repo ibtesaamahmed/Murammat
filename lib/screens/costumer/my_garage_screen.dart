@@ -89,6 +89,7 @@ class _MyGarageScreenState extends State<MyGarageScreen> {
                               children: <Widget>[
                                 Expanded(
                                   child: ListView.builder(
+                                    shrinkWrap: true,
                                     itemBuilder: ((ctx, index) {
                                       return Container(
                                         child: Card(
@@ -105,7 +106,7 @@ class _MyGarageScreenState extends State<MyGarageScreen> {
                                                                   index)));
                                             }),
                                             child: ListTile(
-                                              leading: Container(
+                                              leading: SizedBox(
                                                 child: Image.file(
                                                   File(
                                                       (value.items[index].image)
