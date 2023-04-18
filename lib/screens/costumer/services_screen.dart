@@ -156,7 +156,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                       5.0,
                       5.0,
                     ),
-                  )
+                  ),
                 ],
               ),
               child: Column(
