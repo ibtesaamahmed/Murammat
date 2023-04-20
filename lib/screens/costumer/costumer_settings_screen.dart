@@ -1,7 +1,9 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CostumerSettingsScreen extends StatefulWidget {
   @override
@@ -12,13 +14,36 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
   File? file;
   var image;
 
+  @override
+  void initState() {
+    loadImage();
+    super.initState();
+  }
+
   _openGallery() async {
     image = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
       file = File(image!.path);
     });
-    print(file.toString());
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("imagePath", image.path.toString());
+  }
+
+  loadImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    File fi = File(prefs.getString('imagePath')!);
+    if (fi == null) {
+      return;
+    }
+    setState(() {
+      file = fi;
+    });
+  }
+
+  deleteImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 
   @override
@@ -32,23 +57,34 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Center(
-                child: GestureDetector(
-                  onTap: _openGallery,
-                  child: file != null
-                      ? CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.white70,
-                          backgroundImage: Image.file(file!).image,
-                        )
-                      : CircleAvatar(
-                          radius: 50,
-                          backgroundColor: Colors.white70,
-                          backgroundImage:
-                              Image.asset('assets/images/placeholder.png')
-                                  .image,
-                        ),
-                ),
+                child: file != null
+                    ? CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.white70,
+                        backgroundImage: Image.file(file!).image,
+                      )
+                    : CircleAvatar(
+                        radius: 50,
+                        backgroundColor: Colors.white70,
+                        backgroundImage:
+                            Image.asset('assets/images/placeholder.png').image,
+                      ),
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                IconButton(
+                  color: Theme.of(context).primaryColor,
+                  onPressed: _openGallery,
+                  icon: Icon(Icons.edit),
+                ),
+                IconButton(
+                  color: Theme.of(context).errorColor,
+                  onPressed: deleteImage,
+                  icon: Icon(Icons.delete),
+                ),
+              ],
             ),
             Text(
               'Your Account',
