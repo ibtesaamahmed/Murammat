@@ -55,12 +55,6 @@ class _CostumerTabScreenState extends State<CostumerTabScreen> {
               onPressed: () {},
               icon: Icon(Icons.notifications),
             ),
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              icon: Icon(Icons.logout),
-            ),
           ],
           automaticallyImplyLeading: false,
         ),

@@ -1,8 +1,10 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:murammat_app/screens/costumer/costumer_address_places_screen.dart';
+import 'package:murammat_app/screens/costumer/customer_personal_info_screen.dart';
+import 'package:murammat_app/screens/costumer/customer_reward_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CostumerSettingsScreen extends StatefulWidget {
@@ -33,9 +35,6 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
   loadImage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     File fi = File(prefs.getString('imagePath')!);
-    if (fi == null) {
-      return;
-    }
     setState(() {
       file = fi;
     });
@@ -43,7 +42,10 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
 
   deleteImage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.clear();
+    setState(() {
+      file = null;
+      prefs.clear();
+    });
   }
 
   @override
@@ -100,7 +102,15 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
-              trailing: Icon(Icons.chevron_right),
+              trailing: IconButton(
+                icon: Icon(Icons.chevron_right),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => CustomerPersonalInfo()),
+                  );
+                },
+              ),
             ),
             ListTile(
               leading: Icon(Icons.location_pin),
@@ -109,7 +119,14 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
-              trailing: Icon(Icons.chevron_right),
+              trailing: IconButton(
+                icon: Icon(Icons.chevron_right),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CostumerAddressesPlacesScreen(),
+                  ));
+                },
+              ),
             ),
             Text(
               'Benefits',
@@ -125,7 +142,14 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
-              trailing: Icon(Icons.chevron_right),
+              trailing: IconButton(
+                icon: Icon(Icons.chevron_right),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CustomerRewardScreen(),
+                  ));
+                },
+              ),
             ),
             Text(
               'Support',
@@ -141,7 +165,10 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
-              trailing: Icon(Icons.chevron_right),
+              trailing: IconButton(
+                icon: Icon(Icons.chevron_right),
+                onPressed: () {},
+              ),
             ),
             ListTile(
               leading: Icon(Icons.star),
@@ -150,7 +177,10 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
-              trailing: Icon(Icons.chevron_right),
+              trailing: IconButton(
+                icon: Icon(Icons.chevron_right),
+                onPressed: () {},
+              ),
             ),
             Text(
               'Preferences',
@@ -166,7 +196,10 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
-              trailing: Icon(Icons.chevron_right),
+              trailing: IconButton(
+                icon: Icon(Icons.chevron_right),
+                onPressed: () {},
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
