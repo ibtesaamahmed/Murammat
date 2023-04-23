@@ -5,10 +5,32 @@ import 'package:http/http.dart' as http;
 
 import '../models/http_exception.dart';
 
+class CustomerInfo {
+  String id;
+  String firstName;
+  String lastName;
+  String phoneNo;
+  String email;
+  String gender;
+  CustomerInfo(
+      {required this.id,
+      required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.phoneNo,
+      required this.gender});
+}
+
 class Auth with ChangeNotifier {
   String? _token;
   DateTime? _expiryDate;
   String? _userId;
+
+  CustomerInfo _customerInfo = CustomerInfo(
+      id: '', firstName: '', lastName: '', email: '', phoneNo: '', gender: '');
+  CustomerInfo get customerInfo {
+    return _customerInfo;
+  }
 
   bool get isAuth {
     return token != null;
@@ -43,6 +65,7 @@ class Auth with ChangeNotifier {
       String streetNo,
       String areaOrSector,
       String city,
+      String gender,
       [final shopName]) async {
     const urlSegment = 'accounts:signUp';
     final url = Uri.parse(
@@ -75,11 +98,13 @@ class Auth with ChangeNotifier {
               'id': _userId,
               'firstName': firstName,
               'lastName': lastName,
+              'gender': gender,
               'phoneNo': phoneNo,
               'houseNo': houseNo,
               'streetNo': streetNo,
               'areaOrSector': areaOrSector,
               'city': city,
+              'email': email,
             }));
         notifyListeners();
       } else {
@@ -148,5 +173,61 @@ class Auth with ChangeNotifier {
     } catch (error) {
       throw error;
     }
+  }
+
+  Future<void> getUserInfo(String role) async {
+    var extractedId;
+    final url = Uri.parse(
+        'https://murammat-b174c-default-rtdb.firebaseio.com/users/$role.json?auth=$_token');
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      extractedData.forEach((id, data) {
+        if (data['id'] == _userId) {
+          extractedId = id;
+        }
+      });
+    } catch (error) {
+      throw error;
+    }
+
+    final url2 = Uri.parse(
+        'https://murammat-b174c-default-rtdb.firebaseio.com/users/$role/$extractedId.json?auth=$_token');
+    try {
+      final res = await http.get(url2);
+      final userData = json.decode(res.body) as Map<String, dynamic>;
+      _customerInfo = CustomerInfo(
+        id: extractedId,
+        firstName: userData['firstName'],
+        lastName: userData['lastName'],
+        phoneNo: userData['phoneNo'],
+        email: userData['email'],
+        gender: userData['gender'],
+      );
+    } catch (error) {
+      throw error;
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> editUserInfo(String role, String id, CustomerInfo ci) async {
+    final url = Uri.parse(
+        'https://murammat-b174c-default-rtdb.firebaseio.com/users/$role/$id.json?auth=$_token');
+
+    try {
+      await http.patch(url,
+          body: json.encode({
+            'firstName': ci.firstName,
+            'lastName': ci.lastName,
+            'phoneNo': ci.phoneNo,
+            'gender': ci.gender,
+          }));
+      _customerInfo = ci;
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+    notifyListeners();
   }
 }

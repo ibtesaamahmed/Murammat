@@ -21,6 +21,7 @@ class _CostumerSignupScreenState extends State<CostumerSignupScreen> {
   final _confirmPassword = TextEditingController();
   final _firstName = TextEditingController();
   final _lastName = TextEditingController();
+  final _gender = TextEditingController();
   final _phoneNo = TextEditingController();
   final _houseNo = TextEditingController();
   final _streetNo = TextEditingController();
@@ -51,6 +52,14 @@ class _CostumerSignupScreenState extends State<CostumerSignupScreen> {
                   controller: _lastName,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Last Name'),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                TextField(
+                  controller: _gender,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'Gender'),
                 ),
                 SizedBox(
                   height: 5,
@@ -203,7 +212,8 @@ class _CostumerSignupScreenState extends State<CostumerSignupScreen> {
                             _houseNo.text.isEmpty ||
                             _streetNo.text.isEmpty ||
                             _areaOrSector.text.isEmpty ||
-                            _city.text.isEmpty) {
+                            _city.text.isEmpty ||
+                            _gender.text.isEmpty) {
                           _showErrorDialog('Missing Fields');
                           return;
                         }
@@ -223,6 +233,7 @@ class _CostumerSignupScreenState extends State<CostumerSignupScreen> {
                             _streetNo.text,
                             _areaOrSector.text,
                             _city.text,
+                            _gender.text,
                           );
                           Navigator.of(context).pushReplacementNamed(
                               CostumerLoginScreen.routeName);

@@ -2,9 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:murammat_app/screens/costumer/costumer_address_places_screen.dart';
-import 'package:murammat_app/screens/costumer/customer_personal_info_screen.dart';
-import 'package:murammat_app/screens/costumer/customer_reward_screen.dart';
+import 'package:murammat_app/screens/costumer/settings/costumer_saved_places_screen.dart';
+import 'package:murammat_app/screens/costumer/settings/customer_help_screen.dart';
+import 'package:murammat_app/screens/costumer/settings/customer_language_screen.dart';
+import 'package:murammat_app/screens/costumer/settings/customer_personal_info_screen.dart';
+import 'package:murammat_app/screens/costumer/settings/customer_rate_screen.dart';
+import 'package:murammat_app/screens/costumer/settings/customer_reward_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CostumerSettingsScreen extends StatefulWidget {
@@ -115,7 +118,7 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
             ListTile(
               leading: Icon(Icons.location_pin),
               title: Text(
-                'Place and Addresses',
+                'Saved Places',
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
@@ -167,7 +170,11 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
               ),
               trailing: IconButton(
                 icon: Icon(Icons.chevron_right),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CustomerHelpScreen(),
+                  ));
+                },
               ),
             ),
             ListTile(
@@ -179,7 +186,11 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
               ),
               trailing: IconButton(
                 icon: Icon(Icons.chevron_right),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CustomerRateScreen(),
+                  ));
+                },
               ),
             ),
             Text(
@@ -198,7 +209,11 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
               ),
               trailing: IconButton(
                 icon: Icon(Icons.chevron_right),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CustomerLanguageScreen(),
+                  ));
+                },
               ),
             ),
             Row(
