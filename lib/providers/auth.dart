@@ -230,4 +230,37 @@ class Auth with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future<void> postHelpMessage(String message) async {
+    final url = Uri.parse(
+        'https://murammat-b174c-default-rtdb.firebaseio.com/help.json?auth=$_token');
+    try {
+      await http.post(url,
+          body: json.encode({
+            'message': message,
+            'userId': _userId,
+            'name': _customerInfo.firstName + ' ' + _customerInfo.lastName,
+            'email': _customerInfo.email,
+          }));
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  Future<void> postRatingsAndReviews(double rating, String review) async {
+    await getUserInfo('customers');
+    final url = Uri.parse(
+        'https://murammat-b174c-default-rtdb.firebaseio.com/reviews.json?auth=$_token');
+    try {
+      await http.post(url,
+          body: json.encode({
+            'userId': _userId,
+            'email': _customerInfo.email,
+            'rating': rating.toString(),
+            'review': review,
+          }));
+    } catch (error) {
+      throw error;
+    }
+  }
 }
