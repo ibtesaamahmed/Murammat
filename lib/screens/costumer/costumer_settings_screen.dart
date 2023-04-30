@@ -99,14 +99,20 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                   fontSize: 20),
             ),
             ListTile(
-              leading: Icon(Icons.verified_user),
+              leading: Icon(
+                Icons.verified_user,
+                color: Theme.of(context).primaryColor,
+              ),
               title: Text(
                 'Personal Information',
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
               trailing: IconButton(
-                icon: Icon(Icons.chevron_right),
+                icon: Icon(
+                  Icons.chevron_right,
+                  color: Theme.of(context).primaryColor,
+                ),
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -116,14 +122,20 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.location_pin),
+              leading: Icon(
+                Icons.location_pin,
+                color: Theme.of(context).primaryColor,
+              ),
               title: Text(
                 'Saved Places',
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
               trailing: IconButton(
-                icon: Icon(Icons.chevron_right),
+                icon: Icon(
+                  Icons.chevron_right,
+                  color: Theme.of(context).primaryColor,
+                ),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => CostumerAddressesPlacesScreen(),
@@ -139,14 +151,20 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                   fontSize: 20),
             ),
             ListTile(
-              leading: Icon(Icons.card_giftcard),
+              leading: Icon(
+                Icons.card_giftcard,
+                color: Theme.of(context).primaryColor,
+              ),
               title: Text(
                 'Rewards',
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
               trailing: IconButton(
-                icon: Icon(Icons.chevron_right),
+                icon: Icon(
+                  Icons.chevron_right,
+                  color: Theme.of(context).primaryColor,
+                ),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => CustomerRewardScreen(),
@@ -162,14 +180,20 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                   fontSize: 20),
             ),
             ListTile(
-              leading: Icon(Icons.help),
+              leading: Icon(
+                Icons.help,
+                color: Theme.of(context).primaryColor,
+              ),
               title: Text(
                 'Help',
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
               trailing: IconButton(
-                icon: Icon(Icons.chevron_right),
+                icon: Icon(
+                  Icons.chevron_right,
+                  color: Theme.of(context).primaryColor,
+                ),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => CustomerHelpScreen(),
@@ -178,14 +202,20 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.star),
+              leading: Icon(
+                Icons.star,
+                color: Theme.of(context).primaryColor,
+              ),
               title: Text(
                 'Rate the App',
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
               trailing: IconButton(
-                icon: Icon(Icons.chevron_right),
+                icon: Icon(
+                  Icons.chevron_right,
+                  color: Theme.of(context).primaryColor,
+                ),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => CustomerRateScreen(),
@@ -201,14 +231,20 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                   fontSize: 20),
             ),
             ListTile(
-              leading: Icon(Icons.language),
+              leading: Icon(
+                Icons.language,
+                color: Theme.of(context).primaryColor,
+              ),
               title: Text(
                 'Language',
                 style: TextStyle(
                     color: Theme.of(context).primaryColor, fontSize: 16),
               ),
               trailing: IconButton(
-                icon: Icon(Icons.chevron_right),
+                icon: Icon(
+                  Icons.chevron_right,
+                  color: Theme.of(context).primaryColor,
+                ),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => CustomerLanguageScreen(),
@@ -227,7 +263,10 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/', (Route<dynamic> route) => false);
+                  },
                   icon: Icon(Icons.logout),
                   color: Theme.of(context).errorColor,
                 ),

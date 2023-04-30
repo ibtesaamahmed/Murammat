@@ -63,7 +63,10 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                         child: Column(
                           children: <Widget>[
                             ListTile(
-                              leading: Icon(Icons.person_pin),
+                              leading: Icon(
+                                Icons.person_pin,
+                                color: Theme.of(context).primaryColor,
+                              ),
                               title: Text(
                                 value.customerInfo.firstName +
                                     ' ' +
@@ -74,7 +77,10 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                               ),
                             ),
                             ListTile(
-                              leading: Icon(Icons.phone),
+                              leading: Icon(
+                                Icons.phone,
+                                color: Theme.of(context).primaryColor,
+                              ),
                               title: Text(
                                 value.customerInfo.phoneNo,
                                 style: TextStyle(
@@ -83,7 +89,10 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                               ),
                             ),
                             ListTile(
-                              leading: Icon(Icons.mail),
+                              leading: Icon(
+                                Icons.mail,
+                                color: Theme.of(context).primaryColor,
+                              ),
                               title: Text(
                                 value.customerInfo.email,
                                 style: TextStyle(
@@ -92,7 +101,10 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                               ),
                             ),
                             ListTile(
-                              leading: Icon(Icons.place),
+                              leading: Icon(
+                                Icons.place,
+                                color: Theme.of(context).primaryColor,
+                              ),
                               title: Text(
                                 'Area',
                                 style: TextStyle(
@@ -101,7 +113,10 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                               ),
                             ),
                             ListTile(
-                              leading: Icon(Icons.house),
+                              leading: Icon(
+                                Icons.house,
+                                color: Theme.of(context).primaryColor,
+                              ),
                               title: Text(
                                 'House No',
                                 style: TextStyle(
@@ -110,7 +125,10 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                               ),
                             ),
                             ListTile(
-                              leading: Icon(Icons.streetview),
+                              leading: Icon(
+                                Icons.streetview,
+                                color: Theme.of(context).primaryColor,
+                              ),
                               title: Text(
                                 'Street',
                                 style: TextStyle(
@@ -119,7 +137,10 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                               ),
                             ),
                             ListTile(
-                              leading: Icon(Icons.location_city),
+                              leading: Icon(
+                                Icons.location_city,
+                                color: Theme.of(context).primaryColor,
+                              ),
                               title: Text(
                                 'City',
                                 style: TextStyle(
@@ -128,7 +149,10 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                               ),
                             ),
                             ListTile(
-                              leading: Icon(Icons.person),
+                              leading: Icon(
+                                Icons.person,
+                                color: Theme.of(context).primaryColor,
+                              ),
                               title: Text(
                                 value.customerInfo.gender,
                                 style: TextStyle(

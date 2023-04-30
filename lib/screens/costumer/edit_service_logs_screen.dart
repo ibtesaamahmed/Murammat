@@ -66,7 +66,7 @@ class _EditServiceLogScreenState extends State<EditServiceLogScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Edit Vehicle'),
+        title: Text('Edit Logs'),
         actions: <Widget>[
           IconButton(
             onPressed: _sumitData,

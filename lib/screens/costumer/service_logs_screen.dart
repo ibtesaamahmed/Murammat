@@ -90,7 +90,6 @@ class _ServiceLogsScreenState extends State<ServiceLogsScreen> {
                               return Container(
                                 child: Card(
                                     elevation: 5,
-                                    margin: EdgeInsets.all(20),
                                     child: ListTile(
                                       leading: Container(
                                         padding:

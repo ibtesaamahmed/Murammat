@@ -1,8 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
+
+import '../../widgets/search_page.dart';
 
 class ServicesScreen extends StatefulWidget {
   static const routeName = '/services';
@@ -12,12 +16,8 @@ class ServicesScreen extends StatefulWidget {
 }
 
 class _ServicesScreenState extends State<ServicesScreen> {
-  @override
-  void initState() {
-    checkGps();
-    super.initState();
-  }
-
+  String address = '';
+  var _isLoading = false;
   bool servicestatus = false;
   bool haspermission = false;
   late LocationPermission permission;
@@ -27,11 +27,49 @@ class _ServicesScreenState extends State<ServicesScreen> {
 
   final _initialCameraPosition = CameraPosition(
     target: LatLng(
-        double.parse('33.69689874685456'), double.parse('72.98450682424959')),
+        double.parse('33.63151504740167'), double.parse('73.08072607369083')),
     zoom: 15,
   );
+  final Marker marker = Marker(
+      markerId: MarkerId('1'),
+      position: LatLng(double.parse('33.63151504740167'),
+          double.parse('73.08072607369083')));
+
+  @override
+  void initState() {
+    checkGps();
+    super.initState();
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text(
+                'An Error Occured',
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
+              content: Text(
+                message,
+                style: TextStyle(color: Theme.of(context).primaryColor),
+              ),
+              actions: <Widget>[
+                TextButton(
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
+                    child: Text(
+                      'OK',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    )),
+              ],
+            ));
+  }
 
   checkGps() async {
+    setState(() {
+      _isLoading = true;
+    });
     servicestatus = await Geolocator.isLocationServiceEnabled();
     if (servicestatus) {
       permission = await Geolocator.checkPermission();
@@ -50,9 +88,9 @@ class _ServicesScreenState extends State<ServicesScreen> {
       }
 
       if (haspermission) {
-        setState(() {
-          //refresh the UI
-        });
+        // setState(() {
+        //   _isLoading = false;
+        // });
 
         getLocation();
       }
@@ -60,9 +98,9 @@ class _ServicesScreenState extends State<ServicesScreen> {
       print("GPS Service is not enabled, turn on GPS location");
     }
 
-    setState(() {
-      //refresh the UI
-    });
+    // setState(() {
+    //   //refresh the UI
+    // });
   }
 
   getLocation() async {
@@ -73,10 +111,6 @@ class _ServicesScreenState extends State<ServicesScreen> {
 
     long = position.longitude.toString();
     lat = position.latitude.toString();
-
-    setState(() {
-      //refresh UI
-    });
 
     LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high, //accuracy of the location data
@@ -97,8 +131,21 @@ class _ServicesScreenState extends State<ServicesScreen> {
         //refresh UI on update
       });
     });
+
+    await GetAddressFromLatLong(position);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
+  Future<void> GetAddressFromLatLong(Position position) async {
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    // print(placemarks);
+    Placemark place = placemarks[0];
+    address =
+        '${place.street}, ${place.subLocality}, ${place.locality}, ${place.country}';
+  }
   // Future<String?> openOthersDialog() => showDialog<String>(
   //       context: context,
   //       builder: (context) => AlertDialog(
@@ -128,8 +175,14 @@ class _ServicesScreenState extends State<ServicesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Services"),
-        centerTitle: true,
+        title: const Text('Services'),
+        actions: [
+          // Navigate to the Search Screen
+          IconButton(
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const SearchPage())),
+              icon: const Icon(Icons.search))
+        ],
       ),
       body: Stack(children: [
         GoogleMap(
@@ -137,39 +190,98 @@ class _ServicesScreenState extends State<ServicesScreen> {
           initialCameraPosition: _initialCameraPosition,
           myLocationButtonEnabled: false,
           zoomControlsEnabled: false,
-          markers: {},
+          markers: {marker},
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 20, bottom: 20),
+              child: IconButton(
+                  onPressed: checkGps,
+                  icon: Icon(
+                    Icons.my_location,
+                    color: Theme.of(context).primaryColor,
+                    size: 40,
+                  )),
+            ),
             Container(
-              height: 200.0,
+              height: 300.0,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
+                // borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30)),
+                // color: Theme.of(context).canvasColor,
                 color: Colors.white,
+
                 boxShadow: [
                   BoxShadow(
                     color: Theme.of(context).primaryColor,
-                    blurRadius: 15.0,
-                    spreadRadius: 5.0,
+                    blurRadius: 6.0,
+                    // spreadRadius: 2.0,
                     offset: Offset(
-                      5.0,
-                      5.0,
+                      0.0,
+                      1.0,
                     ),
                   ),
                 ],
               ),
-              child: Column(
-                children: <Widget>[
-                  servicestatus ? Text("GPS enabled") : Text("GPS disabled"),
-                  haspermission ? Text("GPS enabled") : Text("GPS disabled"),
-                  Text("Longitude: $long", style: TextStyle(fontSize: 20)),
-                  Text(
-                    "Latitude: $lat",
-                    style: TextStyle(fontSize: 20),
-                  )
-                ],
-              ),
+              child: _isLoading
+                  ? Center(
+                      child: CustomCircularProgressIndicator(),
+                    )
+                  : SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            // Text("Longitude: $long",
+                            //     style: TextStyle(fontSize: 20)),
+                            // Text("Latitude: $lat",
+                            //     style: TextStyle(fontSize: 20)),
+                            Center(
+                              child: Text(
+                                '$address',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              'Describe Services Needed',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 5),
+                            TextField(
+                              maxLines: 5,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      width: 2,
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Center(
+                              child: ElevatedButton(
+                                child: Text('Find Worker'),
+                                onPressed: () {},
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
             ),
           ],
         ),
