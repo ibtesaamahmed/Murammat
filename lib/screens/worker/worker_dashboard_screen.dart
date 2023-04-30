@@ -96,7 +96,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                 style: TextStyle(color: Theme.of(context).primaryColor),
               ),
               style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).appBarTheme.foregroundColor,
+                backgroundColor: Theme.of(context).appBarTheme.foregroundColor,
                 fixedSize: Size(300, 60),
               ),
             ),
@@ -119,7 +119,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                 style: TextStyle(color: Theme.of(context).primaryColor),
               ),
               style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).appBarTheme.foregroundColor,
+                backgroundColor: Theme.of(context).appBarTheme.foregroundColor,
                 fixedSize: Size(300, 60),
               ),
             ),
@@ -142,7 +142,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                 style: TextStyle(color: Theme.of(context).primaryColor),
               ),
               style: ElevatedButton.styleFrom(
-                primary: Theme.of(context).appBarTheme.foregroundColor,
+                backgroundColor: Theme.of(context).appBarTheme.foregroundColor,
                 fixedSize: Size(300, 60),
               ),
             ),

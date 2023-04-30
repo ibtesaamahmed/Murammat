@@ -11,7 +11,7 @@ class StartPage extends StatelessWidget {
       onPressed: pressed,
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.black,
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         fixedSize: const Size(150, 50),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.elliptical(20, 30)),
@@ -29,7 +29,7 @@ class StartPage extends StatelessWidget {
       //   title: const Text('MURAMMAT'),
       // ),
       body: Container(
-        color: Theme.of(context).appBarTheme.color,
+        color: Theme.of(context).appBarTheme.backgroundColor,
         child: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(

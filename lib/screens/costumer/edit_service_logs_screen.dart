@@ -5,8 +5,8 @@ import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 class EditServiceLogScreen extends StatefulWidget {
-  String existingServiceId;
-  String existingVehicleId;
+  final String existingServiceId;
+  final String existingVehicleId;
 
   EditServiceLogScreen(
       {required this.existingServiceId, required this.existingVehicleId});

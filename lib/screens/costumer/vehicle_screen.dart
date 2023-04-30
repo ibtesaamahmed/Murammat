@@ -107,7 +107,7 @@ class VehicleScreen extends StatelessWidget {
                 padding: EdgeInsets.only(right: 20),
                 child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).primaryColor),
+                        backgroundColor: Theme.of(context).primaryColor),
                     onPressed: () {
                       Navigator.push(
                           context,

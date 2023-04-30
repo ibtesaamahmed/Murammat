@@ -13,9 +13,11 @@ import 'screens/costumer/costumer_login_screen.dart';
 import 'screens/costumer/costumer_signup_screen.dart';
 import 'screens/worker/worker_signup_screen.dart';
 import 'screens/worker/worker_login_screen.dart';
-import 'screens/startpage.dart';
+import 'startpage.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -53,10 +55,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Murammat',
         theme: ThemeData(
-          primarySwatch: myColor,
           primaryColor: Color.fromRGBO(24, 45, 75, 1),
           canvasColor: const Color.fromRGBO(206, 206, 206, 1),
-          accentColor: const Color.fromRGBO(206, 206, 206, 100),
           textTheme: const TextTheme(
               headline6: TextStyle(color: Colors.black, fontSize: 18)),
           appBarTheme: const AppBarTheme(
@@ -73,6 +73,8 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide(color: Color.fromRGBO(24, 45, 75, 1)),
             ),
           ),
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: myColor)
+              .copyWith(secondary: const Color.fromRGBO(206, 206, 206, 100)),
         ),
         initialRoute: '/',
         routes: {

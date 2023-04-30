@@ -110,7 +110,8 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).appBarTheme.foregroundColor,
+                    backgroundColor:
+                        Theme.of(context).appBarTheme.foregroundColor,
                     fixedSize: Size(120, 100),
                   ),
                 ),
@@ -136,7 +137,8 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).appBarTheme.foregroundColor,
+                    backgroundColor:
+                        Theme.of(context).appBarTheme.foregroundColor,
                     fixedSize: Size(120, 100),
                   ),
                 ),
@@ -170,7 +172,8 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).appBarTheme.foregroundColor,
+                    backgroundColor:
+                        Theme.of(context).appBarTheme.foregroundColor,
                     fixedSize: Size(120, 100),
                   ),
                 ),
@@ -195,7 +198,8 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                     style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).appBarTheme.foregroundColor,
+                    backgroundColor:
+                        Theme.of(context).appBarTheme.foregroundColor,
                     fixedSize: Size(120, 100),
                   ),
                 ),

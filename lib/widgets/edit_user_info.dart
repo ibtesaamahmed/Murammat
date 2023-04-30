@@ -98,7 +98,7 @@ class _EditUserInfoState extends State<EditUserInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final userData = Provider.of<Auth>(context, listen: false);
+    // final userData = Provider.of<Auth>(context, listen: false);
 
     return Padding(
       padding: EdgeInsets.only(
