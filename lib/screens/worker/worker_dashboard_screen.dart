@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:murammat_app/screens/worker/my_shop_screen.dart';
+import 'package:murammat_app/screens/worker/request_screen.dart';
 
 class WorkerDashboardScreen extends StatefulWidget {
   @override
@@ -86,7 +88,11 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                 border: Border.all(
                     color: Theme.of(context).primaryColor, width: 4)),
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => RequestScreen(),
+                ));
+              },
               icon: Icon(
                 Icons.notifications_active,
                 color: Theme.of(context).primaryColor,
@@ -132,7 +138,11 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                 border: Border.all(
                     color: Theme.of(context).primaryColor, width: 4)),
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => MyShopScreen(),
+                ));
+              },
               icon: Icon(
                 Icons.shop,
                 color: Theme.of(context).primaryColor,

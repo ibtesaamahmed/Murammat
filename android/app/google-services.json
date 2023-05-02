@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "411855558904",
+    "firebase_url": "https://murammat-b174c-default-rtdb.firebaseio.com",
+    "project_id": "murammat-b174c",
+    "storage_bucket": "murammat-b174c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411855558904:android:ae4d0990f21a1a152ac30d",
+        "android_client_info": {
+          "package_name": "com.example.murammat_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "411855558904-s6qo6daplpg9ctq0qhimo9arf2iqmpeu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMfX5W0R7eoYD6yemGXi6DlLdPkjONrvE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "411855558904-s6qo6daplpg9ctq0qhimo9arf2iqmpeu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

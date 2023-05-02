@@ -52,11 +52,7 @@ class _WorkerTabScreenState extends State<WorkerTabScreen> {
           title: Text(_pages[_selectedPageIndex]['title'].toString()),
           automaticallyImplyLeading: false,
           actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: Icon(Icons.logout))
+            IconButton(onPressed: () {}, icon: Icon(Icons.notifications))
           ],
         ),
         body: _pages[_selectedPageIndex]['page'] as Widget,

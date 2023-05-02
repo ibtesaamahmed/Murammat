@@ -1,24 +1,24 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:murammat_app/providers/auth.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
-class EditUserInfo extends StatefulWidget {
-  const EditUserInfo({super.key});
+class EditMyShop extends StatefulWidget {
+  const EditMyShop({super.key});
 
   @override
-  State<EditUserInfo> createState() => _EditUserInfoState();
+  State<EditMyShop> createState() => _EditMyShopState();
 }
 
-class _EditUserInfoState extends State<EditUserInfo> {
-  final _firstNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _phoneNoController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _genderController = TextEditingController();
+class _EditMyShopState extends State<EditMyShop> {
+  final _shopNoController = TextEditingController();
+  final _shopNameController = TextEditingController();
+  final _areaOrSectorController = TextEditingController();
+  final _streetNoController = TextEditingController();
+  final _cityController = TextEditingController();
   var _isLoading = false;
-  CustomerInfo? ci;
-
+  WorkerInfo? wi;
   @override
   void initState() {
     Future.delayed(Duration.zero).then((_) => _getText());
@@ -27,36 +27,34 @@ class _EditUserInfoState extends State<EditUserInfo> {
 
   Future<void> _getText() async {
     final userData = Provider.of<Auth>(context, listen: false);
-    _firstNameController.text = userData.customerInfo.firstName;
-    _lastNameController.text = userData.customerInfo.lastName;
-    _phoneNoController.text = userData.customerInfo.phoneNo;
-    _emailController.text = userData.customerInfo.email;
-    _genderController.text = userData.customerInfo.gender;
-    ci = userData.customerInfo;
+    _shopNoController.text = userData.workerInfo.shopNo;
+    _shopNameController.text = userData.workerInfo.shopName;
+    _areaOrSectorController.text = userData.workerInfo.areaOrSector;
+    _cityController.text = userData.workerInfo.city;
+    _streetNoController.text = userData.workerInfo.streetNo;
+    wi = userData.workerInfo;
   }
 
   _submitData() async {
-    final newUser;
-    if (_firstNameController.text.isEmpty ||
-        _lastNameController.text.isEmpty ||
-        _phoneNoController.text.isEmpty ||
-        _genderController.text.isEmpty) {
+    if (_shopNameController.text.isEmpty ||
+        _shopNoController.text.isEmpty ||
+        _areaOrSectorController.text.isEmpty ||
+        _cityController.text.isEmpty ||
+        _streetNoController.text.isEmpty) {
       _showErrorDialog('Missing Fields');
       return;
     } else {
       setState(() {
         _isLoading = true;
       });
-      newUser = CustomerInfo(
-          id: ci!.id,
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text,
-          email: ci!.email,
-          phoneNo: _phoneNoController.text,
-          gender: _genderController.text);
       try {
-        await Provider.of<Auth>(context, listen: false)
-            .editUserInfo('customers', ci!.id, newUser);
+        await Provider.of<Auth>(context, listen: false).editMyShop(
+            wi!.id,
+            _shopNameController.text,
+            _shopNoController.text,
+            _areaOrSectorController.text,
+            _streetNoController.text,
+            _cityController.text);
         setState(() {
           _isLoading = false;
         });
@@ -98,25 +96,24 @@ class _EditUserInfoState extends State<EditUserInfo> {
 
   @override
   Widget build(BuildContext context) {
-    // final userData = Provider.of<Auth>(context, listen: false);
-
-    return Padding(
-      padding: EdgeInsets.only(
-          top: 10,
-          left: 20,
-          right: 20,
-          bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: Column(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(
+            top: 10,
+            left: 20,
+            right: 20,
+            bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             TextField(
               autofocus: false,
-              controller: _firstNameController,
+              controller: _shopNameController,
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.zero,
-                  labelText: 'First Name',
+                  labelText: 'Shop Name',
                   labelStyle: TextStyle(
                       fontSize: 14, color: Theme.of(context).primaryColor)),
             ),
@@ -125,11 +122,11 @@ class _EditUserInfoState extends State<EditUserInfo> {
             ),
             TextField(
               autofocus: false,
-              controller: _lastNameController,
+              controller: _shopNoController,
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.zero,
-                  labelText: 'Last Name',
+                  labelText: 'Shop No',
                   labelStyle: TextStyle(
                       fontSize: 14, color: Theme.of(context).primaryColor)),
             ),
@@ -138,11 +135,11 @@ class _EditUserInfoState extends State<EditUserInfo> {
             ),
             TextField(
               autofocus: false,
-              controller: _phoneNoController,
+              controller: _streetNoController,
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.zero,
-                  labelText: 'Phone No',
+                  labelText: 'Street No',
                   labelStyle: TextStyle(
                       fontSize: 14, color: Theme.of(context).primaryColor)),
             ),
@@ -151,11 +148,24 @@ class _EditUserInfoState extends State<EditUserInfo> {
             ),
             TextField(
               autofocus: false,
-              controller: _genderController,
+              controller: _areaOrSectorController,
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
                   contentPadding: EdgeInsets.zero,
-                  labelText: 'Gender',
+                  labelText: 'Area or Sector',
+                  labelStyle: TextStyle(
+                      fontSize: 14, color: Theme.of(context).primaryColor)),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextField(
+              autofocus: false,
+              controller: _cityController,
+              keyboardType: TextInputType.name,
+              decoration: InputDecoration(
+                  contentPadding: EdgeInsets.zero,
+                  labelText: 'City',
                   labelStyle: TextStyle(
                       fontSize: 14, color: Theme.of(context).primaryColor)),
             ),
@@ -179,7 +189,9 @@ class _EditUserInfoState extends State<EditUserInfo> {
             const SizedBox(
               height: 10,
             ),
-          ]),
+          ],
+        ),
+      ),
     );
   }
 }

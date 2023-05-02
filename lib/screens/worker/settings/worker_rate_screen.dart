@@ -4,12 +4,14 @@ import 'package:murammat_app/providers/auth.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
-class CustomerRateScreen extends StatefulWidget {
+class WorkerRateScreen extends StatefulWidget {
+  const WorkerRateScreen({super.key});
+
   @override
-  State<CustomerRateScreen> createState() => _CustomerRateScreenState();
+  State<WorkerRateScreen> createState() => _WorkerRateScreenState();
 }
 
-class _CustomerRateScreenState extends State<CustomerRateScreen> {
+class _WorkerRateScreenState extends State<WorkerRateScreen> {
   var _isLoading = false;
   double? _ratingValue;
   final _reviewController = TextEditingController();
@@ -120,7 +122,7 @@ class _CustomerRateScreenState extends State<CustomerRateScreen> {
                                 });
                                 await Provider.of<Auth>(context, listen: false)
                                     .postRatingsAndReviews(_ratingValue!,
-                                        _reviewController.text, 'customers');
+                                        _reviewController.text, 'workers');
                                 setState(() {
                                   _isLoading = false;
                                   _reviewController.text = '';

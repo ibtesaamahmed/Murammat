@@ -38,6 +38,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
         double.parse('33.63151504740167'), double.parse('73.08072607369083')),
     zoom: 15,
   );
+
   final Marker marker = Marker(
       markerId: MarkerId('1'),
       position: LatLng(double.parse('33.63151504740167'),
@@ -129,21 +130,22 @@ class _ServicesScreenState extends State<ServicesScreen> {
     StreamSubscription<Position> positionStream =
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((Position position) {
-      print(position.longitude); //Output: 80.24599079
-      print(position.latitude); //Output: 29.6593457
+      print(position.longitude);
+      print(position.latitude);
 
       long = position.longitude.toString();
       lat = position.latitude.toString();
     });
-    setState(() {
-      _isLoading = false;
-    });
+
     List<Placemark> placemarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
-    print(placemarks);
+    print('$placemarks yoo');
     Placemark place = placemarks[0];
     address =
         '${place.street}, ${place.subLocality}, ${place.locality}, ${place.country}';
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override

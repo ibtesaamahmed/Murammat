@@ -3,12 +3,14 @@ import 'package:murammat_app/providers/auth.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
-class CustomerHelpScreen extends StatefulWidget {
+class WorkerHelpScreen extends StatefulWidget {
+  const WorkerHelpScreen({super.key});
+
   @override
-  State<CustomerHelpScreen> createState() => _CustomerHelpScreenState();
+  State<WorkerHelpScreen> createState() => _WorkerHelpScreenState();
 }
 
-class _CustomerHelpScreenState extends State<CustomerHelpScreen> {
+class _WorkerHelpScreenState extends State<WorkerHelpScreen> {
   var _isLoading = false;
   final _messageController = TextEditingController();
   void _showErrorDialog(String title, String message) {
@@ -38,7 +40,6 @@ class _CustomerHelpScreenState extends State<CustomerHelpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
     return Scaffold(
       appBar: AppBar(title: Text('Help')),
       body: SingleChildScrollView(
@@ -88,7 +89,7 @@ class _CustomerHelpScreenState extends State<CustomerHelpScreen> {
                               });
                               await Provider.of<Auth>(context, listen: false)
                                   .postHelpMessage(
-                                      _messageController.text, 'customers');
+                                      _messageController.text, 'workers');
                               setState(() {
                                 _isLoading = false;
                                 _messageController.text = '';

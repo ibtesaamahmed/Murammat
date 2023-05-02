@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:murammat_app/providers/auth.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
-import 'package:murammat_app/widgets/edit_user_info.dart';
+import 'package:murammat_app/widgets/edit_customer_info.dart';
 import 'package:provider/provider.dart';
 
 class CustomerPersonalInfo extends StatefulWidget {
@@ -10,17 +10,17 @@ class CustomerPersonalInfo extends StatefulWidget {
 }
 
 class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
-  Future<void> _fetchUserInfo(BuildContext context) async {
-    await Provider.of<Auth>(context, listen: false).getUserInfo('customers');
+  Future<void> _fetchCustomerInfo(BuildContext context) async {
+    await Provider.of<Auth>(context, listen: false).getCustomerInfo();
   }
 
   @override
   void initState() {
-    Future.delayed(Duration.zero).then((_) => _fetchUserInfo(context));
+    Future.delayed(Duration.zero).then((_) => _fetchCustomerInfo(context));
     super.initState();
   }
 
-  void _editUserInfo(BuildContext ctx) {
+  void _editCustomerInfo(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
         backgroundColor: Theme.of(ctx).canvasColor,
@@ -28,7 +28,7 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
         builder: (_) {
           return GestureDetector(
             onTap: () {},
-            child: EditUserInfo(),
+            child: EditCustomerInfo(),
           );
         });
   }
@@ -44,13 +44,13 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
               padding: const EdgeInsets.all(8.0),
               child: IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: () => _editUserInfo(context),
+                onPressed: () => _editCustomerInfo(context),
               ),
             ),
           ],
         ),
         body: FutureBuilder(
-          future: _fetchUserInfo(context),
+          future: _fetchCustomerInfo(context),
           builder: (context, snapshot) =>
               snapshot.connectionState == ConnectionState.waiting
                   ? Center(
@@ -106,7 +106,7 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                                 color: Theme.of(context).primaryColor,
                               ),
                               title: Text(
-                                'Area',
+                                value.customerInfo.areaOrSector,
                                 style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                     fontSize: 16),
@@ -118,7 +118,7 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                                 color: Theme.of(context).primaryColor,
                               ),
                               title: Text(
-                                'House No',
+                                value.customerInfo.houseNo,
                                 style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                     fontSize: 16),
@@ -130,7 +130,7 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                                 color: Theme.of(context).primaryColor,
                               ),
                               title: Text(
-                                'Street',
+                                value.customerInfo.streetNo,
                                 style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                     fontSize: 16),
@@ -142,7 +142,7 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
                                 color: Theme.of(context).primaryColor,
                               ),
                               title: Text(
-                                'City',
+                                value.customerInfo.city,
                                 style: TextStyle(
                                     color: Theme.of(context).primaryColor,
                                     fontSize: 16),

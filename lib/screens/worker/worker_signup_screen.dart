@@ -248,6 +248,7 @@ class _WorkerSignupScreenState extends State<WorkerSignupScreen> {
                                   _streetNo.text,
                                   _areaOrSector.text,
                                   _city.text,
+                                  '',
                                   _shopName.text);
                           Navigator.of(context).pushReplacementNamed(
                               WorkerLoginScreen.routeName);
