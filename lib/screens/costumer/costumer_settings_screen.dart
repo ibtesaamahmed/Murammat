@@ -37,6 +37,9 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
 
   loadImage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('imagePath') == null) {
+      return;
+    }
     File fi = File(prefs.getString('imagePath')!);
     setState(() {
       file = fi;

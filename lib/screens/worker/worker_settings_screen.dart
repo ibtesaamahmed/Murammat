@@ -7,6 +7,7 @@ import 'package:murammat_app/screens/worker/settings/worker_language_screen.dart
 import 'package:murammat_app/screens/worker/settings/worker_personal_info_screen.dart';
 import 'package:murammat_app/screens/worker/settings/worker_rate_screen.dart';
 import 'package:murammat_app/screens/worker/settings/worker_reward_screen.dart';
+import 'package:murammat_app/screens/worker/settings/worker_shop_location_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WorkerSettingsScreen extends StatefulWidget {
@@ -36,6 +37,9 @@ class _WorkerSettingsScreenState extends State<WorkerSettingsScreen> {
 
   loadImage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('imagePath') == null) {
+      return;
+    }
     File fi = File(prefs.getString('imagePath')!);
     setState(() {
       file = fi;
@@ -120,6 +124,29 @@ class _WorkerSettingsScreenState extends State<WorkerSettingsScreen> {
                 },
               ),
             ),
+            // ListTile(
+            //   leading: Icon(
+            //     Icons.my_location,
+            //     color: Theme.of(context).primaryColor,
+            //   ),
+            //   title: Text(
+            //     'Shop Location',
+            //     style: TextStyle(
+            //         color: Theme.of(context).primaryColor, fontSize: 16),
+            //   ),
+            //   trailing: IconButton(
+            //     icon: Icon(
+            //       Icons.chevron_right,
+            //       color: Theme.of(context).primaryColor,
+            //     ),
+            //     onPressed: () {
+            //       Navigator.of(context).push(
+            //         MaterialPageRoute(
+            //             builder: (context) => WorkerShopLocationScreen()),
+            //       );
+            //     },
+            //   ),
+            // ),
             Text(
               'Benefits',
               style: TextStyle(
