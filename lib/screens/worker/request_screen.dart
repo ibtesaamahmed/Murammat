@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:murammat_app/providers/worker_location.dart';
-import 'package:murammat_app/screens/worker/new_screen.dart';
+import 'package:murammat_app/providers/worker.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -114,8 +113,10 @@ class _RequestScreenState extends State<RequestScreen> {
   }
 
   deleteNode() async {
-    await Provider.of<WorkerShopLocation>(context, listen: false).deleteNode();
-    Navigator.of(context).pop();
+    final pro = Provider.of<Worker>(context, listen: false);
+
+    await pro.deleteNode();
+    pro.removeListeners();
   }
 
   @override
@@ -123,7 +124,10 @@ class _RequestScreenState extends State<RequestScreen> {
     return Scaffold(
         resizeToAvoidBottomInset: _toggle ? false : true,
         body: WillPopScope(
-          onWillPop: () => deleteNode(),
+          onWillPop: () {
+            deleteNode();
+            return Future.value(true);
+          },
           child: Stack(
             children: [
               GoogleMap(
@@ -145,18 +149,11 @@ class _RequestScreenState extends State<RequestScreen> {
                 left: 15,
                 child: Container(
                   decoration: BoxDecoration(
-                    // borderRadius: BorderRadius.circular(30),
-                    // borderRadius: BorderRadius.only(
-                    //     topLeft: Radius.circular(30),
-                    //     topRight: Radius.circular(30)),
-                    // color: Theme.of(context).canvasColor,
                     color: Colors.white,
-
                     boxShadow: [
                       BoxShadow(
                         color: Theme.of(context).primaryColor,
                         blurRadius: 6.0,
-                        // spreadRadius: 2.0,
                         offset: Offset(
                           0.0,
                           1.0,
@@ -198,18 +195,14 @@ class _RequestScreenState extends State<RequestScreen> {
                     height: _locationSet ? 300.0 : 200.0,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                      // borderRadius: BorderRadius.circular(30),
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30),
                           topRight: Radius.circular(30)),
-                      // color: Theme.of(context).canvasColor,
                       color: Colors.white,
-
                       boxShadow: [
                         BoxShadow(
                           color: Theme.of(context).primaryColor,
                           blurRadius: 6.0,
-                          // spreadRadius: 2.0,
                           offset: Offset(
                             0.0,
                             1.0,
@@ -222,7 +215,79 @@ class _RequestScreenState extends State<RequestScreen> {
                             child: CustomCircularProgressIndicator(),
                           )
                         : _locationSet
-                            ? Text('samiii')
+                            ? Consumer<Worker>(
+                                builder: (context, provider, _) {
+                                  provider.listenToCustomerRequests(
+                                      currentPosition!.latitude.toString(),
+                                      currentPosition!.longitude.toString());
+                                  if (provider.requestsList.isEmpty) {
+                                    return Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          SizedBox(
+                                            child: Image.asset(
+                                                "assets/images/waiting.png"),
+                                            height: 20,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            'No Incoming Requests',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(20.0),
+                                      child: ListView.builder(
+                                        itemCount: provider.requestsList.length,
+                                        itemBuilder: (context, index) {
+                                          return ListTile(
+                                            style: ListTileStyle.list,
+                                            leading: Text(provider
+                                                    .requestsList[index]
+                                                    .distanceBetween +
+                                                ' km'),
+                                            // leading: Image.asset(
+                                            //     'assets/images/logo.png',
+                                            //     color: Theme.of(context)
+                                            //         .primaryColor),
+                                            title: Text('Incoming Request'),
+                                            subtitle: Text(provider
+                                                .requestsList[index].services
+                                                .toString()),
+                                            trailing: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  IconButton(
+                                                      onPressed: () {},
+                                                      icon: Icon(
+                                                        Icons.done,
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                        size: 35,
+                                                      )),
+                                                  IconButton(
+                                                      onPressed: () {},
+                                                      icon: Icon(
+                                                        Icons.cancel,
+                                                        color: Theme.of(context)
+                                                            .errorColor,
+                                                        size: 35,
+                                                      ))
+                                                ]),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  }
+                                },
+                              )
                             : Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Column(
@@ -247,15 +312,14 @@ class _RequestScreenState extends State<RequestScreen> {
                                               setState(() {
                                                 _isLoading = true;
                                               });
-                                              await Provider.of<
-                                                          WorkerShopLocation>(
-                                                      context,
+                                              await Provider.of<Worker>(context,
                                                       listen: false)
                                                   .addWorkerLocation(
                                                       currentPosition!.latitude
                                                           .toString(),
                                                       currentPosition!.longitude
                                                           .toString());
+
                                               setState(() {
                                                 _isLoading = false;
                                                 _locationSet = true;

@@ -1,10 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:murammat_app/providers/search_worker.dart';
+import 'package:murammat_app/models/http_exception.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:murammat_app/providers/customer.dart';
 
 class ServicesScreen extends StatefulWidget {
   static const routeName = '/services';
@@ -14,8 +17,11 @@ class ServicesScreen extends StatefulWidget {
 }
 
 class _ServicesScreenState extends State<ServicesScreen> {
+  List<String> services = [];
+
   var _toggle = false;
   var _availale = false;
+  final _othersController = TextEditingController();
   String address = '';
   var _isLoading = false;
   bool servicestatus = false;
@@ -30,102 +36,46 @@ class _ServicesScreenState extends State<ServicesScreen> {
   bool? others = false;
   GoogleMapController? mapController;
   Position? currentPosition;
-  // Set<Circle> circles = {};
   List<Placemark>? placemarks;
   Placemark? place;
   Set<Marker> _markers = {};
   @override
   Widget build(BuildContext context) {
-    final data = Provider.of<SearchWorker>(context, listen: false);
+    final data = Provider.of<Customer>(context, listen: false);
 
     return Scaffold(
       resizeToAvoidBottomInset: _toggle ? false : true,
       appBar: null,
-      body: Stack(
-        children: [
-          GoogleMap(
-            padding: EdgeInsets.only(top: 115),
-            onMapCreated: _onMapCreated,
-            myLocationEnabled: true,
-            initialCameraPosition: CameraPosition(target: const LatLng(0, 0)),
-            myLocationButtonEnabled: true,
-            zoomControlsEnabled: false,
-            markers: _markers,
-            onTap: (LatLng position) {
-              _addMarker(position);
-            },
-            // circles: circles,
-          ),
-          Positioned(
-            top: 70,
-            right: 15,
-            left: 15,
-            child: Container(
-              decoration: BoxDecoration(
-                // borderRadius: BorderRadius.circular(30),
-                // borderRadius: BorderRadius.only(
-                //     topLeft: Radius.circular(30),
-                //     topRight: Radius.circular(30)),
-                // color: Theme.of(context).canvasColor,
-                color: Colors.white,
-
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).primaryColor,
-                    blurRadius: 6.0,
-                    // spreadRadius: 2.0,
-                    offset: Offset(
-                      0.0,
-                      1.0,
-                    ),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: <Widget>[
-                  IconButton(
-                    color: Theme.of(context).primaryColor,
-                    icon: Icon(Icons.search),
-                    onPressed: () {},
-                  ),
-                  Expanded(
-                    child: TextField(
-                      onTap: () {
-                        _toggle = true;
-                      },
-                      cursorColor: Colors.black,
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.go,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                          hintText: "Search..."),
-                    ),
-                  ),
-                ],
-              ),
+      body: WillPopScope(
+        onWillPop: () {
+          deleteAvailableWorker();
+          return Future.value(true);
+        },
+        child: Stack(
+          children: [
+            GoogleMap(
+              padding: EdgeInsets.only(top: 115),
+              onMapCreated: _onMapCreated,
+              myLocationEnabled: true,
+              initialCameraPosition: CameraPosition(target: const LatLng(0, 0)),
+              myLocationButtonEnabled: true,
+              zoomControlsEnabled: false,
+              markers: _markers,
+              onTap: (LatLng position) {
+                _addMarker(position);
+              },
             ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                height: 300.0,
-                width: MediaQuery.of(context).size.width,
+            Positioned(
+              top: 70,
+              right: 15,
+              left: 15,
+              child: Container(
                 decoration: BoxDecoration(
-                  // borderRadius: BorderRadius.circular(30),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)),
-                  // color: Theme.of(context).canvasColor,
                   color: Colors.white,
-
                   boxShadow: [
                     BoxShadow(
                       color: Theme.of(context).primaryColor,
                       blurRadius: 6.0,
-                      // spreadRadius: 2.0,
                       offset: Offset(
                         0.0,
                         1.0,
@@ -133,226 +83,284 @@ class _ServicesScreenState extends State<ServicesScreen> {
                     ),
                   ],
                 ),
-                child: _isLoading
-                    ? Center(
-                        child: CustomCircularProgressIndicator(),
-                      )
-                    : _availale
-                        ? data.availaleWorkers.isEmpty
-                            ? Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      child: Image.asset(
-                                          "assets/images/waiting.png"),
-                                      height: 20,
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      'No available Workers',
-                                      style: TextStyle(
-                                          color:
-                                              Theme.of(context).primaryColor),
-                                    )
-                                  ],
-                                ),
-                              )
-                            : Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  Expanded(
-                                      child: ListView.builder(
-                                    itemBuilder: (context, index) {
-                                      return ListTile(
-                                        leading: Image.asset(
-                                            'assets/images/logo.png',
+                child: Row(
+                  children: <Widget>[
+                    IconButton(
+                      color: Theme.of(context).primaryColor,
+                      icon: Icon(Icons.search),
+                      onPressed: () {},
+                    ),
+                    Expanded(
+                      child: TextField(
+                        onTap: () {
+                          _toggle = true;
+                        },
+                        cursorColor: Colors.black,
+                        keyboardType: TextInputType.text,
+                        textInputAction: TextInputAction.go,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 15),
+                            hintText: "Search..."),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Container(
+                  height: 300.0,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30)),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).primaryColor,
+                        blurRadius: 6.0,
+                        offset: Offset(
+                          0.0,
+                          1.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  child: _isLoading
+                      ? Center(
+                          child: CustomCircularProgressIndicator(),
+                        )
+                      : _availale
+                          ? data.availaleWorkers.isEmpty
+                              ? Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      SizedBox(
+                                        child: Image.asset(
+                                            "assets/images/waiting.png"),
+                                        height: 20,
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Text(
+                                        'No available Workers',
+                                        style: TextStyle(
                                             color:
                                                 Theme.of(context).primaryColor),
-                                        title: Text('Available'),
-                                        subtitle: Text(data
-                                                .availaleWorkers[index]
-                                                .distanceBetween +
-                                            ' km away'),
-                                        trailing: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              IconButton(
-                                                  onPressed: () {
-                                                    data.sendRequest(
-                                                        data
-                                                            .availaleWorkers[
-                                                                index]
-                                                            .id,
-                                                        currentPosition!
-                                                            .latitude
-                                                            .toString(),
-                                                        currentPosition!
-                                                            .longitude
-                                                            .toString());
-                                                  },
-                                                  icon: Icon(
-                                                    Icons.done,
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                    size: 35,
-                                                  )),
-                                              IconButton(
-                                                  onPressed: () {},
-                                                  icon: Icon(
-                                                    Icons.cancel,
-                                                    color: Theme.of(context)
-                                                        .errorColor,
-                                                    size: 35,
-                                                  ))
-                                            ]),
-                                      );
-                                    },
-                                    itemCount: data.availaleWorkers.length,
-                                  ))
-                                ],
-                              )
-                        : Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                const SizedBox(
-                                  height: 30,
-                                ),
-                                Center(
-                                  child: Text(
-                                    address,
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 16),
+                                      ),
+                                      IconButton(
+                                          onPressed: _getAvailableWorkers,
+                                          icon: Icon(Icons.refresh))
+                                    ],
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Center(
-                                  child: Text(
-                                    'Choose Services you want!',
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
+                                )
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Expanded(
+                                        child: ListView.builder(
+                                      itemBuilder: (context, index) {
+                                        return ListTile(
+                                          leading: Image.asset(
+                                              'assets/images/logo.png',
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                          title: Text('Available'),
+                                          subtitle: Text(data
+                                                  .availaleWorkers[index]
+                                                  .distanceBetween +
+                                              ' km away'),
+                                          trailing: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: <Widget>[
+                                                IconButton(
+                                                    onPressed: () {
+                                                      data.sendRequest(
+                                                          data
+                                                              .availaleWorkers[
+                                                                  index]
+                                                              .workerId,
+                                                          currentPosition!
+                                                              .latitude
+                                                              .toString(),
+                                                          currentPosition!
+                                                              .longitude
+                                                              .toString(),
+                                                          services,
+                                                          _othersController
+                                                              .text);
+                                                    },
+                                                    icon: Icon(
+                                                      Icons.done,
+                                                      color: Theme.of(context)
+                                                          .primaryColor,
+                                                      size: 35,
+                                                    )),
+                                                IconButton(
+                                                    onPressed: () {},
+                                                    icon: Icon(
+                                                      Icons.cancel,
+                                                      color: Theme.of(context)
+                                                          .errorColor,
+                                                      size: 35,
+                                                    ))
+                                              ]),
+                                        );
+                                      },
+                                      itemCount: data.availaleWorkers.length,
+                                    ))
+                                  ],
+                                )
+                          : Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  const SizedBox(
+                                    height: 30,
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: <Widget>[
-                                        CheckboxListTile(
-                                          value: towing,
-                                          onChanged: ((val) {
-                                            setState(() {
-                                              towing = val;
-                                            });
-                                          }),
-                                          activeColor:
-                                              Theme.of(context).primaryColor,
-                                          title: Text('Towing'),
-                                        ),
-                                        CheckboxListTile(
-                                          value: engineReplacement,
-                                          onChanged: ((val) {
-                                            setState(() {
-                                              engineReplacement = val;
-                                            });
-                                          }),
-                                          activeColor:
-                                              Theme.of(context).primaryColor,
-                                          title: Text('Engine Replacement'),
-                                        ),
-                                        CheckboxListTile(
-                                          value: engineRepair,
-                                          onChanged: ((val) {
-                                            setState(() {
-                                              engineRepair = val;
-                                            });
-                                          }),
-                                          activeColor:
-                                              Theme.of(context).primaryColor,
-                                          title: Text('Engine Repair'),
-                                        ),
-                                        CheckboxListTile(
-                                          value: oilChangeOrFilters,
-                                          onChanged: ((val) {
-                                            setState(() {
-                                              oilChangeOrFilters = val;
-                                            });
-                                          }),
-                                          activeColor:
-                                              Theme.of(context).primaryColor,
-                                          title: Text('Oil change or Filter'),
-                                        ),
-                                        CheckboxListTile(
-                                          value: accidentRecovery,
-                                          onChanged: ((val) {
-                                            setState(() {
-                                              accidentRecovery = val;
-                                            });
-                                          }),
-                                          activeColor:
-                                              Theme.of(context).primaryColor,
-                                          title: Text('Accident Recovery'),
-                                        ),
-                                        CheckboxListTile(
-                                          value: others,
-                                          onChanged: ((val) {
-                                            setState(() {
-                                              others = val;
-                                            });
-                                          }),
-                                          activeColor:
-                                              Theme.of(context).primaryColor,
-                                          title: Text('Others'),
-                                        ),
-                                        others!
-                                            ? TextField(
-                                                maxLines: 3,
-                                                decoration: InputDecoration(
-                                                  label: Text('Description'),
-                                                  enabledBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        width: 2,
-                                                        color: Theme.of(context)
-                                                            .primaryColor),
-                                                  ),
-                                                ),
-                                              )
-                                            : SizedBox(),
-                                        const SizedBox(height: 10),
-                                      ],
+                                  Center(
+                                    child: Text(
+                                      address,
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 16),
                                     ),
                                   ),
-                                ),
-                                Center(
-                                  child: ElevatedButton(
-                                      onPressed: _getAvailableWorkers,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      'Choose Services you want!',
+                                      style: TextStyle(
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Expanded(
+                                    child: SingleChildScrollView(
+                                      child: Column(
                                         children: <Widget>[
-                                          Text('Find Worker'),
-                                          Icon(Icons.chevron_right),
+                                          CheckboxListTile(
+                                            value: towing,
+                                            onChanged: ((val) {
+                                              setState(() {
+                                                towing = val;
+                                              });
+                                            }),
+                                            activeColor:
+                                                Theme.of(context).primaryColor,
+                                            title: Text('Towing'),
+                                          ),
+                                          CheckboxListTile(
+                                            value: engineReplacement,
+                                            onChanged: ((val) {
+                                              setState(() {
+                                                engineReplacement = val;
+                                              });
+                                            }),
+                                            activeColor:
+                                                Theme.of(context).primaryColor,
+                                            title: Text('Engine Replacement'),
+                                          ),
+                                          CheckboxListTile(
+                                            value: engineRepair,
+                                            onChanged: ((val) {
+                                              setState(() {
+                                                engineRepair = val;
+                                              });
+                                            }),
+                                            activeColor:
+                                                Theme.of(context).primaryColor,
+                                            title: Text('Engine Repair'),
+                                          ),
+                                          CheckboxListTile(
+                                            value: oilChangeOrFilters,
+                                            onChanged: ((val) {
+                                              setState(() {
+                                                oilChangeOrFilters = val;
+                                              });
+                                            }),
+                                            activeColor:
+                                                Theme.of(context).primaryColor,
+                                            title: Text('Oil change or Filter'),
+                                          ),
+                                          CheckboxListTile(
+                                            value: accidentRecovery,
+                                            onChanged: ((val) {
+                                              setState(() {
+                                                accidentRecovery = val;
+                                              });
+                                            }),
+                                            activeColor:
+                                                Theme.of(context).primaryColor,
+                                            title: Text('Accident Recovery'),
+                                          ),
+                                          CheckboxListTile(
+                                            value: others,
+                                            onChanged: ((val) {
+                                              setState(() {
+                                                others = val;
+                                              });
+                                            }),
+                                            activeColor:
+                                                Theme.of(context).primaryColor,
+                                            title: Text('Others'),
+                                          ),
+                                          others!
+                                              ? TextField(
+                                                  controller: _othersController,
+                                                  maxLines: 3,
+                                                  decoration: InputDecoration(
+                                                    label: Text('Description'),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderSide: BorderSide(
+                                                          width: 2,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .primaryColor),
+                                                    ),
+                                                  ),
+                                                )
+                                              : SizedBox(),
+                                          const SizedBox(height: 10),
                                         ],
-                                      )),
-                                )
-                              ],
+                                      ),
+                                    ),
+                                  ),
+                                  Center(
+                                    child: ElevatedButton(
+                                        onPressed: _getAvailableWorkers,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Text('Find Worker'),
+                                            Icon(Icons.chevron_right),
+                                          ],
+                                        )),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-              ),
-            ],
-          ),
-        ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -436,10 +444,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
     address =
         '${place!.street}, ${place!.subLocality}, ${place!.locality}, ${place!.country}';
     setState(() {
-      // Remove existing markers
       _markers.clear();
-
-      // Add a new marker at the specified position
       _markers.add(
         Marker(
           markerId: MarkerId("new_location"),
@@ -447,8 +452,6 @@ class _ServicesScreenState extends State<ServicesScreen> {
           infoWindow: InfoWindow(title: "New Location"),
         ),
       );
-
-      // Update the current position to the coordinates of the new marker
       currentPosition = Position(
         latitude: position.latitude,
         longitude: position.longitude,
@@ -467,10 +470,19 @@ class _ServicesScreenState extends State<ServicesScreen> {
 
   _getAvailableWorkers() async {
     try {
+      towing! ? services.add('Towing') : null;
+      engineRepair! ? services.add('Engine Repair') : null;
+      engineReplacement! ? services.add('Engine Replacement') : null;
+      oilChangeOrFilters! ? services.add('Oil change and Filters') : null;
+      accidentRecovery! ? services.add('Accident Recovery') : null;
+      if (services.isEmpty && _othersController.text.isEmpty) {
+        _showErrorDialog('Select any Service');
+        return;
+      }
       setState(() {
         _isLoading = true;
       });
-      await Provider.of<SearchWorker>(context, listen: false).searchWorkers(
+      await Provider.of<Customer>(context, listen: false).searchWorkers(
           currentPosition!.latitude.toString(),
           currentPosition!.longitude.toString());
       setState(() {
@@ -480,5 +492,9 @@ class _ServicesScreenState extends State<ServicesScreen> {
     } catch (error) {
       throw error;
     }
+  }
+
+  deleteAvailableWorker() async {
+    await Provider.of<Customer>(context, listen: false).deleteAvailableWorker();
   }
 }

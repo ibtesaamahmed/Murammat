@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:murammat_app/providers/auth.dart';
-import 'package:murammat_app/providers/search_worker.dart';
-import 'package:murammat_app/providers/worker_location.dart';
+import 'package:murammat_app/providers/customer.dart';
+import 'package:murammat_app/providers/worker.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/my_garage.dart';
@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: ((context) => MyDataProvider())),
         ChangeNotifierProvider(create: (context) => Auth()),
         ChangeNotifierProxyProvider<Auth, Garage>(
           create: ((context) => Garage('', '', [])),
@@ -55,20 +54,17 @@ class MyApp extends StatelessWidget {
                 previousGarage == null ? [] : previousGarage.items,
               )),
         ),
-        ChangeNotifierProxyProvider<Auth, WorkerShopLocation>(
-          create: (context) => WorkerShopLocation('', '', '', ''),
-          update: (context, auth, previousShopLocation) => WorkerShopLocation(
-              auth.token,
-              auth.userId,
-              previousShopLocation == null ? '' : previousShopLocation.lat,
-              previousShopLocation == null ? '' : previousShopLocation.long),
+        ChangeNotifierProxyProvider<Auth, Worker>(
+          create: (context) => Worker('', ''),
+          update: (context, auth, _) => Worker(
+            auth.token,
+            auth.userId,
+          ),
         ),
-        ChangeNotifierProxyProvider<Auth, SearchWorker>(
-          create: ((context) => SearchWorker('', '')),
-          update: (context, auth, _) => SearchWorker(auth.token, auth.userId),
+        ChangeNotifierProxyProvider<Auth, Customer>(
+          create: ((context) => Customer('', '')),
+          update: (context, auth, _) => Customer(auth.token, auth.userId),
         ),
-
-        // ChangeNotifierProvider(create: (context) => Garage()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

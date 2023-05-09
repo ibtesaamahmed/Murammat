@@ -10,6 +10,7 @@ class StartPage extends StatelessWidget {
     return ElevatedButton(
       onPressed: pressed,
       style: ElevatedButton.styleFrom(
+        elevation: 5,
         foregroundColor: Colors.black,
         backgroundColor: Theme.of(context).colorScheme.secondary,
         fixedSize: const Size(150, 50),
@@ -46,7 +47,7 @@ class StartPage extends StatelessWidget {
                     children: <Widget>[
                       button(
                         const Text(
-                          'I am a Costumer',
+                          'Customer',
                           style: TextStyle(fontSize: 16),
                         ),
                         () {
@@ -57,7 +58,7 @@ class StartPage extends StatelessWidget {
                       ),
                       button(
                         const Text(
-                          'I am a Worker',
+                          'Worker',
                           style: TextStyle(fontSize: 16),
                         ),
                         () {
