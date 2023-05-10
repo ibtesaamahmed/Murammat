@@ -19,6 +19,7 @@ class ServicesScreen extends StatefulWidget {
 class _ServicesScreenState extends State<ServicesScreen> {
   List<String> services = [];
 
+  var _req = false;
   var _toggle = false;
   var _availale = false;
   final _othersController = TextEditingController();
@@ -54,19 +55,16 @@ class _ServicesScreenState extends State<ServicesScreen> {
         child: Stack(
           children: [
             GoogleMap(
-              padding: EdgeInsets.only(top: 115),
+              padding: EdgeInsets.only(top: 100),
               onMapCreated: _onMapCreated,
               myLocationEnabled: true,
               initialCameraPosition: CameraPosition(target: const LatLng(0, 0)),
               myLocationButtonEnabled: true,
               zoomControlsEnabled: false,
               markers: _markers,
-              onTap: (LatLng position) {
-                _addMarker(position);
-              },
             ),
             Positioned(
-              top: 70,
+              top: 50,
               right: 15,
               left: 15,
               child: Container(
@@ -114,7 +112,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 Container(
-                  height: 300.0,
+                  height: _req ? 200 : 300.0,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -160,63 +158,90 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                     ],
                                   ),
                                 )
-                              : Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Expanded(
-                                        child: ListView.builder(
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          leading: Image.asset(
-                                              'assets/images/logo.png',
-                                              color: Theme.of(context)
-                                                  .primaryColor),
-                                          title: Text('Available'),
-                                          subtitle: Text(data
-                                                  .availaleWorkers[index]
-                                                  .distanceBetween +
-                                              ' km away'),
-                                          trailing: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: <Widget>[
-                                                IconButton(
-                                                    onPressed: () {
-                                                      data.sendRequest(
-                                                          data
-                                                              .availaleWorkers[
-                                                                  index]
-                                                              .workerId,
-                                                          currentPosition!
-                                                              .latitude
-                                                              .toString(),
-                                                          currentPosition!
-                                                              .longitude
-                                                              .toString(),
-                                                          services,
-                                                          _othersController
-                                                              .text);
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.done,
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
-                                                      size: 35,
-                                                    )),
-                                                IconButton(
-                                                    onPressed: () {},
-                                                    icon: Icon(
-                                                      Icons.cancel,
-                                                      color: Theme.of(context)
-                                                          .errorColor,
-                                                      size: 35,
-                                                    ))
-                                              ]),
-                                        );
+                              : _req
+                                  ? Consumer<Customer>(
+                                      builder: (context, value, _) {
+                                        return Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              value.accepted == false
+                                                  ? Center(
+                                                      child:
+                                                          CustomCircularProgressIndicator(),
+                                                    )
+                                                  : Text(
+                                                      'Request Accepted \n Worker is Coming......')
+                                            ]);
                                       },
-                                      itemCount: data.availaleWorkers.length,
-                                    ))
-                                  ],
-                                )
+                                    )
+                                  : Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        Expanded(
+                                            child: ListView.builder(
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              leading: Image.asset(
+                                                  'assets/images/logo.png',
+                                                  color: Theme.of(context)
+                                                      .primaryColor),
+                                              title: Text('Available'),
+                                              subtitle: Text(data
+                                                      .availaleWorkers[index]
+                                                      .distanceBetween +
+                                                  ' km away'),
+                                              trailing: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    IconButton(
+                                                        onPressed: () async {
+                                                          await data.sendRequest(
+                                                              data
+                                                                  .availaleWorkers[
+                                                                      index]
+                                                                  .workerId,
+                                                              currentPosition!
+                                                                  .latitude
+                                                                  .toString(),
+                                                              currentPosition!
+                                                                  .longitude
+                                                                  .toString(),
+                                                              services,
+                                                              _othersController
+                                                                  .text);
+                                                          await data
+                                                              .listenToAcceptedRequests();
+                                                          setState(() {
+                                                            _req = true;
+                                                          });
+                                                        },
+                                                        icon: Icon(
+                                                          Icons.done,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .primaryColor,
+                                                          size: 35,
+                                                        )),
+                                                    IconButton(
+                                                        onPressed: () {},
+                                                        icon: Icon(
+                                                          Icons.cancel,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .errorColor,
+                                                          size: 35,
+                                                        ))
+                                                  ]),
+                                            );
+                                          },
+                                          itemCount:
+                                              data.availaleWorkers.length,
+                                        ))
+                                      ],
+                                    )
                           : Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: Column(
@@ -431,41 +456,6 @@ class _ServicesScreenState extends State<ServicesScreen> {
     } else {
       print("GPS Service is not enabled, turn on GPS location");
     }
-  }
-
-  void _addMarker(LatLng position) async {
-    setState(() {
-      _isLoading = true;
-    });
-    placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    print(placemarks);
-    place = placemarks![0];
-    address =
-        '${place!.street}, ${place!.subLocality}, ${place!.locality}, ${place!.country}';
-    setState(() {
-      _markers.clear();
-      _markers.add(
-        Marker(
-          markerId: MarkerId("new_location"),
-          position: position,
-          infoWindow: InfoWindow(title: "New Location"),
-        ),
-      );
-      currentPosition = Position(
-        latitude: position.latitude,
-        longitude: position.longitude,
-        timestamp: DateTime.now(),
-        accuracy: 0,
-        altitude: 0,
-        heading: 0,
-        speed: 0,
-        speedAccuracy: 0,
-      );
-      print(position.latitude);
-      print(position.longitude);
-      _isLoading = false;
-    });
   }
 
   _getAvailableWorkers() async {

@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
 
 class Requests {
   String customerId;
@@ -56,31 +54,34 @@ class Worker with ChangeNotifier {
 
   final DatabaseReference _databaseReferences =
       FirebaseDatabase.instance.ref().child('requestsFromCustomer');
+  StreamSubscription<DatabaseEvent>? _subscription;
 
   Future<void> listenToCustomerRequests(String myLat, String myLong) async {
-    _databaseReferences.onValue.listen((event) {
+    _subscription = _databaseReferences
+        .orderByChild('workerId')
+        .equalTo(userId)
+        .onValue
+        .listen((DatabaseEvent event) {
       if (event.snapshot.value != null) {
-        print('listening');
         Map<dynamic, dynamic> extractedData =
             event.snapshot.value as Map<dynamic, dynamic>;
+        print("Listening");
         _requestsList.clear();
         extractedData.forEach((key, value) async {
-          if (value['workerId'] == userId) {
-            double distanceBtw = await Geolocator.distanceBetween(
-                double.parse(myLat),
-                double.parse(myLong),
-                double.parse(value['lat']),
-                double.parse(value['long']));
-            distanceBtw = distanceBtw / 1000;
-            _requestsList.add(Requests(
-              customerId: value['customerId'],
-              lat: value['lat'],
-              long: value['long'],
-              services: value['services'],
-              otherServices: value['otherServices'],
-              distanceBetween: distanceBtw.toStringAsFixed(1),
-            ));
-          }
+          double distanceBtw = await Geolocator.distanceBetween(
+              double.parse(myLat),
+              double.parse(myLong),
+              double.parse(value['lat']),
+              double.parse(value['long']));
+          distanceBtw = distanceBtw / 1000;
+          _requestsList.add(Requests(
+            customerId: value['customerId'],
+            lat: value['lat'],
+            long: value['long'],
+            services: value['services'],
+            otherServices: value['otherServices'],
+            distanceBetween: distanceBtw.toStringAsFixed(1),
+          ));
         });
         notifyListeners();
       }
@@ -88,25 +89,19 @@ class Worker with ChangeNotifier {
   }
 
   void removeListeners() {
-    _databaseReferences.onValue.drain();
+    _subscription?.cancel();
+    print('cancelled subscription');
   }
 
-  // Future<void> listenToCustomerRequest() async {
-  //   final DatabaseReference _databaseReference =
-  //       FirebaseDatabase.instance.ref().child('requestsFromCustomer');
-  //   _databaseReference.onValue.listen((event) {
-  //     if (event.snapshot.value != null) {
-  //       Map<dynamic, dynamic> extractedData =
-  //           event.snapshot.value as Map<dynamic, dynamic>;
-  //       _requestsList.clear();
-  //       extractedData.forEach((key, value) {
-  //         _requestsList.add(Requests(
-  //             customerId: value['customerId'],
-  //             lat: value['lat'],
-  //             long: value['long']));
-  //       });
-  //       notifyListeners();
-  //     }
-  //   });
-  // }
+  Future<void> acceptRequest(int index) async {
+    DatabaseReference _databaseRef =
+        FirebaseDatabase.instance.ref().child('acceptedRequests');
+    final customerId = _requestsList[index].customerId;
+    await _databaseRef
+      ..push().set({
+        'customerId': customerId,
+        'workerId': userId,
+      });
+    removeListeners();
+  }
 }

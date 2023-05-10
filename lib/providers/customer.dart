@@ -1,9 +1,8 @@
-import 'dart:convert';
+import 'dart:async';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:http/http.dart' as http;
 
 class AvailableWorkers {
   String workerId;
@@ -49,28 +48,6 @@ class Customer with ChangeNotifier {
       }
     });
     notifyListeners();
-
-    // final url = Uri.parse(
-    //     'https://murammat-b174c-default-rtdb.firebaseio.com/workersShopLocation.json?auth=$authToken');
-    // final response = await http.get(url);
-    // final extractedData = json.decode(response.body) as Map<String, dynamic>;
-    // final List<AvailableWorkers> workers = [];
-    // extractedData.forEach((_, value) async {
-    //   double distanceBtw = await Geolocator.distanceBetween(
-    //       double.parse(myLat),
-    //       double.parse(myLong),
-    //       double.parse(value['lat']),
-    //       double.parse(value['long']));
-    //   if (distanceBtw <= 5000) {
-    //     workers.add(AvailableWorkers(
-    //         workerId: value['workerId'],
-    //         workerLat: value['lat'],
-    //         workerLong: value['long'],
-    //         distanceBetween: (distanceBtw / 1000).toStringAsFixed(1)));
-    //   }
-    // });
-    // _availableWorkers = workers;
-    // notifyListeners();
   }
 
   Future<void> sendRequest(String workerId, String lat, String long,
@@ -86,15 +63,6 @@ class Customer with ChangeNotifier {
         'services': services.toString(),
         'otherServices': others,
       });
-    // final url = Uri.parse(
-    //     'https://murammat-b174c-default-rtdb.firebaseio.com/requestsFromCustomer.json');
-    // await http.post(url,
-    //     body: json.encode({
-    //       'customerId': userId,
-    //       'workerId': workerId,
-    //       'lat': lat,
-    //       'long': long,
-    //     }));
   }
 
   Future<void> deleteAvailableWorker() async {
@@ -112,5 +80,26 @@ class Customer with ChangeNotifier {
     await _databaseReference.child(id).remove();
     _availableWorkers.clear();
     notifyListeners();
+  }
+
+  final DatabaseReference _dbRef =
+      FirebaseDatabase.instance.ref().child('acceptedRequests');
+  StreamSubscription<DatabaseEvent>? _subscription;
+  bool? accepted = false;
+  Future<void> listenToAcceptedRequests() async {
+    _dbRef.orderByChild('customerId').equalTo(userId).onValue.listen((event) {
+      print('listening');
+      if (event.snapshot.value != null) {
+        print('yes');
+        accepted = true;
+        notifyListeners();
+        removeListeners();
+      }
+    });
+  }
+
+  void removeListeners() {
+    _subscription?.cancel();
+    print('listener removed');
   }
 }
