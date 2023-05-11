@@ -94,14 +94,25 @@ class Worker with ChangeNotifier {
   }
 
   Future<void> acceptRequest(int index) async {
-    DatabaseReference _databaseRef =
+    DatabaseReference _databaseReference =
         FirebaseDatabase.instance.ref().child('acceptedRequests');
     final customerId = _requestsList[index].customerId;
-    await _databaseRef
+    await _databaseReference
       ..push().set({
         'customerId': customerId,
         'workerId': userId,
       });
     removeListeners();
+  }
+
+  Future<void> liveLocationUpdate(int index, String lat, String long) async {
+    final customerId = _requestsList[index].customerId;
+    DatabaseReference _databaseReference =
+        FirebaseDatabase.instance.ref().child('liveTracking').child(customerId);
+    await _databaseReference.set({
+      'workerId': userId,
+      'lat': lat,
+      'long': long,
+    });
   }
 }

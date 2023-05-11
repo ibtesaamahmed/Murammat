@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
@@ -40,7 +42,7 @@ class _RequestScreenState extends State<RequestScreen> {
   }
 
   List<LatLng> polylineCoordinates = [];
-  void getPolyPoints(String lat, String long) async {
+  void getPolyPoints(String lat, String long, int index) async {
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       'AIzaSyCWMxta2y3gpe7EWcsQrR9GXUpjrthC1d0', // Your Google Map Key
@@ -53,7 +55,8 @@ class _RequestScreenState extends State<RequestScreen> {
           LatLng(point.latitude, point.longitude),
         ),
       );
-      setState(() {});
+
+      liveTrack(index);
     }
   }
 
@@ -105,6 +108,25 @@ class _RequestScreenState extends State<RequestScreen> {
     pro.removeListeners();
   }
 
+  StreamSubscription<Position>? locationSubscription;
+
+  void liveTrack(int index) async {
+    locationSubscription =
+        Geolocator.getPositionStream().listen((Position position) {
+      currentPosition = position;
+      print('locating');
+      Provider.of<Worker>(context, listen: false).liveLocationUpdate(
+          index,
+          currentPosition!.latitude.toString(),
+          currentPosition!.longitude.toString());
+      setState(() {});
+    });
+  }
+
+  void cancelLocationUpdates() {
+    locationSubscription?.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     final data = Provider.of<Worker>(context, listen: false);
@@ -113,6 +135,7 @@ class _RequestScreenState extends State<RequestScreen> {
         body: WillPopScope(
           onWillPop: () {
             deleteNode();
+            cancelLocationUpdates();
             return Future.value(true);
           },
           child: Stack(
@@ -325,7 +348,9 @@ class _RequestScreenState extends State<RequestScreen> {
                                                               data
                                                                   .requestsList[
                                                                       index]
-                                                                  .long);
+                                                                  .long,
+                                                              index);
+                                                          // getCurr();
                                                         },
                                                         icon: Icon(
                                                           Icons.done,
@@ -419,7 +444,10 @@ class _RequestScreenState extends State<RequestScreen> {
                                           style: TextStyle(
                                               color: Theme.of(context)
                                                   .primaryColor),
-                                        )
+                                        ),
+                                        TextButton(
+                                            onPressed: cancelLocationUpdates,
+                                            child: Text('I\'ve Reached '))
                                       ]),
                   )
                 ],

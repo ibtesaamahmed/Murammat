@@ -42,6 +42,8 @@ class _ServicesScreenState extends State<ServicesScreen> {
   Set<Marker> _markers = {};
   @override
   Widget build(BuildContext context) {
+    print('hello');
+
     final data = Provider.of<Customer>(context, listen: false);
 
     return Scaffold(

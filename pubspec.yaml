@@ -28,7 +28,6 @@ dependencies:
   cloud_firestore: ^4.5.3
   firebase_database: ^10.1.2
   firebase_auth: ^4.2.2
-  location: ^4.4.0
   flutter_polyline_points: ^1.0.0
 
 dev_dependencies:
