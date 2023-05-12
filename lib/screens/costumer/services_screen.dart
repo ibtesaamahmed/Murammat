@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:murammat_app/models/http_exception.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:murammat_app/providers/customer.dart';
@@ -18,7 +17,6 @@ class ServicesScreen extends StatefulWidget {
 
 class _ServicesScreenState extends State<ServicesScreen> {
   List<String> services = [];
-
   var _req = false;
   var _toggle = false;
   var _availale = false;
@@ -39,11 +37,17 @@ class _ServicesScreenState extends State<ServicesScreen> {
   Position? currentPosition;
   List<Placemark>? placemarks;
   Placemark? place;
+
   Set<Marker> _markers = {};
+
+  @override
+  void initState() {
+    _isLoading = true;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    print('hello');
-
     final data = Provider.of<Customer>(context, listen: false);
 
     return Scaffold(
@@ -56,14 +60,35 @@ class _ServicesScreenState extends State<ServicesScreen> {
         },
         child: Stack(
           children: [
-            GoogleMap(
-              padding: EdgeInsets.only(top: 100),
-              onMapCreated: _onMapCreated,
-              myLocationEnabled: true,
-              initialCameraPosition: CameraPosition(target: const LatLng(0, 0)),
-              myLocationButtonEnabled: true,
-              zoomControlsEnabled: false,
-              markers: _markers,
+            Consumer<Customer>(
+              builder: (context, value, _) {
+                if (_req) {
+                  value.listenToLocationUpdate();
+                  _markers = {
+                    Marker(
+                      markerId: MarkerId('Customer'),
+                      position: LatLng(currentPosition!.latitude,
+                          currentPosition!.longitude),
+                    ),
+                    Marker(
+                      markerId: MarkerId('Worker'),
+                      position: LatLng(
+                          double.parse(value.lat != null ? value.lat! : '0'),
+                          double.parse(value.long != null ? value.long! : '0')),
+                    ),
+                  };
+                }
+                return GoogleMap(
+                  padding: EdgeInsets.only(top: 100),
+                  onMapCreated: _onMapCreated,
+                  myLocationEnabled: true,
+                  initialCameraPosition:
+                      CameraPosition(target: const LatLng(0, 0)),
+                  myLocationButtonEnabled: true,
+                  zoomControlsEnabled: false,
+                  markers: _req ? _markers : {},
+                );
+              },
             ),
             Positioned(
               top: 50,
@@ -172,8 +197,18 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                                       child:
                                                           CustomCircularProgressIndicator(),
                                                     )
-                                                  : Text(
-                                                      'Request Accepted \n Worker is Coming......')
+                                                  : Column(
+                                                      children: <Widget>[
+                                                        Text(
+                                                            'Request Accepted \n Worker is Coming......'),
+                                                        TextButton(
+                                                            onPressed: () {
+                                                              data.removeListen();
+                                                            },
+                                                            child:
+                                                                Text('Remove')),
+                                                      ],
+                                                    )
                                             ]);
                                       },
                                     )
@@ -418,9 +453,6 @@ class _ServicesScreenState extends State<ServicesScreen> {
   }
 
   _onMapCreated(GoogleMapController controller) async {
-    setState(() {
-      _isLoading = true;
-    });
     servicestatus = await Geolocator.isLocationServiceEnabled();
     if (servicestatus) {
       permission = await Geolocator.checkPermission();

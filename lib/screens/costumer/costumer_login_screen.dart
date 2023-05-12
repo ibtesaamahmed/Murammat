@@ -56,11 +56,9 @@ class _CostumerLoginScreenState extends State<CostumerLoginScreen> {
       appBar: AppBar(
         title: const Text('Costumer Login'),
       ),
-      body: Container(
-        height: double.infinity,
-        color: Color.fromRGBO(206, 206, 206, 1),
-        padding: const EdgeInsets.all(30),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
               Widget>[
             Image.asset(
@@ -77,7 +75,7 @@ class _CostumerLoginScreenState extends State<CostumerLoginScreen> {
                   border: OutlineInputBorder(), labelText: 'Email'),
             ),
             const SizedBox(
-              height: 5,
+              height: 10,
             ),
             TextField(
               controller: _passwordController,

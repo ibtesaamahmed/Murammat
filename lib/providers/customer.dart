@@ -39,7 +39,8 @@ class Customer with ChangeNotifier {
           double.parse(myLong),
           double.parse(value['lat']),
           double.parse(value['long']));
-      if (distanceBtw <= 5000) {
+      distanceBtw = distanceBtw / 1000;
+      if (distanceBtw <= 5) {
         _availableWorkers.add(AvailableWorkers(
             workerId: workerId,
             workerLat: value['lat'],
@@ -82,24 +83,52 @@ class Customer with ChangeNotifier {
     notifyListeners();
   }
 
-  final DatabaseReference _dbRef =
-      FirebaseDatabase.instance.ref().child('acceptedRequests');
+  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
   StreamSubscription<DatabaseEvent>? _subscription;
   bool? accepted = false;
+
   Future<void> listenToAcceptedRequests() async {
-    _dbRef.orderByChild('customerId').equalTo(userId).onValue.listen((event) {
+    _subscription = _dbRef
+        .child('acceptedRequests')
+        .orderByChild('customerId')
+        .equalTo(userId)
+        .onValue
+        .listen((event) {
       print('listening');
       if (event.snapshot.value != null) {
         print('yes');
         accepted = true;
         notifyListeners();
-        removeListeners();
+        removeListen();
       }
     });
   }
 
-  void removeListeners() {
+  String? lat;
+  String? long;
+
+  Future<void> listenToLocationUpdate() async {
+    _subscription = _dbRef
+        .child('liveTracking')
+        .child(userId)
+        .onValue
+        .listen((DatabaseEvent event) {
+      print('listen loc');
+      if (event.snapshot.value != null) {
+        Map<dynamic, dynamic> extractedData =
+            event.snapshot.value as Map<dynamic, dynamic>;
+        lat = extractedData['lat'];
+        long = extractedData['long'];
+        print(lat);
+        print(long);
+        notifyListeners();
+      }
+    });
+  }
+
+  void removeListen() {
     _subscription?.cancel();
+    _subscription = null;
     print('listener removed');
   }
 }

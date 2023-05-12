@@ -56,11 +56,9 @@ class _WorkerLoginScreenState extends State<WorkerLoginScreen> {
       appBar: AppBar(
         title: const Text('Worker Login'),
       ),
-      body: Container(
-        height: double.infinity,
-        color: Theme.of(context).canvasColor,
-        padding: const EdgeInsets.all(30),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -78,7 +76,7 @@ class _WorkerLoginScreenState extends State<WorkerLoginScreen> {
                       border: OutlineInputBorder(), labelText: 'Username'),
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 10,
                 ),
                 TextField(
                   controller: _passwordController,
