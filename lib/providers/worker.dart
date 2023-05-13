@@ -115,4 +115,19 @@ class Worker with ChangeNotifier {
       'long': long,
     });
   }
+
+  Future<void> addHistory(int index, String description, String price,
+      double distanceBetween) async {
+    DatabaseReference _databaseReference =
+        FirebaseDatabase.instance.ref().child('history');
+    await _databaseReference
+      ..push().set({
+        'workerId': userId,
+        'customerId': _requestsList[index].customerId,
+        'description': description,
+        'distance': distanceBetween.toStringAsFixed(1),
+        'price': price,
+        'dateTime': DateTime.now().toIso8601String(),
+      });
+  }
 }

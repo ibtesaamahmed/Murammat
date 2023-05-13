@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:murammat_app/screens/worker/my_shop_screen.dart';
-import 'package:murammat_app/screens/worker/new_screen.dart';
 import 'package:murammat_app/screens/worker/request_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:murammat_app/providers/worker.dart';
@@ -118,13 +117,17 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                 border: Border.all(
                     color: Theme.of(context).primaryColor, width: 4)),
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => MyShopScreen(),
+                ));
+              },
               icon: Icon(
-                Icons.home_repair_service,
+                Icons.shop,
                 color: Theme.of(context).primaryColor,
               ),
               label: Text(
-                'Services',
+                'My Shop',
                 style: TextStyle(color: Theme.of(context).primaryColor),
               ),
               style: ElevatedButton.styleFrom(
@@ -141,17 +144,13 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                 border: Border.all(
                     color: Theme.of(context).primaryColor, width: 4)),
             child: ElevatedButton.icon(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => MyShopScreen(),
-                ));
-              },
+              onPressed: () {},
               icon: Icon(
-                Icons.shop,
+                Icons.home_repair_service,
                 color: Theme.of(context).primaryColor,
               ),
               label: Text(
-                'My Shop',
+                'Appointments',
                 style: TextStyle(color: Theme.of(context).primaryColor),
               ),
               style: ElevatedButton.styleFrom(

@@ -6,6 +6,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:murammat_app/providers/worker.dart';
+import 'package:murammat_app/screens/worker/worker_reached_screen.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,7 @@ class _RequestScreenState extends State<RequestScreen> {
 
   GoogleMapController? mapController;
   Position? currentPosition;
+  Position? initialPosition;
   // Set<Circle> circles = {};
   List<Placemark>? placemarks;
   Placemark? place;
@@ -60,7 +62,6 @@ class _RequestScreenState extends State<RequestScreen> {
     }
   }
 
-  Set<Marker> _markers = {};
   _onMapCreated(GoogleMapController controller) async {
     servicestatus = await Geolocator.isLocationServiceEnabled();
     if (servicestatus) {
@@ -85,6 +86,7 @@ class _RequestScreenState extends State<RequestScreen> {
             desiredAccuracy: LocationAccuracy.high);
         mapController!.animateCamera(CameraUpdate.newLatLngZoom(
             LatLng(currentPosition!.latitude, currentPosition!.longitude), 15));
+        initialPosition = currentPosition;
 
         placemarks = await placemarkFromCoordinates(
             currentPosition!.latitude, currentPosition!.longitude);
@@ -123,8 +125,10 @@ class _RequestScreenState extends State<RequestScreen> {
     });
   }
 
-  void cancelLocationUpdates() {
-    locationSubscription?.cancel();
+  Future<void> cancelLocationUpdates() async {
+    await locationSubscription?.cancel();
+    locationSubscription = null;
+    print('listener Canc');
   }
 
   @override
@@ -160,8 +164,12 @@ class _RequestScreenState extends State<RequestScreen> {
                             markerId: MarkerId('Customer'),
                             infoWindow: InfoWindow(title: 'Customer'),
                             position: LatLng(
-                                double.parse(data.requestsList[ind!].lat),
-                                double.parse(data.requestsList[ind!].long)),
+                                double.parse(data.requestsList.isEmpty
+                                    ? '0'
+                                    : data.requestsList[ind!].lat),
+                                double.parse(data.requestsList.isEmpty
+                                    ? '0'
+                                    : data.requestsList[ind!].long)),
                           )
                         }
                       : {},
@@ -264,11 +272,12 @@ class _RequestScreenState extends State<RequestScreen> {
                                           ),
                                           const SizedBox(height: 10),
                                           Text(
-                                            'No Incoming Requests',
+                                            'Waiting for Incoming Requests',
                                             style: TextStyle(
                                                 color: Theme.of(context)
                                                     .primaryColor),
                                           ),
+                                          CustomCircularProgressIndicator(),
                                         ],
                                       ),
                                     );
@@ -399,9 +408,9 @@ class _RequestScreenState extends State<RequestScreen> {
                                           child: ElevatedButton(
                                               onPressed: () async {
                                                 try {
-                                                  setState(() {
-                                                    _isLoading = true;
-                                                  });
+                                                  // setState(() {
+                                                  //   _isLoading = true;
+                                                  // });
                                                   await Provider.of<Worker>(
                                                           context,
                                                           listen: false)
@@ -415,7 +424,7 @@ class _RequestScreenState extends State<RequestScreen> {
 
                                                   setState(() {
                                                     _loc = true;
-                                                    _isLoading = false;
+                                                    // _isLoading = false;
                                                     _locationSet = true;
                                                   });
                                                 } catch (error) {
@@ -439,17 +448,26 @@ class _RequestScreenState extends State<RequestScreen> {
                                 : Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                        Text(
-                                          'Connected to Customer',
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .primaryColor),
-                                        ),
-                                        TextButton(
-                                            onPressed: cancelLocationUpdates,
-                                            child: Text('I\'ve Reached '))
-                                      ]),
-                  )
+                                      Text(
+                                        'Connected to Customer',
+                                        style: TextStyle(
+                                            color:
+                                                Theme.of(context).primaryColor),
+                                      ),
+                                      TextButton(
+                                          onPressed: () async {
+                                            await cancelLocationUpdates();
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                              builder: (context) =>
+                                                  WorkerReachedScreen(
+                                                      ind!, initialPosition),
+                                            ));
+                                          },
+                                          child: Text('I\'ve Reached '))
+                                    ],
+                                  ),
+                  ),
                 ],
               ),
             ],

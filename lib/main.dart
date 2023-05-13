@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:murammat_app/providers/auth.dart';
 import 'package:murammat_app/providers/customer.dart';
+import 'package:murammat_app/providers/history.dart';
 import 'package:murammat_app/providers/worker.dart';
 import 'package:provider/provider.dart';
 
@@ -62,8 +63,12 @@ class MyApp extends StatelessWidget {
           ),
         ),
         ChangeNotifierProxyProvider<Auth, Customer>(
-          create: ((context) => Customer('', '')),
+          create: (context) => Customer('', ''),
           update: (context, auth, _) => Customer(auth.token, auth.userId),
+        ),
+        ChangeNotifierProxyProvider<Auth, MyHistory>(
+          create: (context) => MyHistory(''),
+          update: (context, auth, _) => MyHistory(auth.userId),
         ),
       ],
       child: MaterialApp(

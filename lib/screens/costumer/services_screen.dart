@@ -199,14 +199,23 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                                     )
                                                   : Column(
                                                       children: <Widget>[
+                                                        SizedBox(
+                                                          child: Image.asset(
+                                                            'assets/images/mechanic.png',
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                          ),
+                                                          height: 40,
+                                                        ),
                                                         Text(
-                                                            'Request Accepted \n Worker is Coming......'),
+                                                            'Request Accepted'),
                                                         TextButton(
                                                             onPressed: () {
                                                               data.removeListen();
                                                             },
-                                                            child:
-                                                                Text('Remove')),
+                                                            child: Text(
+                                                                'Worker Reached')),
                                                       ],
                                                     )
                                             ]);
