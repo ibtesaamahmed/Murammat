@@ -63,6 +63,7 @@ class _CostumerLoginScreenState extends State<CostumerLoginScreen> {
               Widget>[
             Image.asset(
               "assets/images/logo.png",
+              color: Theme.of(context).primaryColor,
               width: double.infinity,
               height: 250,
             ),

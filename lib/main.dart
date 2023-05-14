@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:murammat_app/providers/appointment.dart';
 import 'package:murammat_app/providers/auth.dart';
 import 'package:murammat_app/providers/customer.dart';
 import 'package:murammat_app/providers/history.dart';
@@ -70,6 +71,10 @@ class MyApp extends StatelessWidget {
           create: (context) => MyHistory(''),
           update: (context, auth, _) => MyHistory(auth.userId),
         ),
+        ChangeNotifierProxyProvider<Auth, Appointments>(
+          create: (context) => Appointments(''),
+          update: (context, auth, _) => Appointments(auth.userId),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

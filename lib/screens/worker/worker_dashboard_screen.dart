@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:murammat_app/screens/worker/my_shop_screen.dart';
 import 'package:murammat_app/screens/worker/request_screen.dart';
+import 'package:murammat_app/screens/worker/worker_appointment_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:murammat_app/providers/worker.dart';
 
@@ -144,7 +145,11 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                 border: Border.all(
                     color: Theme.of(context).primaryColor, width: 4)),
             child: ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => WorkerAppointmentScreen(),
+                ));
+              },
               icon: Icon(
                 Icons.home_repair_service,
                 color: Theme.of(context).primaryColor,

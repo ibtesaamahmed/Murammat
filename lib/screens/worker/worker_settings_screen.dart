@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:murammat_app/screens/worker/settings/worker_about_us.dart';
 import 'package:murammat_app/screens/worker/settings/worker_help_screen.dart';
 import 'package:murammat_app/screens/worker/settings/worker_language_screen.dart';
 import 'package:murammat_app/screens/worker/settings/worker_personal_info_screen.dart';
 import 'package:murammat_app/screens/worker/settings/worker_rate_screen.dart';
 import 'package:murammat_app/screens/worker/settings/worker_reward_screen.dart';
-import 'package:murammat_app/screens/worker/settings/worker_shop_location_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WorkerSettingsScreen extends StatefulWidget {
@@ -124,29 +124,6 @@ class _WorkerSettingsScreenState extends State<WorkerSettingsScreen> {
                 },
               ),
             ),
-            // ListTile(
-            //   leading: Icon(
-            //     Icons.my_location,
-            //     color: Theme.of(context).primaryColor,
-            //   ),
-            //   title: Text(
-            //     'Shop Location',
-            //     style: TextStyle(
-            //         color: Theme.of(context).primaryColor, fontSize: 16),
-            //   ),
-            //   trailing: IconButton(
-            //     icon: Icon(
-            //       Icons.chevron_right,
-            //       color: Theme.of(context).primaryColor,
-            //     ),
-            //     onPressed: () {
-            //       Navigator.of(context).push(
-            //         MaterialPageRoute(
-            //             builder: (context) => WorkerShopLocationScreen()),
-            //       );
-            //     },
-            //   ),
-            // ),
             Text(
               'Benefits',
               style: TextStyle(
@@ -223,6 +200,28 @@ class _WorkerSettingsScreenState extends State<WorkerSettingsScreen> {
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => WorkerRateScreen(),
+                  ));
+                },
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.info,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: Text(
+                'About Us',
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor, fontSize: 16),
+              ),
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.chevron_right,
+                  color: Theme.of(context).primaryColor,
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => WorkerAboutUs(),
                   ));
                 },
               ),

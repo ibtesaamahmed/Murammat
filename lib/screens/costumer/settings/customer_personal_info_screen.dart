@@ -38,7 +38,7 @@ class _CustomerPersonalInfoState extends State<CustomerPersonalInfo> {
     print('building');
     return Scaffold(
         appBar: AppBar(
-          title: Text('Personal Information'),
+          title: Text('Personal Info'),
           actions: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),

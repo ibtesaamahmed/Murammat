@@ -169,7 +169,8 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                   ),
                   label: Text(
                     'Doorstep',
-                    style: TextStyle(color: Theme.of(context).primaryColor),
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor, fontSize: 12),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor:

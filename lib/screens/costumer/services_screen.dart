@@ -271,15 +271,6 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                                                   .primaryColor,
                                                           size: 35,
                                                         )),
-                                                    IconButton(
-                                                        onPressed: () {},
-                                                        icon: Icon(
-                                                          Icons.cancel,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .errorColor,
-                                                          size: 35,
-                                                        ))
                                                   ]),
                                             );
                                           },

@@ -64,6 +64,7 @@ class _WorkerLoginScreenState extends State<WorkerLoginScreen> {
               children: <Widget>[
                 Image.asset(
                   "assets/images/logo.png",
+                  color: Theme.of(context).primaryColor,
                   width: double.infinity,
                   height: 250,
                 ),
