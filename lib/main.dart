@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
             color: Color.fromRGBO(24, 45, 75, 1),
             titleTextStyle: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 16,
             ),
           ),
           inputDecorationTheme: const InputDecorationTheme(

@@ -79,7 +79,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                   };
                 }
                 return GoogleMap(
-                  padding: EdgeInsets.only(top: _req ? 400 : 500),
+                  padding: EdgeInsets.only(top: _req ? 440 : 350),
                   onMapCreated: _onMapCreated,
                   myLocationEnabled: true,
                   initialCameraPosition:
@@ -89,50 +89,6 @@ class _ServicesScreenState extends State<ServicesScreen> {
                   markers: _req ? _markers : {},
                 );
               },
-            ),
-            Positioned(
-              top: 50,
-              right: 15,
-              left: 15,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).primaryColor,
-                      blurRadius: 6.0,
-                      offset: Offset(
-                        0.0,
-                        1.0,
-                      ),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: <Widget>[
-                    IconButton(
-                      color: Theme.of(context).primaryColor,
-                      icon: Icon(Icons.search),
-                      onPressed: () {},
-                    ),
-                    Expanded(
-                      child: TextField(
-                        onTap: () {
-                          _toggle = true;
-                        },
-                        cursorColor: Colors.black,
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.go,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 15),
-                            hintText: "Search..."),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,

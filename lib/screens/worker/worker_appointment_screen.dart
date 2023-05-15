@@ -61,21 +61,25 @@ class _WorkerAppointmentScreenState extends State<WorkerAppointmentScreen> {
   }
 
   Future<void> _checkAvailable() async {
-    setState(() {
-      _isLoading = true;
-    });
     final provider = Provider.of<Appointments>(context, listen: false);
-    await provider.checkIt();
-    if (provider.data != null) {
-      _available = true;
+    final check = await provider.checkIt();
+    print(check);
+    if (!check) {
+      setState(() {
+        _available = false;
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _available = true;
+        _isLoading = false;
+      });
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   @override
   void initState() {
+    _isLoading = true;
     Future.delayed(Duration.zero).then((_) => _checkAvailable());
     super.initState();
   }
@@ -116,10 +120,7 @@ class _WorkerAppointmentScreenState extends State<WorkerAppointmentScreen> {
                                     currentPosition!.latitude.toString(),
                                     currentPosition!.longitude.toString(),
                                     address);
-                            // _checkAvailable;
-                            setState(() {
-                              _isLoading = false;
-                            });
+                            await _checkAvailable();
                           },
                           child: Text('Get Started'),
                         ),
