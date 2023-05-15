@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:murammat_app/screens/costumer/atdoorstep_services_screen.dart';
+import 'package:murammat_app/screens/costumer/customer_appointment_screen.dart';
 import 'package:murammat_app/screens/costumer/my_garage_screen.dart';
 import 'package:murammat_app/screens/costumer/services_screen.dart';
 import 'package:murammat_app/screens/costumer/shops_customers_screen.dart';
@@ -94,6 +94,7 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                   Services
               */
               Container(
+                width: 150,
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: Theme.of(context).primaryColor, width: 4)),
@@ -120,6 +121,7 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                   Shops
               */
               Container(
+                width: 150,
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: Theme.of(context).primaryColor, width: 4)),
@@ -155,20 +157,21 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                   At Door Step
               */
               Container(
+                width: 150,
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: Theme.of(context).primaryColor, width: 4)),
                 child: ElevatedButton.icon(
                   onPressed: () {
                     Navigator.of(context)
-                        .pushNamed(AtDoorStepServicesScreen.routeName);
+                        .pushNamed(CutomerAppointmentScreen.routeName);
                   },
                   icon: Icon(
                     Icons.door_sliding_outlined,
                     color: Theme.of(context).primaryColor,
                   ),
                   label: Text(
-                    'Doorstep',
+                    'Appointment',
                     style: TextStyle(
                         color: Theme.of(context).primaryColor, fontSize: 12),
                   ),
@@ -183,6 +186,7 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                   My Garage
               */
               Container(
+                width: 150,
                 decoration: BoxDecoration(
                     border: Border.all(
                         color: Theme.of(context).primaryColor, width: 4)),

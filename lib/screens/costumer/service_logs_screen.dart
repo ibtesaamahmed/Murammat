@@ -165,7 +165,10 @@ class _ServiceLogsScreenState extends State<ServiceLogsScreen> {
                                                         gravity:
                                                             ToastGravity.BOTTOM,
                                                         textColor: Colors.white,
-                                                        fontSize: 12.0);
+                                                        fontSize: 12.0,
+                                                        backgroundColor:
+                                                            Theme.of(context)
+                                                                .primaryColor);
                                                   } catch (error) {
                                                     scaffold
                                                         .showSnackBar(SnackBar(

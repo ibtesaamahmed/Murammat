@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:murammat_app/providers/auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Appointment {
   String serviceDescription;
@@ -15,12 +16,40 @@ class Appointments with ChangeNotifier {
   List<Appointment> _appointments = [];
   List<Appointment> get appointment => _appointments;
 
-  Future<void> setAppointmentAvailability() async {
+  Future<void> setAppointmentAvailability(
+    String workerLat,
+    String workerLong,
+    String workerAddress,
+  ) async {
     DatabaseReference _databaseReference = FirebaseDatabase.instance.ref();
-    _databaseReference.child('appointmentsAvailability').child(userId).set({
-      'availanle': true,
+    await _databaseReference
+        .child('appointmentsAvailability')
+        .child(userId)
+        .set({
+      'workerLat': workerLat,
+      'workerLong': workerLong,
+      'workerAddress': workerAddress,
     });
   }
 
-  Future<void> removeAppointmentAvailability() async {}
+  var data;
+  Future<void> checkIt() async {
+    DatabaseReference _databaseReference = FirebaseDatabase.instance.ref();
+    final response = await _databaseReference
+        .child('appointmentsAvailability')
+        .child(userId)
+        .get();
+    Map<dynamic, dynamic> extractedData =
+        response.value as Map<dynamic, dynamic>;
+    data = extractedData;
+  }
+
+  Future<void> searchWorkerForAppointment() async {
+    DatabaseReference _databaseReferences = FirebaseDatabase.instance.ref();
+    final response =
+        await _databaseReferences.child('appointmentsAvailability').get();
+    Map<dynamic, dynamic> extractedData =
+        response.value as Map<dynamic, dynamic>;
+    extractedData.forEach((key, value) {});
+  }
 }

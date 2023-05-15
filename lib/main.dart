@@ -8,7 +8,7 @@ import 'package:murammat_app/providers/worker.dart';
 import 'package:provider/provider.dart';
 
 import 'providers/my_garage.dart';
-import 'screens/costumer/atdoorstep_services_screen.dart';
+import 'screens/costumer/customer_appointment_screen.dart';
 import 'screens/costumer/my_garage_screen.dart';
 import 'screens/costumer/services_screen.dart';
 import 'screens/costumer/shops_customers_screen.dart';
@@ -118,8 +118,8 @@ class MyApp extends StatelessWidget {
           //--//
           ShopsCustomerScreen.routeName: (context) => ShopsCustomerScreen(),
           //--//
-          AtDoorStepServicesScreen.routeName: (context) =>
-              AtDoorStepServicesScreen(),
+          CutomerAppointmentScreen.routeName: (context) =>
+              CutomerAppointmentScreen(),
           //--//
           MyGarageScreen.routeName: (context) => MyGarageScreen(),
           //--//

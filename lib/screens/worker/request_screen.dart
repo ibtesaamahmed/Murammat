@@ -145,13 +145,15 @@ class _RequestScreenState extends State<RequestScreen> {
           child: Stack(
             children: [
               GoogleMap(
-                  padding: EdgeInsets.only(top: 100),
+                  padding: EdgeInsets.only(top: _locationSet ? 400 : 500),
                   onMapCreated: _onMapCreated,
                   initialCameraPosition:
                       CameraPosition(target: const LatLng(0, 0)),
                   myLocationButtonEnabled: true,
                   myLocationEnabled: true,
                   zoomControlsEnabled: false,
+                  compassEnabled: true,
+                  trafficEnabled: true,
                   markers: _accepted
                       ? {
                           Marker(
@@ -182,50 +184,50 @@ class _RequestScreenState extends State<RequestScreen> {
                               width: 4)
                         }
                       : {}),
-              Positioned(
-                top: 50,
-                right: 15,
-                left: 15,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).primaryColor,
-                        blurRadius: 6.0,
-                        offset: Offset(
-                          0.0,
-                          1.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: <Widget>[
-                      IconButton(
-                        color: Theme.of(context).primaryColor,
-                        icon: Icon(Icons.search),
-                        onPressed: () {},
-                      ),
-                      Expanded(
-                        child: TextField(
-                          onTap: () {
-                            _toggle = true;
-                          },
-                          cursorColor: Colors.black,
-                          keyboardType: TextInputType.text,
-                          textInputAction: TextInputAction.go,
-                          decoration: InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 15),
-                              hintText: "Search..."),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // Positioned(
+              //   top: 50,
+              //   right: 15,
+              //   left: 15,
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       color: Colors.white,
+              //       boxShadow: [
+              //         BoxShadow(
+              //           color: Theme.of(context).primaryColor,
+              //           blurRadius: 6.0,
+              //           offset: Offset(
+              //             0.0,
+              //             1.0,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //     child: Row(
+              //       children: <Widget>[
+              //         IconButton(
+              //           color: Theme.of(context).primaryColor,
+              //           icon: Icon(Icons.search),
+              //           onPressed: () {},
+              //         ),
+              //         Expanded(
+              //           child: TextField(
+              //             onTap: () {
+              //               _toggle = true;
+              //             },
+              //             cursorColor: Colors.black,
+              //             keyboardType: TextInputType.text,
+              //             textInputAction: TextInputAction.go,
+              //             decoration: InputDecoration(
+              //                 border: InputBorder.none,
+              //                 contentPadding:
+              //                     EdgeInsets.symmetric(horizontal: 15),
+              //                 hintText: "Search..."),
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,

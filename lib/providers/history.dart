@@ -22,7 +22,7 @@ class MyHistory with ChangeNotifier {
   List<History> get customerHistory => _customerHistory;
 
   Future<void> getCustomerHistory() async {
-    _customerHistory.clear();
+    List<History> loaded = [];
     final DatabaseReference _databaseReference =
         FirebaseDatabase.instance.ref().child('history');
     final response = await _databaseReference.get();
@@ -30,7 +30,7 @@ class MyHistory with ChangeNotifier {
         response.value as Map<dynamic, dynamic>;
     extractedData.forEach((key, value) {
       if (value['customerId'] == userId) {
-        _customerHistory.add(History(
+        loaded.add(History(
           description: value['description'],
           price: value['price'],
           distanceBetween: value['distance'],
@@ -38,11 +38,12 @@ class MyHistory with ChangeNotifier {
         ));
       }
     });
+    _customerHistory = loaded;
     notifyListeners();
   }
 
   Future<void> getWorkerHistory() async {
-    _workerHistory.clear();
+    List<History> loaded = [];
     final DatabaseReference _databaseReference =
         FirebaseDatabase.instance.ref().child('history');
     final response = await _databaseReference.get();
@@ -50,7 +51,7 @@ class MyHistory with ChangeNotifier {
         response.value as Map<dynamic, dynamic>;
     extractedData.forEach((key, value) {
       if (value['workerId'] == userId) {
-        _workerHistory.add(History(
+        loaded.add(History(
           description: value['description'],
           price: value['price'],
           distanceBetween: value['distance'],
@@ -58,6 +59,7 @@ class MyHistory with ChangeNotifier {
         ));
       }
     });
+    _workerHistory = loaded;
     notifyListeners();
   }
 }

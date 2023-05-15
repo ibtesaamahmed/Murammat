@@ -79,7 +79,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                   };
                 }
                 return GoogleMap(
-                  padding: EdgeInsets.only(top: 100),
+                  padding: EdgeInsets.only(top: _req ? 400 : 500),
                   onMapCreated: _onMapCreated,
                   myLocationEnabled: true,
                   initialCameraPosition:

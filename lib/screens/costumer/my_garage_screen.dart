@@ -29,7 +29,7 @@ class _MyGarageScreenState extends State<MyGarageScreen> {
     super.initState();
   }
 
-  void addNewVehicle(BuildContext ctx) {
+  void addNewVehicle(ctx) {
     showModalBottomSheet(
       backgroundColor: Theme.of(ctx).canvasColor,
       isScrollControlled: true,
@@ -78,7 +78,7 @@ class _MyGarageScreenState extends State<MyGarageScreen> {
                                   ),
                                   const SizedBox(height: 20),
                                   Text(
-                                    'No Logs Added Yet!',
+                                    'No Vehicles Added Yet!',
                                     style: TextStyle(
                                         color: Theme.of(context).primaryColor),
                                   )
@@ -158,11 +158,11 @@ class _MyGarageScreenState extends State<MyGarageScreen> {
                                                                   ToastGravity
                                                                       .BOTTOM,
                                                               textColor:
-                                                                  Colors.black,
+                                                                  Colors.white,
                                                               backgroundColor:
                                                                   Theme.of(
                                                                           context)
-                                                                      .primaryColorLight,
+                                                                      .primaryColor,
                                                               fontSize: 12.0);
                                                         } catch (error) {
                                                           scaffold.showSnackBar(

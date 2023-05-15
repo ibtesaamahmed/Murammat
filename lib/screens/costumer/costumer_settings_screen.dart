@@ -32,15 +32,15 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
       file = File(image!.path);
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("imagePath", image.path.toString());
+    prefs.setString("customerImagePath", image.path.toString());
   }
 
   loadImage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('imagePath') == null) {
+    if (prefs.getString('customerImagePath') == null) {
       return;
     }
-    File fi = File(prefs.getString('imagePath')!);
+    File fi = File(prefs.getString('customerImagePath')!);
     setState(() {
       file = fi;
     });
@@ -50,7 +50,7 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       file = null;
-      prefs.clear();
+      prefs.remove('customerImagePath');
     });
   }
 
