@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -108,6 +109,15 @@ class _WorkerLoginScreenState extends State<WorkerLoginScreen> {
                                     _passwordController.text, 'workers');
                             Navigator.of(context).pushReplacementNamed(
                                 WorkerTabScreen.routeName);
+                            Fluttertoast.showToast(
+                                msg: 'Logged in Successfully!',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                textColor: Colors.white,
+                                backgroundColor: Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.8),
+                                fontSize: 12.0);
                           } on HttpException catch (error) {
                             var errorMessage = 'Authentication failed!';
                             if (error.toString().contains('INVALID_EMAIL')) {

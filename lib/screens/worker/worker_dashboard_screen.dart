@@ -14,8 +14,7 @@ class WorkerDashboardScreen extends StatefulWidget {
 class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
   int _currentIndex = 0;
   final List imagesList = [
-    "https://img.freepik.com/premium-vector/roadside-assistance-concept-broken-car-tow-truck-cartoon-man-calling-emergency-service-illustration-flat-style_136277-675.jpg?w=2000",
-    "https://img.freepik.com/premium-vector/roadside-assistance-tow-truck-illustration-car-vector_178650-4113.jpg?w=2000",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIrGtbwy6PcwHI7DpwfNgP42OdPgu3s_9mfg&usqp=CAU",
   ];
   @override
   Widget build(BuildContext context) {
@@ -36,19 +35,33 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                 .map(
                   (item) => Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Card(
+                    child: Container(
                       margin: EdgeInsets.only(
                         top: 10.0,
                         bottom: 10.0,
                       ),
-                      elevation: 6.0,
-                      shadowColor: Theme.of(context).primaryColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Theme.of(context).primaryColor,
+                              blurRadius: 4.0,
+                              offset: Offset(
+                                0.0,
+                                1.0,
+                              ),
+                            ),
+                          ],
+                          border: Border.all(
+                              width: 5, color: Theme.of(context).primaryColor)),
+                      // elevation: 6.0,
+                      // shadowColor: Theme.of(context).primaryColor,
+                      // shape: RoundedRectangleBorder(
+                      //   borderRadius: BorderRadius.circular(30.0),
+                      // ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.all(
-                          Radius.circular(30.0),
+                          Radius.zero,
                         ),
                         child: Stack(
                           children: <Widget>[

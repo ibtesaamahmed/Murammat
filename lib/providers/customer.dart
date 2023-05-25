@@ -28,6 +28,7 @@ class Customer with ChangeNotifier {
   }
 
   Future<void> searchWorkers(String myLat, String myLong) async {
+    _availableWorkers.clear();
     final DatabaseReference _databaseReference =
         FirebaseDatabase.instance.ref().child('availableWorkerShop');
     final response = await _databaseReference.get();

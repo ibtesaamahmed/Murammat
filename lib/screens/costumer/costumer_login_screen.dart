@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:murammat_app/models/http_exception.dart';
 import 'package:murammat_app/providers/auth.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
@@ -108,6 +109,14 @@ class _CostumerLoginScreenState extends State<CostumerLoginScreen> {
                             'customers');
                         Navigator.of(context)
                             .pushReplacementNamed(CostumerTabScreen.routeName);
+                        Fluttertoast.showToast(
+                            msg: 'Logged in Successfully!',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            textColor: Colors.white,
+                            backgroundColor:
+                                Theme.of(context).primaryColor.withOpacity(0.8),
+                            fontSize: 12.0);
                       } on HttpException catch (error) {
                         print(error);
                         var errorMessage = 'Authentication failed!';

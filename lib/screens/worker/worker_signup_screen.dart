@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:murammat_app/providers/auth.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -252,6 +253,15 @@ class _WorkerSignupScreenState extends State<WorkerSignupScreen> {
                                   _shopName.text);
                           Navigator.of(context).pushReplacementNamed(
                               WorkerLoginScreen.routeName);
+                          Fluttertoast.showToast(
+                              msg: 'Registered Successfully!',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              textColor: Colors.white,
+                              backgroundColor: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.8),
+                              fontSize: 12.0);
                         } on HttpException catch (error) {
                           var errorMessage = 'Authentication failed!';
                           if (error.toString().contains('EMAIL_EXISTS')) {

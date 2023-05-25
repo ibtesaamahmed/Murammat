@@ -17,7 +17,7 @@ class _WorkerActivityScreenState extends State<WorkerActivityScreen> {
 
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 2)).then((_) => _refreshVehicles(context));
+    Future.delayed(Duration.zero).then((_) => _refreshVehicles(context));
     super.initState();
   }
 

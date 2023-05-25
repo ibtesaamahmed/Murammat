@@ -159,10 +159,12 @@ class _MyGarageScreenState extends State<MyGarageScreen> {
                                                                       .BOTTOM,
                                                               textColor:
                                                                   Colors.white,
-                                                              backgroundColor:
-                                                                  Theme.of(
+                                                              backgroundColor: Theme
+                                                                      .of(
                                                                           context)
-                                                                      .primaryColor,
+                                                                  .primaryColor
+                                                                  .withOpacity(
+                                                                      0.8),
                                                               fontSize: 12.0);
                                                         } catch (error) {
                                                           scaffold.showSnackBar(

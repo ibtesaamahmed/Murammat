@@ -168,7 +168,9 @@ class _ServiceLogsScreenState extends State<ServiceLogsScreen> {
                                                         fontSize: 12.0,
                                                         backgroundColor:
                                                             Theme.of(context)
-                                                                .primaryColor);
+                                                                .primaryColor
+                                                                .withOpacity(
+                                                                    0.8));
                                                   } catch (error) {
                                                     scaffold
                                                         .showSnackBar(SnackBar(

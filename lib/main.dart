@@ -11,7 +11,7 @@ import 'providers/my_garage.dart';
 import 'screens/costumer/customer_appointment_screen.dart';
 import 'screens/costumer/my_garage_screen.dart';
 import 'screens/costumer/services_screen.dart';
-import 'screens/costumer/shops_customers_screen.dart';
+import 'screens/costumer/nearby_shops_screen.dart';
 import 'screens/costumer/costumer_tab_screen.dart';
 import 'screens/worker/worker_tab_screen.dart';
 import 'screens/costumer/costumer_login_screen.dart';
@@ -116,7 +116,7 @@ class MyApp extends StatelessWidget {
           //--//
           ServicesScreen.routeName: (context) => ServicesScreen(),
           //--//
-          ShopsCustomerScreen.routeName: (context) => ShopsCustomerScreen(),
+          NearByShopsScreen.routeName: (context) => NearByShopsScreen(),
           //--//
           CutomerAppointmentScreen.routeName: (context) =>
               CutomerAppointmentScreen(),

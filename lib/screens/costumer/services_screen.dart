@@ -166,9 +166,12 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                                         ),
                                                         Text(
                                                             'Request Accepted'),
-                                                        TextButton(
+                                                        ElevatedButton(
                                                             onPressed: () {
                                                               data.removeListen();
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
                                                             },
                                                             child: Text(
                                                                 'Worker Reached')),
