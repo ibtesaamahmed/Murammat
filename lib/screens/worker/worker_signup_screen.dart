@@ -23,6 +23,7 @@ class _WorkerSignupScreenState extends State<WorkerSignupScreen> {
   final _firstName = TextEditingController();
   final _lastName = TextEditingController();
   final _phoneNo = TextEditingController();
+  final _cnic = TextEditingController();
   final _shopNo = TextEditingController();
   final _shopName = TextEditingController();
   final _streetNo = TextEditingController();
@@ -78,9 +79,41 @@ class _WorkerSignupScreenState extends State<WorkerSignupScreen> {
             content: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.all(15),
+                  padding: EdgeInsets.all(5),
                   child: Text('Personal', style: TextStyle(fontSize: 20)),
                 ),
+                // Column(
+                //   children: [
+                //     // CircleAvatar(
+                //     //   radius: 30,
+                //     //   backgroundColor: Theme.of(context).canvasColor,
+                //     //   backgroundImage:
+                //     //       Image.asset('assets/images/placeholder.png').image,
+                //     // ),
+                //     Container(
+                //       width: 70.0,
+                //       height: 70.0,
+                //       decoration: BoxDecoration(
+                //         color: Theme.of(context).canvasColor,
+                //         image: DecorationImage(
+                //           image: AssetImage('assets/images/placeholder.png'),
+                //           fit: BoxFit.cover,
+                //         ),
+                //         borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                //         border: Border.all(
+                //           color: Theme.of(context).primaryColor,
+                //           width: 4.0,
+                //         ),
+                //       ),
+                //     ),
+                //     IconButton(
+                //         onPressed: () {},
+                //         icon: Icon(
+                //           Icons.add_a_photo,
+                //           color: Theme.of(context).primaryColor,
+                //         ))
+                //   ],
+                // ),
                 TextField(
                   controller: _firstName,
                   decoration: InputDecoration(
@@ -101,6 +134,14 @@ class _WorkerSignupScreenState extends State<WorkerSignupScreen> {
                   controller: _phoneNo,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Phone No'),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                TextField(
+                  controller: _cnic,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(), labelText: 'CNIC'),
                 ),
               ],
             )),

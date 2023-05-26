@@ -450,13 +450,23 @@ class _RequestScreenState extends State<RequestScreen> {
                                 : Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
+                                      SizedBox(
+                                        child: Image.asset(
+                                          'assets/images/mechanic.png',
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        height: 40,
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
                                       Text(
                                         'Connected to Customer',
                                         style: TextStyle(
                                             color:
                                                 Theme.of(context).primaryColor),
                                       ),
-                                      TextButton(
+                                      ElevatedButton(
                                           onPressed: () async {
                                             await cancelLocationUpdates();
                                             Navigator.of(context)

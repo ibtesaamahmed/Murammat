@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
 
 class AvailableWorkers {
   String workerId;
@@ -72,8 +74,9 @@ class Customer with ChangeNotifier {
     final DatabaseReference _databaseReference =
         FirebaseDatabase.instance.ref().child('requestsFromCustomer');
     final response = await _databaseReference.get();
-    Map<dynamic, dynamic> extractedData =
-        response.value as Map<dynamic, dynamic>;
+    Map<dynamic, dynamic> extractedData = response.value == null
+        ? Map()
+        : response.value as Map<dynamic, dynamic>;
     extractedData.forEach((key, value) {
       if (value['customerId'] == userId) {
         id = key;
@@ -107,8 +110,31 @@ class Customer with ChangeNotifier {
 
   String? lat;
   String? long;
+  String phoneNum = '';
+  String name = '';
 
   Future<void> listenToLocationUpdate() async {
+    var desiredId;
+    DatabaseReference db = FirebaseDatabase.instance.ref();
+    final res = await db.child('acceptedRequests').get();
+
+    Map<dynamic, dynamic> dat =
+        res.value == null ? Map() : res.value as Map<dynamic, dynamic>;
+    dat.forEach((key, value) {
+      if (value['customerId'] == userId) {
+        desiredId = value['workerId'];
+      }
+    });
+    final url = Uri.parse(
+        'https://murammat-b174c-default-rtdb.firebaseio.com/users/workers.json?auth=$authToken');
+    final response = await http.get(url);
+    final extractedData = json.decode(response.body) as Map<String, dynamic>;
+    extractedData.forEach((id, data) {
+      if (data['id'] == desiredId) {
+        phoneNum = data['phoneNo'];
+        name = data['firstName'] + ' ' + data['lastName'];
+      }
+    });
     _subscription = _dbRef
         .child('liveTracking')
         .child(userId)

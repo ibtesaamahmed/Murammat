@@ -51,9 +51,6 @@ class _WorkerTabScreenState extends State<WorkerTabScreen> {
         appBar: AppBar(
           title: Text(_pages[_selectedPageIndex]['title'].toString()),
           automaticallyImplyLeading: false,
-          actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.notifications))
-          ],
         ),
         body: _pages[_selectedPageIndex]['page'] as Widget,
         bottomNavigationBar: BottomNavigationBar(

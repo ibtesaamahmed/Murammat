@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:murammat_app/providers/customer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ServicesScreen extends StatefulWidget {
   static const routeName = '/services';
@@ -166,6 +167,38 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                                         ),
                                                         Text(
                                                             'Request Accepted'),
+                                                        const SizedBox(
+                                                          height: 5,
+                                                        ),
+                                                        Text(
+                                                          value.name.isEmpty
+                                                              ? ''
+                                                              : value.name,
+                                                        ),
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(value.phoneNum
+                                                                    .isEmpty
+                                                                ? ''
+                                                                : value
+                                                                    .phoneNum),
+                                                            IconButton(
+                                                                onPressed: () =>
+                                                                    _launchDialPad(
+                                                                        value
+                                                                            .phoneNum),
+                                                                icon: Icon(
+                                                                  Icons
+                                                                      .phone_outlined,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .primaryColor,
+                                                                ))
+                                                          ],
+                                                        ),
                                                         ElevatedButton(
                                                             onPressed: () {
                                                               data.removeListen();
@@ -479,5 +512,14 @@ class _ServicesScreenState extends State<ServicesScreen> {
 
   deleteAvailableWorker() async {
     await Provider.of<Customer>(context, listen: false).deleteAvailableWorker();
+  }
+
+  void _launchDialPad(String phoneNumber) async {
+    final url = Uri.parse('tel:$phoneNumber');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

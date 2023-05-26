@@ -50,12 +50,6 @@ class _CostumerTabScreenState extends State<CostumerTabScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(_pages[_selectedPageIndex]['title'].toString()),
-          actions: <Widget>[
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.notifications),
-            ),
-          ],
           automaticallyImplyLeading: false,
         ),
         body: _pages[_selectedPageIndex]['page'] as Widget,

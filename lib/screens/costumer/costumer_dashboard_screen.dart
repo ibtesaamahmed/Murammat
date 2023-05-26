@@ -14,7 +14,9 @@ class CostumerDashboardScreen extends StatefulWidget {
 class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
   int _currentIndex = 0;
   final List imagesList = [
+    "https://newsroom.aaa.com/wp-content/uploads/2016/07/Roadside-Assistance.jpg",
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIrGtbwy6PcwHI7DpwfNgP42OdPgu3s_9mfg&usqp=CAU",
+    "https://cdn.hswstatic.com/gif/cost-of-roadside-assistance-1.jpg",
   ];
 
   @override
