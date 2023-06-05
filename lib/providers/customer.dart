@@ -34,8 +34,9 @@ class Customer with ChangeNotifier {
     final DatabaseReference _databaseReference =
         FirebaseDatabase.instance.ref().child('availableWorkerShop');
     final response = await _databaseReference.get();
-    Map<dynamic, dynamic> extractedData =
-        response.value as Map<dynamic, dynamic>;
+    Map<dynamic, dynamic> extractedData = response.value == null
+        ? Map()
+        : response.value as Map<dynamic, dynamic>;
     extractedData.forEach((workerId, value) async {
       double distanceBtw = await Geolocator.distanceBetween(
           double.parse(myLat),

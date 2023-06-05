@@ -21,213 +21,256 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          CarouselSlider(
-            options: CarouselOptions(
-              autoPlay: true,
-              // autoPlayAnimationDuration: Duration(microseconds: 2000),
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-            ),
-            items: imagesList
-                .map(
-                  (item) => Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        top: 10.0,
-                        bottom: 10.0,
-                      ),
-
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Theme.of(context).primaryColor,
-                              blurRadius: 4.0,
-                              offset: Offset(
-                                0.0,
-                                1.0,
-                              ),
-                            ),
-                          ],
-                          border: Border.all(
-                              width: 5, color: Theme.of(context).primaryColor)),
-                      // elevation: 6.0,
-                      // shadowColor: Theme.of(context).primaryColor,
-                      // shape: RoundedRectangleBorder(
-                      //   borderRadius: BorderRadius.circular(30.0),
-                      // ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(
-                          Radius.zero,
+    return Container(
+      child: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            CarouselSlider(
+              options: CarouselOptions(
+                autoPlay: true,
+                // autoPlayAnimationDuration: Duration(microseconds: 2000),
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                },
+              ),
+              items: imagesList
+                  .map(
+                    (item) => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        margin: EdgeInsets.only(
+                          top: 10.0,
+                          bottom: 10.0,
                         ),
-                        child: Stack(
-                          children: <Widget>[
-                            Image.network(
-                              item,
-                              fit: BoxFit.cover,
-                              height: double.infinity,
-                              width: double.infinity,
-                            ),
-                          ],
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Theme.of(context).primaryColor,
+                          //     blurRadius: 4.0,
+                          //     offset: Offset(
+                          //       0.0,
+                          //       1.0,
+                          //     ),
+                          //   ),
+                          // ],
+
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                              width: 3, color: Theme.of(context).primaryColor),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(16),
+                          ),
+                          child: Stack(
+                            children: <Widget>[
+                              Image.network(
+                                item,
+                                fit: BoxFit.cover,
+                                height: double.infinity,
+                                width: double.infinity,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
+                  )
+                  .toList(),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: imagesList.map((urlOfItem) {
+                int index = imagesList.indexOf(urlOfItem);
+                return Container(
+                  width: 10.0,
+                  height: 10.0,
+                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentIndex == index
+                        ? Color.fromRGBO(0, 0, 0, 0.8)
+                        : Color.fromRGBO(0, 0, 0, 0.3),
                   ),
-                )
-                .toList(),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: imagesList.map((urlOfItem) {
-              int index = imagesList.indexOf(urlOfItem);
-              return Container(
-                width: 10.0,
-                height: 10.0,
-                margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: _currentIndex == index
-                      ? Color.fromRGBO(0, 0, 0, 0.8)
-                      : Color.fromRGBO(0, 0, 0, 0.3),
+                );
+              }).toList(),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                /*
+                    Services
+                */
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: (() {
+                        Navigator.of(context)
+                            .pushNamed(ServicesScreen.routeName);
+                      }),
+                      child: Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 2,
+                                color: Theme.of(context).primaryColor),
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.white),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Image.asset(
+                            'assets/images/services.png',
+                            fit: BoxFit.cover,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'Service',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    )
+                  ],
                 ),
-              );
-            }).toList(),
-          ),
-          const SizedBox(
-            height: 50,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              /*
-                  Services
-              */
-              Container(
-                width: 150,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).primaryColor, width: 4)),
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(ServicesScreen.routeName);
-                  },
-                  icon: Icon(
-                    Icons.home_repair_service,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  label: Text(
-                    'Services',
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Theme.of(context).appBarTheme.foregroundColor,
-                    fixedSize: Size(120, 100),
-                  ),
-                ),
-              ),
-              /*
-                  Shops
-              */
-              Container(
-                width: 150,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).primaryColor, width: 4)),
-                child: ElevatedButton.icon(
-                  onPressed: () {
+                /*
+                    Shops
+                */
+                GestureDetector(
+                  onTap: () {
                     Navigator.of(context)
                         .pushNamed(NearByShopsScreen.routeName);
                   },
-                  icon: Icon(
-                    Icons.shop,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  label: Text(
-                    'Shops',
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Theme.of(context).appBarTheme.foregroundColor,
-                    fixedSize: Size(120, 100),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 2,
+                                color: Theme.of(context).primaryColor),
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.white),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Image.asset(
+                            'assets/images/shops.png',
+                            fit: BoxFit.cover,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'Shops',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      )
+                    ],
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              /*
-                  At Door Step
-              */
-              Container(
-                width: 150,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).primaryColor, width: 4)),
-                child: ElevatedButton.icon(
-                  onPressed: () {
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                /*
+                    At Door Step
+                */
+                GestureDetector(
+                  onTap: () {
                     Navigator.of(context)
                         .pushNamed(CutomerAppointmentScreen.routeName);
                   },
-                  icon: Icon(
-                    Icons.door_sliding_outlined,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  label: Text(
-                    'Appointment',
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor, fontSize: 12),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Theme.of(context).appBarTheme.foregroundColor,
-                    fixedSize: Size(120, 100),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 2,
+                                color: Theme.of(context).primaryColor),
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.white),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Image.asset(
+                            'assets/images/appointment.png',
+                            fit: BoxFit.cover,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'Appointment',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      )
+                    ],
                   ),
                 ),
-              ),
-              /*
-                  My Garage
-              */
-              Container(
-                width: 150,
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).primaryColor, width: 4)),
-                child: ElevatedButton.icon(
-                  onPressed: () {
+                /*
+                    My Garage
+                */
+                GestureDetector(
+                  onTap: () {
                     Navigator.of(context).pushNamed(MyGarageScreen.routeName);
                   },
-                  icon: Icon(
-                    Icons.garage,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  label: Text(
-                    'Garage',
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        Theme.of(context).appBarTheme.foregroundColor,
-                    fixedSize: Size(120, 100),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 100,
+                        width: 100,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 2,
+                                color: Theme.of(context).primaryColor),
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.white),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Image.asset(
+                            'assets/images/garage.png',
+                            fit: BoxFit.cover,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'My Garage',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      )
+                    ],
                   ),
                 ),
-              ),
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

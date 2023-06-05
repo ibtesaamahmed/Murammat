@@ -275,6 +275,9 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                 ),
               ],
             ),
+            Container(
+              height: 100,
+            )
           ],
         ),
       ),
