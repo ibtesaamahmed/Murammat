@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:murammat_app/screens/worker/settings/worker_about_us.dart';
 import 'package:murammat_app/screens/worker/settings/worker_help_screen.dart';
-import 'package:murammat_app/screens/worker/settings/worker_language_screen.dart';
 import 'package:murammat_app/screens/worker/settings/worker_personal_info_screen.dart';
 import 'package:murammat_app/screens/worker/settings/worker_rate_screen.dart';
 import 'package:murammat_app/screens/worker/settings/worker_reward_screen.dart';
@@ -241,28 +240,28 @@ class _WorkerSettingsScreenState extends State<WorkerSettingsScreen> {
                   fontWeight: FontWeight.bold,
                   fontSize: 20),
             ),
-            ListTile(
-              leading: Icon(
-                Icons.language,
-                color: Theme.of(context).primaryColor,
-              ),
-              title: Text(
-                'Language',
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 16),
-              ),
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.chevron_right,
-                  color: Theme.of(context).primaryColor,
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => WorkerLanguageScreen(),
-                  ));
-                },
-              ),
-            ),
+            // ListTile(
+            //   leading: Icon(
+            //     Icons.language,
+            //     color: Theme.of(context).primaryColor,
+            //   ),
+            //   title: Text(
+            //     'Language',
+            //     style: TextStyle(
+            //         color: Theme.of(context).primaryColor, fontSize: 16),
+            //   ),
+            //   trailing: IconButton(
+            //     icon: Icon(
+            //       Icons.chevron_right,
+            //       color: Theme.of(context).primaryColor,
+            //     ),
+            //     onPressed: () {
+            //       Navigator.of(context).push(MaterialPageRoute(
+            //         builder: (context) => WorkerLanguageScreen(),
+            //       ));
+            //     },
+            //   ),
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[

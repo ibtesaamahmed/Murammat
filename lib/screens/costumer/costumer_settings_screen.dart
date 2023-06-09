@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:murammat_app/screens/costumer/settings/customer_about_us.dart';
 import 'package:murammat_app/screens/costumer/settings/customer_help_screen.dart';
-import 'package:murammat_app/screens/costumer/settings/customer_language_screen.dart';
 import 'package:murammat_app/screens/costumer/settings/customer_personal_info_screen.dart';
 import 'package:murammat_app/screens/costumer/settings/customer_rate_screen.dart';
 import 'package:murammat_app/screens/costumer/settings/customer_reward_screen.dart';
@@ -254,28 +253,28 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                   fontWeight: FontWeight.bold,
                   fontSize: 20),
             ),
-            ListTile(
-              leading: Icon(
-                Icons.language,
-                color: Theme.of(context).primaryColor,
-              ),
-              title: Text(
-                'Language',
-                style: TextStyle(
-                    color: Theme.of(context).primaryColor, fontSize: 16),
-              ),
-              trailing: IconButton(
-                icon: Icon(
-                  Icons.chevron_right,
-                  color: Theme.of(context).primaryColor,
-                ),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CustomerLanguageScreen(),
-                  ));
-                },
-              ),
-            ),
+            // ListTile(
+            //   leading: Icon(
+            //     Icons.language,
+            //     color: Theme.of(context).primaryColor,
+            //   ),
+            //   title: Text(
+            //     'Language',
+            //     style: TextStyle(
+            //         color: Theme.of(context).primaryColor, fontSize: 16),
+            //   ),
+            //   trailing: IconButton(
+            //     icon: Icon(
+            //       Icons.chevron_right,
+            //       color: Theme.of(context).primaryColor,
+            //     ),
+            //     onPressed: () {
+            //       Navigator.of(context).push(MaterialPageRoute(
+            //         builder: (context) => CustomerLanguageScreen(),
+            //       ));
+            //     },
+            //   ),
+            // ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
