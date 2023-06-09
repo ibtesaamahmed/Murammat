@@ -52,30 +52,45 @@ class _WorkerTabScreenState extends State<WorkerTabScreen> {
           title: Text(_pages[_selectedPageIndex]['title'].toString()),
           automaticallyImplyLeading: false,
         ),
-        body: _pages[_selectedPageIndex]['page'] as Widget,
-        bottomNavigationBar: BottomNavigationBar(
-          iconSize: 30,
-          onTap: _selectPage,
-          backgroundColor: Theme.of(context).primaryColor,
-          unselectedItemColor: Theme.of(context).colorScheme.secondary,
-          selectedItemColor: Theme.of(context).appBarTheme.foregroundColor,
-          currentIndex: _selectedPageIndex,
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              backgroundColor: Theme.of(context).primaryColor,
-              label: 'Dashboard',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.local_activity),
-              backgroundColor: Theme.of(context).primaryColor,
-              label: 'Activity',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              backgroundColor: Theme.of(context).primaryColor,
-              label: 'Settings',
+        body: Stack(
+          children: <Widget>[
+            _pages[_selectedPageIndex]['page'] as Widget,
+            Padding(
+              padding: EdgeInsets.only(left: 10, right: 10, bottom: 15),
+              child: Align(
+                alignment: Alignment(0.0, 1.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(30)),
+                  child: BottomNavigationBar(
+                    iconSize: 30,
+                    onTap: _selectPage,
+                    backgroundColor: Theme.of(context).primaryColor,
+                    unselectedItemColor:
+                        Theme.of(context).colorScheme.secondary,
+                    selectedItemColor:
+                        Theme.of(context).appBarTheme.foregroundColor,
+                    currentIndex: _selectedPageIndex,
+                    type: BottomNavigationBarType.fixed,
+                    items: [
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.home),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        label: 'Dashboard',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.local_activity),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        label: 'Activity',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.person),
+                        backgroundColor: Theme.of(context).primaryColor,
+                        label: 'Settings',
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ],
         ),

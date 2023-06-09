@@ -146,14 +146,14 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                 /*
                     Shops
                 */
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(NearByShopsScreen.routeName);
-                  },
-                  child: Column(
-                    children: [
-                      Container(
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed(NearByShopsScreen.routeName);
+                      },
+                      child: Container(
                         height: 100,
                         width: 100,
                         decoration: BoxDecoration(
@@ -171,16 +171,16 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'Shops',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
-                      )
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'Shops',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -193,14 +193,14 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                 /*
                     At Door Step
                 */
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context)
-                        .pushNamed(CutomerAppointmentScreen.routeName);
-                  },
-                  child: Column(
-                    children: [
-                      Container(
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed(CutomerAppointmentScreen.routeName);
+                      },
+                      child: Container(
                         height: 100,
                         width: 100,
                         decoration: BoxDecoration(
@@ -218,27 +218,28 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'Appointment',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
-                      )
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'Appointment',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    )
+                  ],
                 ),
                 /*
                     My Garage
                 */
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pushNamed(MyGarageScreen.routeName);
-                  },
-                  child: Column(
-                    children: [
-                      Container(
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context)
+                            .pushNamed(MyGarageScreen.routeName);
+                      },
+                      child: Container(
                         height: 100,
                         width: 100,
                         decoration: BoxDecoration(
@@ -256,16 +257,16 @@ class _CostumerDashboardScreenState extends State<CostumerDashboardScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'My Garage',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16),
-                      )
-                    ],
-                  ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      'My Garage',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    )
+                  ],
                 ),
               ],
             )

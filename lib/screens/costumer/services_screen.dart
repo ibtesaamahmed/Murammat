@@ -220,50 +220,66 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                         Expanded(
                                             child: ListView.builder(
                                           itemBuilder: (context, index) {
-                                            return ListTile(
-                                              leading: Image.asset(
-                                                  'assets/images/logo.png',
-                                                  color: Theme.of(context)
-                                                      .primaryColor),
-                                              title: Text('Available'),
-                                              subtitle: Text(data
-                                                      .availaleWorkers[index]
-                                                      .distanceBetween +
-                                                  ' km away'),
-                                              trailing: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    IconButton(
-                                                        onPressed: () async {
-                                                          await data.sendRequest(
-                                                              data
-                                                                  .availaleWorkers[
-                                                                      index]
-                                                                  .workerId,
-                                                              currentPosition!
-                                                                  .latitude
-                                                                  .toString(),
-                                                              currentPosition!
-                                                                  .longitude
-                                                                  .toString(),
-                                                              services,
-                                                              _othersController
-                                                                  .text);
-                                                          await data
-                                                              .listenToAcceptedRequests();
-                                                          setState(() {
-                                                            _req = true;
-                                                          });
-                                                        },
-                                                        icon: Icon(
-                                                          Icons.done,
-                                                          color:
-                                                              Theme.of(context)
+                                            return Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 5, right: 5, bottom: 5),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        width: 1,
+                                                        color: Theme.of(context)
+                                                            .primaryColor),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                child: ListTile(
+                                                  leading: Image.asset(
+                                                      'assets/images/logo.png',
+                                                      color: Theme.of(context)
+                                                          .primaryColor),
+                                                  title: Text('Available'),
+                                                  subtitle: Text(data
+                                                          .availaleWorkers[
+                                                              index]
+                                                          .distanceBetween +
+                                                      ' km away'),
+                                                  trailing: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: <Widget>[
+                                                        IconButton(
+                                                            onPressed:
+                                                                () async {
+                                                              await data.sendRequest(
+                                                                  data
+                                                                      .availaleWorkers[
+                                                                          index]
+                                                                      .workerId,
+                                                                  currentPosition!
+                                                                      .latitude
+                                                                      .toString(),
+                                                                  currentPosition!
+                                                                      .longitude
+                                                                      .toString(),
+                                                                  services,
+                                                                  _othersController
+                                                                      .text);
+                                                              await data
+                                                                  .listenToAcceptedRequests();
+                                                              setState(() {
+                                                                _req = true;
+                                                              });
+                                                            },
+                                                            icon: Icon(
+                                                              Icons.done,
+                                                              color: Theme.of(
+                                                                      context)
                                                                   .primaryColor,
-                                                          size: 35,
-                                                        )),
-                                                  ]),
+                                                              size: 35,
+                                                            )),
+                                                      ]),
+                                                ),
+                                              ),
                                             );
                                           },
                                           itemCount:
@@ -315,7 +331,19 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                             }),
                                             activeColor:
                                                 Theme.of(context).primaryColor,
-                                            title: Text('Towing'),
+                                            title: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text('Towing'),
+                                                Text(
+                                                  'Rs 400-800',
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                           CheckboxListTile(
                                             value: engineReplacement,
@@ -326,18 +354,19 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                             }),
                                             activeColor:
                                                 Theme.of(context).primaryColor,
-                                            title: Text('Engine Replacement'),
-                                          ),
-                                          CheckboxListTile(
-                                            value: engineRepair,
-                                            onChanged: ((val) {
-                                              setState(() {
-                                                engineRepair = val;
-                                              });
-                                            }),
-                                            activeColor:
-                                                Theme.of(context).primaryColor,
-                                            title: Text('Engine Repair'),
+                                            title: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text('Engine Work'),
+                                                Text(
+                                                  'Rs 3000-5000',
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                           CheckboxListTile(
                                             value: oilChangeOrFilters,
@@ -348,7 +377,19 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                             }),
                                             activeColor:
                                                 Theme.of(context).primaryColor,
-                                            title: Text('Oil change or Filter'),
+                                            title: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text('Oil Change and Filters'),
+                                                Text(
+                                                  'Rs 1200-1500',
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                           CheckboxListTile(
                                             value: accidentRecovery,
@@ -359,7 +400,19 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                             }),
                                             activeColor:
                                                 Theme.of(context).primaryColor,
-                                            title: Text('Accident Recovery'),
+                                            title: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text('Accident Recovery'),
+                                                Text(
+                                                  'Rs 5000-8000',
+                                                  style: TextStyle(
+                                                      color: Colors.grey),
+                                                )
+                                              ],
+                                            ),
                                           ),
                                           CheckboxListTile(
                                             value: others,

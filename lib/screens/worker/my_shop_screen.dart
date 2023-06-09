@@ -75,6 +75,12 @@ class _MyShopScreenState extends State<MyShopScreen> {
                                   fontSize: 16),
                             ),
                           ),
+                          Center(
+                              child: Container(
+                            color: Colors.grey,
+                            height: 1,
+                            width: 280,
+                          )),
                           ListTile(
                             leading: Icon(
                               Icons.shop_outlined,
@@ -87,6 +93,12 @@ class _MyShopScreenState extends State<MyShopScreen> {
                                   fontSize: 16),
                             ),
                           ),
+                          Center(
+                              child: Container(
+                            color: Colors.grey,
+                            height: 1,
+                            width: 280,
+                          )),
                           ListTile(
                             leading: Icon(
                               Icons.streetview,
@@ -99,6 +111,12 @@ class _MyShopScreenState extends State<MyShopScreen> {
                                   fontSize: 16),
                             ),
                           ),
+                          Center(
+                              child: Container(
+                            color: Colors.grey,
+                            height: 1,
+                            width: 280,
+                          )),
                           ListTile(
                             leading: Icon(
                               Icons.phone,
@@ -111,6 +129,12 @@ class _MyShopScreenState extends State<MyShopScreen> {
                                   fontSize: 16),
                             ),
                           ),
+                          Center(
+                              child: Container(
+                            color: Colors.grey,
+                            height: 1,
+                            width: 280,
+                          )),
                           ListTile(
                             leading: Icon(
                               Icons.location_pin,
@@ -123,6 +147,12 @@ class _MyShopScreenState extends State<MyShopScreen> {
                                   fontSize: 16),
                             ),
                           ),
+                          Center(
+                              child: Container(
+                            color: Colors.grey,
+                            height: 1,
+                            width: 280,
+                          )),
                           ListTile(
                             leading: Icon(
                               Icons.location_city,
@@ -135,6 +165,12 @@ class _MyShopScreenState extends State<MyShopScreen> {
                                   fontSize: 16),
                             ),
                           ),
+                          Center(
+                              child: Container(
+                            color: Colors.grey,
+                            height: 1,
+                            width: 280,
+                          )),
                         ],
                       ),
                     )),

@@ -48,8 +48,9 @@ class MyHistory with ChangeNotifier {
     final DatabaseReference _databaseReference =
         FirebaseDatabase.instance.ref().child('history');
     final response = await _databaseReference.get();
-    Map<dynamic, dynamic> extractedData =
-        response.value as Map<dynamic, dynamic>;
+    Map<dynamic, dynamic> extractedData = response.value == null
+        ? Map()
+        : response.value as Map<dynamic, dynamic>;
     extractedData.forEach((key, value) {
       if (value['workerId'] == userId) {
         loaded.add(History(

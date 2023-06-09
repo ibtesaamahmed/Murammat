@@ -8,6 +8,7 @@ import 'package:murammat_app/screens/costumer/settings/customer_language_screen.
 import 'package:murammat_app/screens/costumer/settings/customer_personal_info_screen.dart';
 import 'package:murammat_app/screens/costumer/settings/customer_rate_screen.dart';
 import 'package:murammat_app/screens/costumer/settings/customer_reward_screen.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CostumerSettingsScreen extends StatefulWidget {
@@ -18,10 +19,11 @@ class CostumerSettingsScreen extends StatefulWidget {
 class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
   File? file;
   var image;
-
+  String _appVersion = 'v1.0.0';
   @override
   void initState() {
     loadImage();
+    Future.delayed(Duration.zero).then((_) => getAppVersion());
     super.initState();
   }
 
@@ -46,12 +48,9 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
     });
   }
 
-  deleteImage() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      file = null;
-      prefs.remove('customerImagePath');
-    });
+  getAppVersion() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    _appVersion = packageInfo.version;
   }
 
   @override
@@ -62,36 +61,58 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Center(
-                child: file != null
-                    ? CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.white70,
-                        backgroundImage: Image.file(file!).image,
-                      )
-                    : CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.white70,
-                        backgroundImage:
-                            Image.asset('assets/images/placeholder.png').image,
-                      ),
+            Stack(children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Center(
+                  child: file != null
+                      ? CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.white70,
+                          backgroundImage: Image.file(file!).image,
+                        )
+                      : CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Colors.white70,
+                          backgroundImage:
+                              Image.asset('assets/images/placeholder.png')
+                                  .image,
+                        ),
+                ),
               ),
-            ),
+              Positioned(
+                left: 190,
+                top: 80,
+                child: GestureDetector(
+                  onTap: _openGallery,
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(50),
+                        border: Border.all(
+                            width: 2, color: Theme.of(context).primaryColor)),
+                    child: Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                      size: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ]),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                IconButton(
-                  color: Theme.of(context).primaryColor,
-                  onPressed: _openGallery,
-                  icon: Icon(Icons.edit),
-                ),
-                IconButton(
-                  color: Theme.of(context).errorColor,
-                  onPressed: deleteImage,
-                  icon: Icon(Icons.delete),
-                ),
+                // ElevatedButton.icon(
+                //   label: Text('Edit'),
+                //   onPressed: _openGallery,
+                //   icon: Icon(
+                //     Icons.edit_rounded,
+                //     size: 18,
+                //   ),
+                // ),
               ],
             ),
             Text(
@@ -275,6 +296,21 @@ class _CostumerSettingsScreenState extends State<CostumerSettingsScreen> {
                 ),
               ],
             ),
+            Center(
+              child: Container(
+                color: Colors.grey,
+                height: 1,
+                width: 250,
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Center(
+                child: Text(
+              _appVersion,
+              style: TextStyle(color: Colors.grey),
+            )),
             Container(
               height: 100,
             )

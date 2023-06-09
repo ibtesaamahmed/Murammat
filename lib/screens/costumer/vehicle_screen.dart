@@ -30,68 +30,103 @@ class VehicleScreen extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
-          Row(
+          Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Vehicle Name',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold)),
-                  const SizedBox(
-                    height: 5,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Text('Vehicle Name',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold)),
+                      Text(
+                          vehicleData.items[existingIndex].vehicleName
+                              .toString(),
+                          style: TextStyle(fontSize: 18)),
+                    ],
                   ),
-                  Text('Mileage (Km)',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 15),
+                  Center(
+                      child: Container(
+                    color: Colors.grey,
+                    height: 1,
+                    width: 280,
+                  )),
                   const SizedBox(
-                    height: 5,
+                    height: 15,
                   ),
-                  Text('Engine Size (cc)',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold)),
-                  const SizedBox(
-                    height: 5,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('Mileage (Km)',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold)),
+                      Text(vehicleData.items[existingIndex].milage.toString(),
+                          style: TextStyle(fontSize: 18)),
+                    ],
                   ),
-                  Text('Top Speed (Km/h)',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 15),
+                  Center(
+                      child: Container(
+                    color: Colors.grey,
+                    height: 1,
+                    width: 280,
+                  )),
                   const SizedBox(
-                    height: 5,
+                    height: 15,
                   ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(vehicleData.items[existingIndex].vehicleName.toString(),
-                      style: TextStyle(fontSize: 18)),
-                  const SizedBox(
-                    height: 5,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('Engine Size (cc)',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold)),
+                      Text(
+                          vehicleData.items[existingIndex].engineSize
+                              .toString(),
+                          style: TextStyle(fontSize: 18)),
+                    ],
                   ),
-                  Text(vehicleData.items[existingIndex].milage.toString(),
-                      style: TextStyle(fontSize: 18)),
+                  const SizedBox(height: 15),
+                  Center(
+                      child: Container(
+                    color: Colors.grey,
+                    height: 1,
+                    width: 280,
+                  )),
                   const SizedBox(
-                    height: 5,
+                    height: 15,
                   ),
-                  Text(vehicleData.items[existingIndex].engineSize.toString(),
-                      style: TextStyle(fontSize: 18)),
-                  const SizedBox(
-                    height: 5,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('Top Speed (Km/h)',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold)),
+                      Text(vehicleData.items[existingIndex].topSpeed.toString(),
+                          style: TextStyle(fontSize: 18)),
+                    ],
                   ),
-                  Text(vehicleData.items[existingIndex].topSpeed.toString(),
-                      style: TextStyle(fontSize: 18)),
+                  const SizedBox(height: 15),
+                  Center(
+                      child: Container(
+                    color: Colors.grey,
+                    height: 1,
+                    width: 280,
+                  )),
                   const SizedBox(
-                    height: 5,
+                    height: 15,
                   ),
                 ],
               ),
@@ -100,25 +135,19 @@ class VehicleScreen extends StatelessWidget {
           const SizedBox(
             height: 50,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Container(
-                padding: EdgeInsets.only(right: 20),
-                child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ServiceLogsScreen(
-                                  vehicleData.items[existingIndex].id)));
-                    },
-                    icon: Icon(Icons.home_repair_service_rounded),
-                    label: Text('Service Logs')),
-              ),
-            ],
+          Container(
+            child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ServiceLogsScreen(
+                              vehicleData.items[existingIndex].id)));
+                },
+                icon: Icon(Icons.home_repair_service_rounded),
+                label: Text('Service Logs')),
           ),
         ],
       ),

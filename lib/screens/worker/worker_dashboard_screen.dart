@@ -26,7 +26,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
           CarouselSlider(
             options: CarouselOptions(
               autoPlay: true,
-              //  autoPlayAnimationDuration: Duration(microseconds: 2000),
+              // autoPlayAnimationDuration: Duration(microseconds: 2000),
               onPageChanged: (index, reason) {
                 setState(() {
                   _currentIndex = index;
@@ -43,27 +43,25 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                         bottom: 10.0,
                       ),
                       decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Theme.of(context).primaryColor,
-                              blurRadius: 4.0,
-                              offset: Offset(
-                                0.0,
-                                1.0,
-                              ),
-                            ),
-                          ],
-                          border: Border.all(
-                              width: 5, color: Theme.of(context).primaryColor)),
-                      // elevation: 6.0,
-                      // shadowColor: Theme.of(context).primaryColor,
-                      // shape: RoundedRectangleBorder(
-                      //   borderRadius: BorderRadius.circular(30.0),
-                      // ),
+                        color: Colors.white,
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color: Theme.of(context).primaryColor,
+                        //     blurRadius: 4.0,
+                        //     offset: Offset(
+                        //       0.0,
+                        //       1.0,
+                        //     ),
+                        //   ),
+                        // ],
+
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                            width: 3, color: Theme.of(context).primaryColor),
+                      ),
                       child: ClipRRect(
                         borderRadius: BorderRadius.all(
-                          Radius.zero,
+                          Radius.circular(16),
                         ),
                         child: Stack(
                           children: <Widget>[
@@ -99,85 +97,107 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
             }).toList(),
           ),
           const SizedBox(
-            height: 50,
+            height: 30,
           ),
-          Container(
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: Theme.of(context).primaryColor, width: 4)),
-            child: ElevatedButton.icon(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => RequestScreen(),
-                ));
-              },
-              icon: Icon(
-                Icons.notifications_active,
-                color: Theme.of(context).primaryColor,
-              ),
-              label: Text(
-                'Requests',
-                style: TextStyle(color: Theme.of(context).primaryColor),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).appBarTheme.foregroundColor,
-                fixedSize: Size(300, 60),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => RequestScreen(),
+              ));
+            },
+            child: Container(
+              height: 60,
+              width: 60,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 2, color: Theme.of(context).primaryColor),
+                  borderRadius: BorderRadius.circular(50),
+                  color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.all(7.0),
+                child: Image.asset(
+                  'assets/images/services.png',
+                  fit: BoxFit.cover,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Service',
+            style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16),
           ),
           const SizedBox(
             height: 20,
           ),
-          Container(
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: Theme.of(context).primaryColor, width: 4)),
-            child: ElevatedButton.icon(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => MyShopScreen(),
-                ));
-              },
-              icon: Icon(
-                Icons.shop,
-                color: Theme.of(context).primaryColor,
-              ),
-              label: Text(
-                'My Shop',
-                style: TextStyle(color: Theme.of(context).primaryColor),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).appBarTheme.foregroundColor,
-                fixedSize: Size(300, 60),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => MyShopScreen()));
+            },
+            child: Container(
+              height: 60,
+              width: 60,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 2, color: Theme.of(context).primaryColor),
+                  borderRadius: BorderRadius.circular(50),
+                  color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.all(7.0),
+                child: Image.asset(
+                  'assets/images/shops.png',
+                  fit: BoxFit.cover,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Shops',
+            style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16),
           ),
           const SizedBox(
             height: 20,
           ),
-          Container(
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: Theme.of(context).primaryColor, width: 4)),
-            child: ElevatedButton.icon(
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => WorkerAppointmentScreen(),
-                ));
-              },
-              icon: Icon(
-                Icons.home_repair_service,
-                color: Theme.of(context).primaryColor,
-              ),
-              label: Text(
-                'Appointments',
-                style: TextStyle(color: Theme.of(context).primaryColor),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).appBarTheme.foregroundColor,
-                fixedSize: Size(300, 60),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => WorkerAppointmentScreen()));
+            },
+            child: Container(
+              height: 60,
+              width: 60,
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      width: 2, color: Theme.of(context).primaryColor),
+                  borderRadius: BorderRadius.circular(50),
+                  color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.all(7.0),
+                child: Image.asset(
+                  'assets/images/appointment.png',
+                  fit: BoxFit.cover,
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Appointment',
+            style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 16),
           ),
         ],
       ),

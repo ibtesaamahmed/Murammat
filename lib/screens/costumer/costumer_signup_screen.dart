@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:murammat_app/models/http_exception.dart';
@@ -17,6 +19,9 @@ class CostumerSignupScreen extends StatefulWidget {
 class _CostumerSignupScreenState extends State<CostumerSignupScreen> {
   var _isLoading = false;
   int currentStep = 0;
+  File? file;
+  var image;
+
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPassword = TextEditingController();
@@ -74,6 +79,50 @@ class _CostumerSignupScreenState extends State<CostumerSignupScreen> {
                 //         ))
                 //   ],
                 // ),
+
+                // Stack(children: [
+                //   Padding(
+                //     padding: const EdgeInsets.all(10.0),
+                //     child: Center(
+                //       child: file != null
+                //           ? CircleAvatar(
+                //               radius: 50,
+                //               backgroundColor: Colors.white70,
+                //               backgroundImage: Image.file(file!).image,
+                //             )
+                //           : CircleAvatar(
+                //               radius: 50,
+                //               backgroundColor: Colors.white70,
+                //               backgroundImage:
+                //                   Image.asset('assets/images/placeholder.png')
+                //                       .image,
+                //             ),
+                //     ),
+                //   ),
+                //   Positioned(
+                //     left: 190,
+                //     top: 80,
+                //     child: GestureDetector(
+                //       onTap: () {},
+                //       child: Container(
+                //         height: 30,
+                //         width: 30,
+                //         decoration: BoxDecoration(
+                //             color: Theme.of(context).primaryColor,
+                //             borderRadius: BorderRadius.circular(50),
+                //             border: Border.all(
+                //                 width: 2,
+                //                 color: Theme.of(context).primaryColor)),
+                //         child: Icon(
+                //           Icons.edit,
+                //           color: Colors.white,
+                //           size: 18,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ]),
+
                 SizedBox(
                   height: 5,
                 ),
