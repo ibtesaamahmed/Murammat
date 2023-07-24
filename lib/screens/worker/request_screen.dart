@@ -10,6 +10,8 @@ import 'package:murammat_app/screens/worker/worker_reached_screen.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/api_keys.dart';
+
 class RequestScreen extends StatefulWidget {
   const RequestScreen({super.key});
 
@@ -47,7 +49,7 @@ class _RequestScreenState extends State<RequestScreen> {
   void getPolyPoints(String lat, String long, int index) async {
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      'AIzaSyCWMxta2y3gpe7EWcsQrR9GXUpjrthC1d0', // Your Google Map Key
+      googleMapApiKey, // Your Google Map Key
       PointLatLng(currentPosition!.latitude, currentPosition!.longitude),
       PointLatLng(double.parse(lat), double.parse(long)),
     );
@@ -153,7 +155,6 @@ class _RequestScreenState extends State<RequestScreen> {
                   myLocationEnabled: true,
                   zoomControlsEnabled: false,
                   compassEnabled: true,
-                  trafficEnabled: true,
                   markers: _accepted
                       ? {
                           Marker(

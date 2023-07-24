@@ -4,8 +4,6 @@ import 'package:murammat_app/providers/history.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/customer.dart';
-
 class CostumerActivityScreen extends StatefulWidget {
   @override
   State<CostumerActivityScreen> createState() => _CostumerActivityScreenState();

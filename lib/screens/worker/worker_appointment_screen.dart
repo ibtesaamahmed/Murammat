@@ -7,7 +7,6 @@ import 'package:murammat_app/screens/worker/worker_appointment_request_screen.da
 import 'package:murammat_app/screens/worker/worker_rejected_cancelled_appointment_screen.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class WorkerAppointmentScreen extends StatefulWidget {
   const WorkerAppointmentScreen({super.key});

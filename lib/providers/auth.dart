@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import '../constants/api_keys.dart';
 import '../models/http_exception.dart';
 
 class CustomerInfo {
@@ -129,7 +130,7 @@ class Auth with ChangeNotifier {
       [final shopName]) async {
     const urlSegment = 'accounts:signUp';
     final url = Uri.parse(
-        'https://identitytoolkit.googleapis.com/v1/$urlSegment?key=AIzaSyA6zCS41bJZaQicQ1rXUQo9qqhCvUvA5jA');
+        'https://identitytoolkit.googleapis.com/v1/$urlSegment?key=$firebaseApiKey');
 
     try {
       final response = await http.post(url,
@@ -192,7 +193,7 @@ class Auth with ChangeNotifier {
   Future<void> login(String email, String password, String role) async {
     const urlSegment = 'accounts:signInWithPassword';
     final url = Uri.parse(
-        'https://identitytoolkit.googleapis.com/v1/$urlSegment?key=AIzaSyA6zCS41bJZaQicQ1rXUQo9qqhCvUvA5jA');
+        'https://identitytoolkit.googleapis.com/v1/$urlSegment?key=$firebaseApiKey');
 
     try {
       final response = await http.post(url,

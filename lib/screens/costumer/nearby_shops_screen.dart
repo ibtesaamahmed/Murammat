@@ -5,7 +5,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:murammat_app/providers/customer.dart';
 import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NearByShopsScreen extends StatefulWidget {
   static const routeName = '/nearby-shops-customers';
@@ -27,7 +26,7 @@ class _NearByShopsScreenState extends State<NearByShopsScreen> {
 
   var _isLoading = false;
 
-  var _visibility = false;
+  // var _visibility = false;
 
   List<Placemark>? placemarks;
 

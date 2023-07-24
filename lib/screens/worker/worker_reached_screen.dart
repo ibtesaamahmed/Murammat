@@ -5,8 +5,8 @@ import 'package:murammat_app/widgets/custom_circular_progress_indicator.dart';
 import 'package:provider/provider.dart';
 
 class WorkerReachedScreen extends StatefulWidget {
-  int index;
-  Position? initialPosition;
+  final int index;
+  final Position? initialPosition;
   WorkerReachedScreen(this.index, this.initialPosition);
 
   @override

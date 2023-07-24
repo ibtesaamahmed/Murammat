@@ -22,8 +22,8 @@ class _CustomerAppointmentRequestScreenState
   bool servicestatus = false;
   late LocationPermission permission;
   bool haspermission = false;
-  var _isLoading = false;
-  var _visibility = false;
+  // var _isLoading = false;
+  // var _visibility = false;
   List<Placemark>? placemarks;
   Placemark? place;
   DateTime? _selectedDate;

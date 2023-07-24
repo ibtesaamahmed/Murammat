@@ -3,8 +3,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:murammat_app/screens/worker/my_shop_screen.dart';
 import 'package:murammat_app/screens/worker/request_screen.dart';
 import 'package:murammat_app/screens/worker/worker_appointment_screen.dart';
-import 'package:provider/provider.dart';
-import 'package:murammat_app/providers/worker.dart';
 
 class WorkerDashboardScreen extends StatefulWidget {
   @override
