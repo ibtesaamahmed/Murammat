@@ -25,10 +25,6 @@ class StartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   centerTitle: true,
-      //   title: const Text('MURAMMAT'),
-      // ),
       body: Container(
         color: Theme.of(context).appBarTheme.backgroundColor,
         child: Container(
