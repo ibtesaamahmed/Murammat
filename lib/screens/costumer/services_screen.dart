@@ -18,7 +18,7 @@ class ServicesScreen extends StatefulWidget {
 
 class _ServicesScreenState extends State<ServicesScreen> {
   List<String> services = [];
-  var _req = false;
+  var _isReq = false;
   var _toggle = false;
   var _availale = false;
   final _othersController = TextEditingController();
@@ -63,7 +63,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
           children: [
             Consumer<Customer>(
               builder: (context, value, _) {
-                if (_req) {
+                if (_isReq) {
                   value.listenToLocationUpdate();
                   _markers = {
                     Marker(
@@ -80,14 +80,14 @@ class _ServicesScreenState extends State<ServicesScreen> {
                   };
                 }
                 return GoogleMap(
-                  padding: EdgeInsets.only(top: _req ? 440 : 350),
+                  padding: EdgeInsets.only(top: _isReq ? 440 : 350),
                   onMapCreated: _onMapCreated,
                   myLocationEnabled: true,
                   initialCameraPosition:
                       CameraPosition(target: const LatLng(0, 0)),
                   myLocationButtonEnabled: true,
                   zoomControlsEnabled: false,
-                  markers: _req ? _markers : {},
+                  markers: _isReq ? _markers : {},
                 );
               },
             ),
@@ -96,7 +96,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 Container(
-                  height: _req ? 200 : 300.0,
+                  height: _isReq ? 200 : 300.0,
                   width: MediaQuery.of(context).size.width,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -142,7 +142,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                     ],
                                   ),
                                 )
-                              : _req
+                              : _isReq
                                   ? Consumer<Customer>(
                                       builder: (context, value, _) {
                                         return Column(
@@ -267,7 +267,7 @@ class _ServicesScreenState extends State<ServicesScreen> {
                                                               await data
                                                                   .listenToAcceptedRequests();
                                                               setState(() {
-                                                                _req = true;
+                                                                _isReq = true;
                                                               });
                                                             },
                                                             icon: Icon(
